@@ -1,9 +1,9 @@
 export declare function printf(...args:any[]):void//msvcrt
 
-struct OBJ
-    fieldA dq 12
-    fieldB dq 13
-ends
+class OBJ{
+    fieldA:number = 12
+    fieldB:number = 13
+}
 
 let objA = new OBJ()
 
@@ -11,9 +11,7 @@ function funcA(propA:number){
     printf("%i", propA)
     printf("end ")
 
-    lea rax, [objA]
-    mov rbx, [rax + OBJ.fieldA]
-    printf("%i", rbx)
+    printf("%i", objA.fieldA)
 }
 
 function main(){

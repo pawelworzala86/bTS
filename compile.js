@@ -28,6 +28,7 @@ const DATA = []
 function Compile(source){
     const FILE = {
         FUNCTIONS: {},
+        CLASSES: {},
     }
 
     function r(regexp,callback){
@@ -49,12 +50,35 @@ function Compile(source){
     r(/export .*/gm,'')
 
 
-    r(/let objA \= new OBJ\(\)/gm,match=>{
+
+
+    r(/class(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        let name = match.split(':')[0].replace('class','').trim()
+        let lines = match.split('\n')
+        lines.splice(0,1)
+        lines.splice(lines.length-1,1)
+        let body = lines.join('\n')
+        let props = body.split('\n')
+        props = props.map(prop=>{
+            let name = prop.split(':')[0].trim()
+            let value = prop.split('=')[1].trim()
+            return `${name} dq ${value}`
+        })
+
+        FILE.CLASSES[name] = {name,props,objs:[]}
+
+        return `struct ${name}
+        ${props.join('\n')}
+    ends`
+    })
+
+    r(/let .* \= new .*\(\)/gm,match=>{
         let name = match.split(' ')[1].trim()
         let kind = match.split(' ')[4].split('(')[0].trim()
         let value = null
         console.log({name,kind,value,isObj:true})
         DATA.push({name,kind,value,isObj:true})
+        FILE.CLASSES[kind].objs.push(name)
         return ''
     })
 
@@ -90,6 +114,7 @@ function Compile(source){
                 let pidx = 0
                 let prefix = ''
                 let idreg = 0
+
                 for(const param of params){
                     pidx += 8
                     line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
@@ -97,6 +122,19 @@ function Compile(source){
                         return REG[idreg++]
                     })
                 }
+
+                for(const CLASSname of Object.keys(FILE.CLASSES)){
+                    let CLASS = FILE.CLASSES[CLASSname]
+                for(const OBJ of CLASS.objs){
+                    line = line.replace(new RegExp('\\b'+OBJ+'\\..*\\b','gm'),mmm=>{
+                        let field = mmm.split('.')[1].trim()
+                        prefix+=`   lea ${REG[idreg++]}, [${OBJ}]
+    mov ${REG[idreg]}, [${REG[idreg-1]} + ${CLASS.name}.${field}]`
+                        return REG[idreg]
+                    })
+                }}
+
+
                 return prefix+'\n'+line
             })
 
