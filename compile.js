@@ -82,6 +82,19 @@ function Compile(source){
         return ''
     })
 
+    r(/let .* \= \'.*\'/gm,match=>{
+        let name = match.split('=')[0].replace('let','').trim().split(':')[0]
+        let value = match.split('=')[1].trim()
+        DATA.push({name,kind:'db',value})
+        return ''
+    })
+    r(/let .* \= .*/gm,match=>{
+        let name = match.split('=')[0].replace('let','').trim().split(':')[0]
+        let value = match.split('=')[1].trim()
+        DATA.push({name,kind:'dq',value})
+        return ''
+    })
+
 
 
 
@@ -128,7 +141,7 @@ function Compile(source){
                 for(const OBJ of CLASS.objs){
                     line = line.replace(new RegExp('\\b'+OBJ+'\\..*\\b','gm'),mmm=>{
                         let field = mmm.split('.')[1].trim()
-                        prefix+=`   lea ${REG[idreg++]}, [${OBJ}]
+                        prefix+=`   lea ${REG[idreg++]}, ${OBJ}
     mov ${REG[idreg]}, [${REG[idreg-1]} + ${CLASS.name}.${field}]`
                         return REG[idreg]
                     })
@@ -170,6 +183,9 @@ ret`
     }
 
 
+    for(const DTA of DATA){
+        r(new RegExp('\\b('+DTA.name+')\\b','gm'),'[$1]')
+    }
 
     r(/\,\n/gm,'\n')
 
@@ -188,11 +204,17 @@ let data = []
 for(const DTA of DATA){
     if(DTA.isObj){
         data.push(`${DTA.name} ${DTA.kind}`)
+    }else{
+        if(DTA.kind=='dq'){
+            data.push(`${DTA.name} dq ${DTA.value}`)
+        }else if(DTA.kind=='db'){
+            data.push(`${DTA.name} db "${DTA.value}",0`)
+        }
     }
 }
 
 let frame = fs.readFileSync('./frame/cmd.inc').toString()
 frame = frame.replace('{{CODE}}',code)
-frame = frame.replace('{{DATA}}',data)
+frame = frame.replace('{{DATA}}',data.join('\n'))
 
 fs.writeFileSync('./cache/test.asm',frame)

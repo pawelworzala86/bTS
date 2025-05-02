@@ -7,11 +7,15 @@ class OBJ{
 
 let objA = new OBJ()
 
+let valA:number = 123
+
 function funcA(propA:number){
     printf("%i", propA)
     printf("end ")
 
-    printf("%i", objA.fieldA)
+    printf("%i ", objA.fieldA)
+
+    printf("%i ", valA)
 }
 
 function main(){
