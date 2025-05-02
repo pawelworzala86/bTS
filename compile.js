@@ -73,19 +73,21 @@ function Compile(source){
         //console.log('params',params)
         
         lines = body.split('\n')
-        lines = lines.map(line=>{
-            let pidx = 0
-            let prefix = ''
-            let idreg = 0
-            for(const param of params){
-                pidx += 8
-                line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
-                    prefix+='mov '+REG[idreg]+',[rsp + '+pidx+']'
-                    return REG[idreg++]
-                })
-            }
-            return prefix+'\n'+line
-        })
+
+            lines = lines.map(line=>{
+                let pidx = 0
+                let prefix = ''
+                let idreg = 0
+                for(const param of params){
+                    pidx += 8
+                    line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
+                        prefix+='mov '+REG[idreg]+',[rsp + '+pidx+']'
+                        return REG[idreg++]
+                    })
+                }
+                return prefix+'\n'+line
+            })
+
         body = lines.join('\n')
 
         //process.exit(1)
