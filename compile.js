@@ -22,6 +22,8 @@ function Blocks(source){
 const REG = ['rax','rbx','rdx','rdi']
 const INVOKERS = []
 
+const DATA = []
+
 
 function Compile(source){
     const FILE = {
@@ -45,6 +47,16 @@ function Compile(source){
         return ''
     })
     r(/export .*/gm,'')
+
+
+    r(/let objA \= new OBJ\(\)/gm,match=>{
+        let name = match.split(' ')[1].trim()
+        let kind = match.split(' ')[4].split('(')[0].trim()
+        let value = null
+        console.log({name,kind,value,isObj:true})
+        DATA.push({name,kind,value,isObj:true})
+        return ''
+    })
 
 
 
@@ -134,8 +146,15 @@ let code = fs.readFileSync('./source/test.ts').toString()
 
 code = Compile(code)
 
+let data = []
+for(const DTA of DATA){
+    if(DTA.isObj){
+        data.push(`${DTA.name} ${DTA.kind}`)
+    }
+}
+
 let frame = fs.readFileSync('./frame/cmd.inc').toString()
 frame = frame.replace('{{CODE}}',code)
-frame = frame.replace('{{DATA}}','')
+frame = frame.replace('{{DATA}}',data)
 
 fs.writeFileSync('./cache/test.asm',frame)
