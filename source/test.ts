@@ -5,7 +5,7 @@ class OBJ{
     fieldB:number = 13
 }
 
-let objA = new OBJ()
+let objA:OBJ = new OBJ()
 
 let valA:number = 123
 

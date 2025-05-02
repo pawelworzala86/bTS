@@ -29,6 +29,7 @@ function Compile(source){
     const FILE = {
         FUNCTIONS: {},
         CLASSES: {},
+        INDEX: 1,
     }
 
     function r(regexp,callback){
@@ -42,12 +43,30 @@ function Compile(source){
 
 
 
+
+
+
     r(/export declare function .*/,match=>{
         let name = match.split('(')[0].replace('export declare function','').trim()
         INVOKERS.push(name)
         return ''
     })
     r(/export .*/gm,'')
+
+
+
+
+
+    let names = []
+    r(/let .*\:/gm,match=>{
+        let name = match.split(':')[0].replace('let','').trim()
+        names.push(name)
+        return match
+    })
+    for(const name of names){
+        r(new RegExp('\\b('+name+')\\b','gm'),'F'+FILE.INDEX+'_$1')
+    }
+
 
 
 
@@ -73,7 +92,7 @@ function Compile(source){
     })
 
     r(/let .* \= new .*\(\)/gm,match=>{
-        let name = match.split(' ')[1].trim()
+        let name = match.split(' ')[1].trim().split(':')[0]
         let kind = match.split(' ')[4].split('(')[0].trim()
         let value = null
         console.log({name,kind,value,isObj:true})
