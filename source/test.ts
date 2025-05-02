@@ -25,4 +25,6 @@ function main(){
     funcA(11)
 
     imp1.testFunc()
+
+    printf("%i ", imp1.dataA)
 }

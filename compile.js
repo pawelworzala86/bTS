@@ -65,6 +65,11 @@ function Compile(file){
         FILE.EXPORTS.push({name,kind:'function'})
         return match.replace('export ','')
     })
+    r(/export let .*\:/gm,match=>{
+        let name = match.split(' ')[2].trim().split(':')[0].trim()
+        FILE.EXPORTS.push({name,kind:'data'})
+        return match.replace('export ','')
+    })
     //r(/export .*/gm,'')
 
 
