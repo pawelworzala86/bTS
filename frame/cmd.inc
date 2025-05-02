@@ -16,7 +16,7 @@ section '.text' code readable executable
 start:
     sub	rsp,8		; Make stack dqword aligned
     
-    call main
+    call F1_main
 
     invoke	ExitProcess,0
 
