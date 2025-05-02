@@ -63,6 +63,11 @@ function Compile(source){
         names.push(name)
         return match
     })
+    r(/function .*\(/gm,match=>{
+        let name = match.split('(')[0].replace('function','').trim()
+        names.push(name)
+        return match
+    })
     for(const name of names){
         r(new RegExp('\\b('+name+')\\b','gm'),'F'+FILE.INDEX+'_$1')
     }
