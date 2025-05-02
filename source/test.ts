@@ -1,3 +1,5 @@
+import * as imp1 from './imp1.ts'
+
 export declare function printf(...args:any[]):void//msvcrt
 
 class OBJ{

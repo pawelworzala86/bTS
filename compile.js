@@ -24,12 +24,16 @@ const INVOKERS = []
 
 const DATA = []
 
+let FILE_INDEX = 1
 
-function Compile(source){
+
+function Compile(file){
+    let source = fs.readFileSync('./source/'+file).toString()
+
     const FILE = {
         FUNCTIONS: {},
         CLASSES: {},
-        INDEX: 1,
+        INDEX: FILE_INDEX++,
     }
 
     function r(regexp,callback){
@@ -42,7 +46,7 @@ function Compile(source){
     r(/\/\*[\s\S]+?\*\//gm,'')
 
 
-
+    
 
 
 
@@ -51,7 +55,14 @@ function Compile(source){
         INVOKERS.push(name)
         return ''
     })
-    r(/export .*/gm,'')
+    //r(/export .*/gm,'')
+
+
+    r(/import .*/gm,match=>{
+        Compile('imp1.ts')
+
+        return 'include \'imp1.asm\''
+    })
 
 
 
@@ -213,6 +224,10 @@ ret`
 
     r(/\,\n/gm,'\n')
 
+
+
+    fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),source)
+
     return source
 }
 
@@ -220,9 +235,9 @@ ret`
 
 
 
-let code = fs.readFileSync('./source/test.ts').toString()
 
-code = Compile(code)
+
+let code = Compile('test.ts')
 
 let data = []
 for(const DTA of DATA){
