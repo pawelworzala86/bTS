@@ -36,6 +36,8 @@ function Compile(source){
     r(/\/\/.*/gm,'')
     r(/\/\*[\s\S]+?\*\//gm,'')
 
+    r(/export .*/gm,'')
+
     r(/function([\s\S]+?)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
         let lines = match.split('\n')
         let header = lines[0]
