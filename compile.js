@@ -19,7 +19,7 @@ function Blocks(source){
 }
 
 
-const REG = ['rax','rbx','rdx','rdi']
+const REG = ['rax','rbx','rdx','rdi', 'r9', 'r10', 'r11', 'r12']
 const INVOKERS = []
 
 const DATA = []
