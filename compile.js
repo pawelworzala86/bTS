@@ -75,11 +75,15 @@ function Compile(file){
 
     let FFF = []
     r(/import .*/gm,match=>{
-        Compile('imp1.ts')
+        let as = match.split(' ')[3]
+        let fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
+        console.log('GGG',as,fi)
 
-        FFF.push(['imp1', 'imp1.ts'])
+        Compile(fi)
 
-        return 'include \'imp1.asm\''
+        FFF.push([as, fi])
+
+        return 'include \''+fi.replace('.ts','.asm')+'\''
     })
     for(let FF of FFF){
         if(FILES[FF[1]].EXPORTS){
