@@ -86,6 +86,8 @@ function Compile(file){
                 if(EXP.kind=='function'){
                     FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
                     r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                }else{
+                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
                 }
             }
         }
