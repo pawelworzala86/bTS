@@ -20,6 +20,7 @@ function Blocks(source){
 
 
 const REG = ['rax','rbx','rdx','rdi']
+const INVOKERS = []
 
 
 function Compile(source){
@@ -36,7 +37,17 @@ function Compile(source){
     r(/\/\/.*/gm,'')
     r(/\/\*[\s\S]+?\*\//gm,'')
 
+
+
+    r(/export declare function .*/,match=>{
+        let name = match.split('(')[0].replace('export declare function','').trim()
+        INVOKERS.push(name)
+        return ''
+    })
     r(/export .*/gm,'')
+
+
+
 
     r(/function([\s\S]+?)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
         let lines = match.split('\n')
@@ -86,8 +97,8 @@ ret`
     })
 
     for(const FUNC of Object.keys(FILE.FUNCTIONS)){
-        r(new RegExp('\\b('+FUNC+')\\(\\)',''),'call $1')
-        r(new RegExp('\\b('+FUNC+')\\((.*)\\)',''),match=>{
+        r(new RegExp('\\b('+FUNC+')\\(\\)','gm'),'call $1')
+        r(new RegExp('\\b('+FUNC+')\\((.*)\\)','gm'),match=>{
             let params = match.split('(')[1].split(')')[0].trim().split(',')
             params = params.map(param=>{
                 return 'push '+param
@@ -99,6 +110,14 @@ ret`
         })
         //r(new RegExp('\\b('+FUNC+')\\((.*)\\)',''),'call $1,$2')
     }
+
+
+    for(const INVOKE of INVOKERS){
+        r(new RegExp('\\b('+INVOKE+')\\(\\)','gm'),'invoke $1')
+        r(new RegExp('\\b('+INVOKE+')\\((.*)\\)','gm'),'invoke $1,$2')
+    }
+
+
 
     r(/\,\n/gm,'\n')
 
