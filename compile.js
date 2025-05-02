@@ -35,6 +35,7 @@ function Compile(file){
     const FILE = {
         FUNCTIONS: {},
         CLASSES: {},
+        EXPORTS: [],
         INDEX: FILE_INDEX++,
     }
 
@@ -59,7 +60,11 @@ function Compile(file){
         INVOKERS.push(name)
         return ''
     })
-    r(/export function/gm,'function')
+    r(/export function .*\(/gm,match=>{
+        let name = match.split(' ')[2].trim().split('(')[0].trim()
+        FILE.EXPORTS.push({name,kind:'function'})
+        return match.replace('export ','')
+    })
     //r(/export .*/gm,'')
 
 
@@ -72,15 +77,16 @@ function Compile(file){
         return 'include \'imp1.asm\''
     })
     for(let FF of FFF){
-        if(FILES[FF[1]].EXPORT){
-            for(let EXP of FILES[FF[1]].EXPORT){
+        if(FILES[FF[1]].EXPORTS){
+            for(let EXP of FILES[FF[1]].EXPORTS){
                 console.log('EXP',EXP)
 
-                let name = 'F'+FILES['imp1.ts'].INDEX+'_'+EXP
+                let name = 'F'+FILES['imp1.ts'].INDEX+'_'+EXP.name
 
-                FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
-
-                r(new RegExp('\\b'+FF[0]+'\\.('+EXP+')','gm'), name)
+                if(EXP.kind=='function'){
+                    FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
+                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                }
             }
         }
     }
@@ -103,7 +109,7 @@ function Compile(file){
     for(const name of names){
         r(new RegExp('\\b('+name+')\\b','gm'),'F'+FILE.INDEX+'_$1')
     }
-    FILE.EXPORT = names
+    //FILE.EXPORT = names
 
 
 
