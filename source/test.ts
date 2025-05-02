@@ -23,4 +23,6 @@ function funcA(propA:number){
 function main(){
     printf("ok")
     funcA(11)
+
+    imp1.testFunc()
 }

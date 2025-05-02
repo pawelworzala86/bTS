@@ -26,6 +26,8 @@ const DATA = []
 
 let FILE_INDEX = 1
 
+const FILES = {}
+
 
 function Compile(file){
     let source = fs.readFileSync('./source/'+file).toString()
@@ -35,6 +37,8 @@ function Compile(file){
         CLASSES: {},
         INDEX: FILE_INDEX++,
     }
+
+    FILES[file] = FILE
 
     function r(regexp,callback){
         source = source.replace(regexp,callback)
@@ -55,14 +59,31 @@ function Compile(file){
         INVOKERS.push(name)
         return ''
     })
+    r(/export function/gm,'function')
     //r(/export .*/gm,'')
 
 
+    let FFF = []
     r(/import .*/gm,match=>{
         Compile('imp1.ts')
 
+        FFF.push(['imp1', 'imp1.ts'])
+
         return 'include \'imp1.asm\''
     })
+    for(let FF of FFF){
+        if(FILES[FF[1]].EXPORT){
+            for(let EXP of FILES[FF[1]].EXPORT){
+                console.log('EXP',EXP)
+
+                let name = 'F'+FILES['imp1.ts'].INDEX+'_'+EXP
+
+                FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
+
+                r(new RegExp('\\b'+FF[0]+'\\.('+EXP+')','gm'), name)
+            }
+        }
+    }
 
 
 
@@ -82,6 +103,7 @@ function Compile(file){
     for(const name of names){
         r(new RegExp('\\b('+name+')\\b','gm'),'F'+FILE.INDEX+'_$1')
     }
+    FILE.EXPORT = names
 
 
 

@@ -1,3 +1,3 @@
 export function testFunc(){
-    printf("ok")
+    printf(" ee ")
 }
