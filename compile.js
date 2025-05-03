@@ -245,7 +245,7 @@ function Compile(file){
                         line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{
                             let field = mmm.split('.')[1]
                             prefix+='lea '+REG[idreg]+',[rsp + '+pidx+']\n'+
-                            'mov '+REG[idreg++]+', ['+REG[idreg-1]+' + '+param.kind+'.'+field+']'
+                            'mov '+REG[++idreg]+', ['+REG[idreg-1]+' + '+param.kind+'.'+field+']'
                             return REG[idreg]
                         })
                     }
