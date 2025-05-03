@@ -3,3 +3,8 @@ export function testFunc(){
 }
 
 export let dataA:number = 1222
+
+export class OBJ{
+    fieldA:number = 12
+    fieldB:number = 13
+}

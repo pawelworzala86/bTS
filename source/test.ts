@@ -2,12 +2,12 @@ import * as imp1 from './imp1.ts'
 
 export declare function printf(...args:any[]):void//msvcrt
 
-class OBJ{
+/*class OBJ{
     fieldA:number = 12
     fieldB:number = 13
-}
+}*/
 
-let objA:OBJ = new OBJ()
+let objA:imp1.OBJ = new imp1.OBJ()
 
 let valA:number = 123
 

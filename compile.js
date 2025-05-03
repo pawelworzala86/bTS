@@ -70,6 +70,11 @@ function Compile(file){
         FILE.EXPORTS.push({name,kind:'data'})
         return match.replace('export ','')
     })
+    r(/export class .*\:/gm,match=>{
+        let name = match.split(' ')[2].trim().split(':')[0].trim()
+        FILE.EXPORTS.push({name,kind:'class'})
+        return match.replace('export ','')
+    })
     //r(/export .*/gm,'')
 
 
@@ -95,6 +100,9 @@ function Compile(file){
                 if(EXP.kind=='function'){
                     FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
                     r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                }else if(EXP.kind=='class'){
+                    FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
+                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
                 }else{
                     r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
                 }
@@ -114,6 +122,11 @@ function Compile(file){
     })
     r(/function .*\(/gm,match=>{
         let name = match.split('(')[0].replace('function','').trim()
+        names.push(name)
+        return match
+    })
+    r(/class .*\:/gm,match=>{
+        let name = match.split(':')[0].replace('class','').trim()
         names.push(name)
         return match
     })
