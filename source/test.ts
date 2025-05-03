@@ -27,4 +27,7 @@ function main(){
     imp1.testFunc()
 
     printf("%i ", imp1.dataA)
+
+    objA.constructor()
+    printf("%i ", objA.fieldA)
 }

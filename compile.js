@@ -203,6 +203,16 @@ function Compile(file){
 
 
 
+    //todo: CLASS.objs - funkcje starty
+    for(const CLASSname of Object.keys(FILE.CLASSES)){
+        let CLASS = FILE.CLASSES[CLASSname]
+        for(const OBJ of CLASS.objs){
+            r(new RegExp('\\b'+OBJ+'\\.(.*)\\(','gm'),CLASSname+'_$1('+OBJ+',')
+        }
+    }
+    r(/\,\)/gm,')')
+
+
 
     r(/function([\s\S]+?)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
         let lines = match.split('\n')
@@ -244,9 +254,9 @@ function Compile(file){
                     }else{
                         line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{
                             let field = mmm.split('.')[1]
-                            prefix+='lea '+REG[idreg]+',[rsp + '+pidx+']\n'+
-                            'mov '+REG[++idreg]+', ['+REG[idreg-1]+' + '+param.kind+'.'+field+']'
-                            return REG[idreg]
+                            prefix+='mov '+REG[idreg++]+',[rsp + '+pidx+']\n'
+                            //'mov '+REG[++idreg]+', ['+REG[idreg-1]+' + '+param.kind+'.'+field+']'
+                            return '['+REG[idreg-1]+' + '+param.kind+'.'+field+']'//REG[idreg]
                         })
                     }
                 }
@@ -276,36 +286,43 @@ function Compile(file){
 ret`
     })
 
-    for(const FUNC of Object.keys(FILE.FUNCTIONS)){
-        r(new RegExp('\\b('+FUNC+')\\(\\)','gm'),'call $1')
-        r(new RegExp('\\b('+FUNC+')\\((.*)\\)','gm'),match=>{
-            let params = match.split('(')[1].split(')')[0].trim().split(',')
-            params = params.map(param=>{
-                return 'push '+param
-            })
-            let count = params.length
-            return `${params.join('\n')}
-    call ${FUNC}
-    add rsp, ${count*8}`
-        })
-        //r(new RegExp('\\b('+FUNC+')\\((.*)\\)',''),'call $1,$2')
-    }
-
 
     for(const INVOKE of INVOKERS){
         r(new RegExp('\\b('+INVOKE+')\\(\\)','gm'),'invoke $1')
         r(new RegExp('\\b('+INVOKE+')\\((.*)\\)','gm'),'invoke $1,$2')
     }
 
+    for(const FUNC of Object.keys(FILE.FUNCTIONS)){
+        r(new RegExp('\\b(.*)\\(\\)','gm'),'call $1')
+        r(new RegExp('\\b(.*)\\((.*)\\)','gm'),match=>{
+            let name = match.split('\(')[0].trim()
+            let params = match.split('(')[1].split(')')[0].trim().split(',')
+            params = params.map(param=>{
+                return 'push '+param
+            })
+            let count = params.length
+            return `${params.join('\n')}
+    call ${name}
+    add rsp, ${count*8}`
+        })
+        //r(new RegExp('\\b('+FUNC+')\\((.*)\\)',''),'call $1,$2')
+    }
+
 
     for(const DTA of DATA){
         r(new RegExp('\\b('+DTA.name+')\\b','gm'),'[$1]')
+    }
+    for(const CLASSname of Object.keys(FILE.CLASSES)){
+        let CLASS = FILE.CLASSES[CLASSname]
+        for(const OBJ of CLASS.objs){
+            r(new RegExp('push \\[('+OBJ+')\\]','gm'),'push $1')
+        }
     }
 
     r(/\,\n/gm,'\n')
 
 
-    r(/(.*) \= (.*)/gm,'mov rax, $2\nmov $1, rax')
+    r(/(.*) \= ([0-9\.\-]+)/gm,'mov $1, $2')
 
 
 
