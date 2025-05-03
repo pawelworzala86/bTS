@@ -85,10 +85,18 @@ function Compile(file){
         let fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
         console.log('GGG',as,fi)
 
+        let res = true
+        if(FILES[fi]){
+            res = false
+        }
+
         Compile(fi)
 
         FFF.push([as, fi])
 
+        if(!res){
+            return ''
+        }
         return 'include \''+fi.replace('.ts','.asm')+'\''
     })
     for(let FF of FFF){
