@@ -1,6 +1,7 @@
 import * as imp1 from './imp1.ts'
+import * as msvcrt from './msvcrt.ts'
 
-export declare function printf(...args:any[]):void//msvcrt
+//export declare function printf(...args:any[]):void//msvcrt
 
 /*class OBJ{
     fieldA:number = 12
@@ -12,22 +13,22 @@ let objA:imp1.OBJ = new imp1.OBJ()
 let valA:number = 123
 
 function funcA(propA:number){
-    printf("%i", propA)
-    printf("end ")
+    msvcrt.printf("%i", propA)
+    msvcrt.printf("end ")
 
-    printf("%i ", objA.fieldA)
+    msvcrt.printf("%i ", objA.fieldA)
 
-    printf("%i ", valA)
+    msvcrt.printf("%i ", valA)
 }
 
 function main(){
-    printf("ok")
+    msvcrt.printf("ok")
     funcA(11)
 
     imp1.testFunc()
 
-    printf("%i ", imp1.dataA)
+    msvcrt.printf("%i ", imp1.dataA)
 
     objA.constructor()
-    printf("%i ", objA.fieldA)
+    msvcrt.printf("%i ", objA.fieldA)
 }

@@ -58,6 +58,7 @@ function Compile(file){
     r(/export declare function .*/,match=>{
         let name = match.split('(')[0].replace('export declare function','').trim()
         INVOKERS.push(name)
+        FILE.EXPORTS.push({name,kind:'invoke'})
         return ''
     })
     r(/export function .*\(/gm,match=>{
@@ -103,6 +104,9 @@ function Compile(file){
                 }else if(EXP.kind=='class'){
                     FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
                     r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                }else if(EXP.kind=='invoke'){
+                    //FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
+                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), EXP.name)
                 }else{
                     r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
                 }

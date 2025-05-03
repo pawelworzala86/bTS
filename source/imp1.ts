@@ -1,5 +1,7 @@
+import * as msvcrt from './msvcrt.ts'
+
 export function testFunc(){
-    printf(" ee ")
+    msvcrt.printf(" ee ")
 }
 
 export let dataA:number = 1222

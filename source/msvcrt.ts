@@ -1,0 +1,1 @@
+export declare function printf(...args:any[]):void//msvcrt
