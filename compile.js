@@ -145,18 +145,37 @@ function Compile(file){
         lines.splice(0,1)
         lines.splice(lines.length-1,1)
         let body = lines.join('\n')
-        let props = body.split('\n')
-        props = props.map(prop=>{
-            let name = prop.split(':')[0].trim()
-            let value = prop.split('=')[1].trim()
-            return `${name} dq ${value}`
+
+        //console.log('body',body)
+
+        const FUNCS = []
+        body = body.replace(/(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+            match = 'function '+name+'_'+match.trim()
+            match = match.replace(/\(/,'(this:'+name+',')
+            match = match.replace(/\,\)/gm,')')
+            //console.log('FUNC',match)
+            FUNCS.push(match)
+            return ``
+        })
+
+        //process.exit(1)
+
+        let props2 = body.split('\n')
+        let props = []
+        props2.map(prop=>{
+            if(prop.trim().length){
+                let name = prop.split(':')[0].trim()
+                let value = prop.split('=')[1].trim()
+                props.push(`${name} dq ${value}`)
+            }
         })
 
         FILE.CLASSES[name] = {name,props,objs:[]}
 
         return `struct ${name}
         ${props.join('\n')}
-    ends`
+    ends
+    ${FUNCS.join('\n')}`
     })
 
     r(/let .* \= new .*\(\)/gm,match=>{
