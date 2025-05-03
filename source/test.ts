@@ -31,4 +31,7 @@ function main(){
 
     objA.constructor()
     msvcrt.printf("%i ", objA.fieldA)
+
+    valA = 456
+    msvcrt.printf("%i ", valA)
 }
