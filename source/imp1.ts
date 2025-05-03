@@ -9,5 +9,6 @@ export class OBJ{
     fieldB:number = 13
     constructor(){
         this.fieldA = 111
+        this.fieldA = this.fieldB
     }
 }
