@@ -236,10 +236,19 @@ function Compile(file){
 
                 for(const param of params){
                     pidx += 8
-                    line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
-                        prefix+='mov '+REG[idreg]+',[rsp + '+pidx+']'
-                        return REG[idreg++]
-                    })
+                    if(['number','string'].includes(param.kind)){
+                        line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
+                            prefix+='mov '+REG[idreg]+',[rsp + '+pidx+']'
+                            return REG[idreg++]
+                        })
+                    }else{
+                        line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{
+                            let field = mmm.split('.')[1]
+                            prefix+='lea '+REG[idreg]+',[rsp + '+pidx+']\n'+
+                            'mov '+REG[idreg++]+', ['+REG[idreg-1]+' + '+param.kind+'.'+field+']'
+                            return REG[idreg]
+                        })
+                    }
                 }
 
                 for(const CLASSname of Object.keys(FILE.CLASSES)){
@@ -294,6 +303,9 @@ ret`
     }
 
     r(/\,\n/gm,'\n')
+
+
+    r(/(.*) \= (.*)/gm,'mov rax, $2\nmov $1, rax')
 
 
 
