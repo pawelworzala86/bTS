@@ -348,9 +348,9 @@ ret`
 
 
 
+let file = process.argv[2]+'.ts'
 
-
-let code = Compile('test.ts')
+let code = Compile(file)
 
 let data = []
 for(const DTA of DATA){
