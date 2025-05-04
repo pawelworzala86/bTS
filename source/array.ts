@@ -17,8 +17,7 @@ let valA:number = 0
 function main(){
     msvcrt.printf("ok ")
 
-    msvcrt.malloc(16)
-    mov valA, rax
+    valA = msvcrt.malloc(16)
 
 
     valA[0] = 11
