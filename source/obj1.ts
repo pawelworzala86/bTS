@@ -4,6 +4,9 @@ import * as msvcrt from './msvcrt.ts'
 export class INNOBJ{
     fieldA:number = 12
     fieldB:number = 13
+    testA(){
+        msvcrt.printf(" inner ")
+    }
 }
 
 export class OBJ{
@@ -16,5 +19,6 @@ export class OBJ{
     }
     testFunc(){
         msvcrt.printf(" %i ", this.ino.fieldA)
+        this.ino.testA()
     }
 }

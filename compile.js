@@ -213,8 +213,11 @@ function Compile(file){
 
         //console.log('body',body)
 
-        const FUNCS = []
+        let FUNCS = []
+        const fnames = []
         body = body.replace(/(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+            let fname = match.split('(')[0].trim()
+            fnames.push(fname)
             match = 'function '+name+'_'+match.trim()
             match = match.replace(/\(/,'(this:'+name+',')
             match = match.replace(/\,\)/gm,')')
@@ -224,6 +227,8 @@ function Compile(file){
         })
 
         //process.exit(1)
+
+        let inOBJS = []
 
         let props2 = body.split('\n')
         let props = []
@@ -236,16 +241,30 @@ function Compile(file){
                     props.push(`${name} dq ${value}`)
                 }else{
                     props.push(`${name} ${kind}`)
+                    inOBJS.push({name,obj:FILE.CLASSES[kind]})
                 }
             }
         })
 
-        FILE.CLASSES[name] = {name,props,objs:[]}
+        FILE.CLASSES[name] = {name,props,objs:[],inOBJS,fnames}
+
+        FUNCS = FUNCS.join('\n')
+
+        for(const inOBJ of inOBJS){
+            console.log('inOBJ',inOBJ)
+            for(const FN of inOBJ.obj.fnames){
+                FUNCS=FUNCS.replace(new RegExp('this\\.'+inOBJ.name+'\\.'+FN+'\\(','gm'),
+                    'mov r12,[rsp + 8]\n'+
+                    'lea r13,[r12 + '+name+'.'+inOBJ.name+']\n'+
+                    inOBJ.obj.name+'_'+FN+'(r13,')
+            }
+            //process.exit(1)
+        }
 
         return `struct ${name}
         ${props.join('\n')}
     ends
-    ${FUNCS.join('\n')}`
+    ${FUNCS}`
     })
 
     r(/let .* \= new .*\(\)/gm,match=>{
