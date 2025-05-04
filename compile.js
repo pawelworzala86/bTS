@@ -369,4 +369,4 @@ let frame = fs.readFileSync('./frame/cmd.inc').toString()
 frame = frame.replace('{{CODE}}',code)
 frame = frame.replace('{{DATA}}',data.join('\n'))
 
-fs.writeFileSync('./cache/test.asm',frame)
+fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),frame)
