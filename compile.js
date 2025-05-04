@@ -106,7 +106,7 @@ function Compile(file){
             for(let EXP of FILES[FF[1]].EXPORTS){
                 console.log('EXP',EXP)
 
-                let name = 'F'+FILES['imp1.ts'].INDEX+'_'+EXP.name
+                let name = 'F'+FILES[FF[1]].INDEX+'_'+EXP.name
 
                 if(EXP.kind=='function'){
                     FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
@@ -193,7 +193,7 @@ function Compile(file){
     r(/([a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'[$1 + $2*8]')
 
 
-    r(/(.*) = (.*)\((.*)/gm,'$2($3\nmov $1, rax')
+    
 
 
 
@@ -277,6 +277,8 @@ function Compile(file){
     }
     r(/\,\)/gm,')')
 
+
+    r(/(.*) = (.*)\((.*)/gm,'$2($3\nmov $1, rax')
 
 
 
