@@ -15,5 +15,7 @@ function main(){
     objA.constructor()
     msvcrt.printf(" %i ", objA.fieldA)
 
+    objA.testFunc()
+
     msvcrt.printf(" end")
 }
