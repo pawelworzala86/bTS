@@ -231,7 +231,12 @@ function Compile(file){
             if(prop.trim().length){
                 let name = prop.split(':')[0].trim()
                 let value = prop.split('=')[1].trim()
-                props.push(`${name} dq ${value}`)
+                let kind = prop.split(':')[1].split('=')[0].trim()
+                if(['number','string'].includes(kind)){
+                    props.push(`${name} dq ${value}`)
+                }else{
+                    props.push(`${name} ${kind}`)
+                }
             }
         })
 
