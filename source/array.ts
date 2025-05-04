@@ -20,16 +20,13 @@ function main(){
     msvcrt.malloc(16)
     mov valA, rax
 
-    mov valA[0], 11
-    mov rax, valA[0]
-    msvcrt.printf("%i ", rax)
 
-    mov valA[1], 12
-    mov rax, valA[1]
-    msvcrt.printf("%i ", rax)
+    valA[0] = 11
+    valA[1] = 12
+    msvcrt.printf("%i ", valA[0])
+    msvcrt.printf("%i ", valA[1])
 
-    mov rax, valA[0]
-    msvcrt.printf("%i ", rax)
+    msvcrt.printf("%i ", valA[0])
 
 
     msvcrt.printf("end ")
