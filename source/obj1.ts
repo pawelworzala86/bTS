@@ -15,6 +15,6 @@ export class OBJ{
         this.fieldA = this.fieldB
     }
     testFunc(){
-        msvcrt.printf(" %i ", this.fieldA)
+        msvcrt.printf(" %i ", this.ino.fieldA)
     }
 }
