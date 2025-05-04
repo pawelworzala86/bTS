@@ -279,7 +279,7 @@ function Compile(file){
 
     r(/let .* \= \'.*\'/gm,match=>{
         let name = match.split('=')[0].replace('let','').trim().split(':')[0]
-        let value = match.split('=')[1].trim()
+        let value = match.split('=')[1].trim().replace(/\'|\"/gm,'')
         DATA.push({name,kind:'db',value})
         return ''
     })
@@ -525,7 +525,9 @@ ret`
 
 
     for(const DTA of DATA){
-        r(new RegExp('\\b('+DTA.name+')\\b','gm'),'[$1]')
+        if(DTA.kind!='db'){
+            r(new RegExp('\\b('+DTA.name+')\\b','gm'),'[$1]')
+        }
     }
     for(const CLASSname of Object.keys(FILE.CLASSES)){
         let CLASS = FILE.CLASSES[CLASSname]
