@@ -150,10 +150,54 @@ function Compile(file){
 
 
 
+
+
+
+
+    var index = 0
+    var parseMaths=(line,op,name)=>{
+        line=line.replace( new RegExp('(.*)\\b([a-zA-Z\\_0-9\\[\\]\\.]+)[\ ]+'+op+'[\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)','gm'), 
+            match=>{
+                var matched = /(.*)\b([a-zA-Z\_0-9\\[\]\\.]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\\.]+)/gm.exec(match)
+                index++
+                //if((TYPES[matched[2]]==undefined)||((TYPES[matched[2]]=='float')||(matched[2].indexOf('mth')==0))){
+                    return 'Macro_Math_'+name+' '+matched[2]+','+matched[4]+',[mth'+index+']\n'+matched[1]+'[mth'+index+']'
+                //}else{
+                //    return 'Macro_iMath_'+name+' '+matched[2]+','+matched[4]+',mth'+index+'\n'+matched[1]+'mth'+index+''
+                //}
+        })
+        return line
+
+    }
+    var lines=source.split('\n')
+    lines=lines.map(line=>{
+        index = 0
+        while(index<16){
+            line=parseMaths(line,'\\*','pomnoz')
+            line=parseMaths(line,'\\/','podziel')
+            line=parseMaths(line,'\\+','dodaj')
+            line=parseMaths(line,'\\-','odejmnij')
+            index++
+        }
+        return line
+    })
+    source=lines.join('\n')
+
+
+
+
     r(/([a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'[$1 + $2*8]')
 
 
     r(/(.*) = (.*)\((.*)/gm,'$2($3\nmov $1, rax')
+
+
+
+
+
+
+
+
 
 
     r(/class(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
