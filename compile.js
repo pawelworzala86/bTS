@@ -47,10 +47,12 @@ function Compile(file){
 
     source = Blocks(source)
 
+    r(/\/\/int/gm,'@@int')
+
     r(/\/\/.*/gm,'')
     r(/\/\*[\s\S]+?\*\//gm,'')
 
-
+    r(/\@\@int/gm,'//int')
     
 
 
@@ -155,28 +157,30 @@ function Compile(file){
 
 
     var index = 0
-    var parseMaths=(line,op,name)=>{
+    var parseMaths=(line,op,name,isInt=false)=>{
         line=line.replace( new RegExp('(.*)\\b([a-zA-Z\\_0-9\\[\\]\\.]+)[\ ]+'+op+'[\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)','gm'), 
             match=>{
                 var matched = /(.*)\b([a-zA-Z\_0-9\\[\]\\.]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\\.]+)/gm.exec(match)
                 index++
-                //if((TYPES[matched[2]]==undefined)||((TYPES[matched[2]]=='float')||(matched[2].indexOf('mth')==0))){
+                if(!isInt){
                     return 'Macro_Math_'+name+' '+matched[2]+','+matched[4]+',[mth'+index+']\n'+matched[1]+'[mth'+index+']'
-                //}else{
-                //    return 'Macro_iMath_'+name+' '+matched[2]+','+matched[4]+',mth'+index+'\n'+matched[1]+'mth'+index+''
-                //}
+                }else{
+                    return 'Macro_iMath_'+name+' '+matched[2]+','+matched[4]+',[mth'+index+']\n'+matched[1]+'[mth'+index+']'
+                }
         })
         return line
 
     }
     var lines=source.split('\n')
     lines=lines.map(line=>{
+        let Int = line.indexOf('//int')>-1
+        line=line.replace(/\/\/int/gm,'')
         index = 0
         while(index<16){
-            line=parseMaths(line,'\\*','pomnoz')
-            line=parseMaths(line,'\\/','podziel')
-            line=parseMaths(line,'\\+','dodaj')
-            line=parseMaths(line,'\\-','odejmnij')
+            line=parseMaths(line,'\\*','pomnoz',Int)
+            line=parseMaths(line,'\\/','podziel',Int)
+            line=parseMaths(line,'\\+','dodaj',Int)
+            line=parseMaths(line,'\\-','odejmnij',Int)
             index++
         }
         return line
