@@ -55,7 +55,7 @@ function Compile(file){
 
 
 
-    r(/export declare function .*/,match=>{
+    r(/export declare function .*/gm,match=>{
         let name = match.split('(')[0].replace('export declare function','').trim()
         INVOKERS.push(name)
         FILE.EXPORTS.push({name,kind:'invoke'})
@@ -146,6 +146,11 @@ function Compile(file){
         r(new RegExp('\\b('+name+')\\b','gm'),'F'+FILE.INDEX+'_$1')
     }
     //FILE.EXPORT = names
+
+
+
+
+    r(/([a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'[$1 + $2*8]')
 
 
 
@@ -336,6 +341,9 @@ ret`
 
     r(/(.*) \= ([0-9\.\-]+)/gm,'mov $1, $2')
     r(/(.*) \= (.*)/gm,'mov r15, $2\nmov $1, r15')
+
+
+    r(/\[\[([a-zA-Z0-9\_]+)\]/gm,'[$1')
 
 
 
