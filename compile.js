@@ -150,8 +150,18 @@ function Compile(file){
     //FILE.EXPORT = names
 
 
+    //r(/\'/gm,'"')
 
 
+    r(/(.*) = (gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $2\nmov $1, rax')
+    r(/(.*) = (gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $2, $3\nmov $1, rax')
+
+    r(/(gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $1')
+    r(/(gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $1, $2')
+    //r(/(gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $1')
+    //r(/(gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $1, $2')
+
+    
 
 
 
@@ -285,7 +295,7 @@ function Compile(file){
     })
     r(/let .* \= .*/gm,match=>{
         let name = match.split('=')[0].replace('let','').trim().split(':')[0]
-        let value = match.split('=')[1].trim()
+        let value = match.split('=')[1].replace(/\[|\]/gm,'').trim()
         DATA.push({name,kind:'dq',value})
         return ''
     })
@@ -463,7 +473,7 @@ function Compile(file){
                     pidx += 8
                     if(['number','string'].includes(param.kind)){
                         line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
-                            prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']'
+                            prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
                             return REG[idreg++]
                         })
                     }else{
@@ -556,6 +566,11 @@ ret`
     r(/\]\.([a-zA-Z0-9\_\.]+)/gm,'.$1]')
 
     r(/return (.*)/gm,'mov rax, $1')
+
+
+    /*r(/invoke gl(.*)/gm,match=>{
+        return match.replace(/\[|\]/gm,'')
+    })*/
 
 
 

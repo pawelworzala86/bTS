@@ -3,11 +3,12 @@
 
 include 'win64a.inc'
 
-format PE64 GUI 5.0
+format PE64 CONSOLE 5.0
 entry start
 
 include 'include\\math.inc'
 include 'include\\opengl.inc'
+include 'include\\gl2.inc'
 
 section '.text' code readable executable
 
@@ -143,6 +144,8 @@ section '.data' data readable writeable
 	mth6 dq 0.0
 	mth7 dq 0.0
 	mth8 dq 0.0
+
+	include 'include\\gl2d.inc'
 
 	{{DATA}}
 
