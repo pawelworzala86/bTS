@@ -455,7 +455,7 @@ function Compile(file){
         lines = body.split('\n')
 
             lines = lines.map(line=>{
-                let pidx = 0
+                let pidx = 8
                 let prefix = ''
                 let idreg = 0
 
@@ -463,13 +463,13 @@ function Compile(file){
                     pidx += 8
                     if(['number','string'].includes(param.kind)){
                         line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
-                            prefix+='mov '+REG[idreg]+',[rsp + '+pidx+']'
+                            prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']'
                             return REG[idreg++]
                         })
                     }else{
                         line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{
                             let field = mmm.split('.')[1]
-                            prefix+='mov '+REG[idreg++]+',[rsp + '+pidx+']\n'
+                            prefix+='mov '+REG[idreg++]+',[rbp + '+pidx+']\n'
                             //'mov '+REG[++idreg]+', ['+REG[idreg-1]+' + '+param.kind+'.'+field+']'
                             return '['+REG[idreg-1]+' + '+param.kind+'.'+field+']'//REG[idreg]
                         })
