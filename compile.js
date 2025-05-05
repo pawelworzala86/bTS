@@ -497,7 +497,14 @@ function Compile(file){
         FILE.FUNCTIONS[name] = {params}
 
         return `${name}:
+     push rbp
+    mov rbp, rsp
+    sub rsp, 8*${params.length}
+
     ${body}
+    
+    mov rsp, rbp
+    pop rbp
 ret`
     })
 
