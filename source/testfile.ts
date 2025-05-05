@@ -7,7 +7,8 @@ let fileName:string = 'test.txt'
 function main(){
     msvcrt.printf("ok")
 
-    fs.readFile(fileName)
+    lea rax, [fileName]
+    fs.readFile(rax)
 
     msvcrt.printf(" end")
 }
