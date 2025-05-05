@@ -555,6 +555,8 @@ ret`
 
     r(/\]\.([a-zA-Z0-9\_\.]+)/gm,'.$1]')
 
+    r(/return (.*)/gm,'mov rax, $1')
+
 
 
     fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),source)

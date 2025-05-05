@@ -10,7 +10,7 @@ export let buffor:number = 0
 export function readFile(fileName:string){
 
     //lea rax, [fileName]
-    msvcrt.printf(" %s ",fileName)
+    //msvcrt.printf(" %s ",fileName)
     
     handle = kernel.CreateFileA(fileName, GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL, 0)
     //mov handle, rax
@@ -26,5 +26,7 @@ export function readFile(fileName:string){
     //printf('%s',buffor)
     kernel.CloseHandle(handle)
 
-    msvcrt.printf(" %s ", buffor)
+    //msvcrt.printf(" %s ", buffor)
+
+    return buffor
 }
