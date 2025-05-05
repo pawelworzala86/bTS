@@ -585,7 +585,12 @@ for(const DTA of DATA){
     }
 }
 
-let frame = fs.readFileSync('./frame/cmd.inc').toString()
+let form = 'cmd.inc'
+if(code.indexOf('renderSystem:')>-1){
+    form = 'opengl.inc'
+}
+
+let frame = fs.readFileSync('./frame/'+form).toString()
 frame = frame.replace('{{CODE}}',code)
 frame = frame.replace('{{DATA}}',data.join('\n'))
 
