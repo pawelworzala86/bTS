@@ -532,8 +532,12 @@ ret`
             params = params.map(param=>{
                 return 'push '+param
             })
+            let prms = []
+            for(let idx=params.length-1;idx>=0;idx--){
+                prms.push(params[idx])
+            }
             let count = params.length
-            return `${params.join('\n')}
+            return `${prms.join('\n')}
     call ${name}
     add rsp, ${count*8}`
         })
