@@ -126,8 +126,8 @@ function initSystem(){
 		
 		
 		
-			
-			//CreateBuffer(0,3,24,144, vertices)
+			//lea rax, vertices
+			//CreateBuffer(0,3,24,144, rax)
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 				lea rbx, bufferID1
 				glGenBuffers(1, rbx)
@@ -141,7 +141,8 @@ function initSystem(){
 				glEnableVertexAttribArray(0)
 				glVertexAttribPointer(0,3,GL_DOUBLE,GL_FALSE, 24, 0)
 			//}
-			//CreateBuffer(1,2,16,96, coords)
+			//lea rax, coords
+			//CreateBuffer(1,2,16,96, rax)
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 				lea rbx, bufferID2
 				glGenBuffers(1, rbx)
