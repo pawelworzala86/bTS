@@ -1414,6 +1414,11 @@ mov [glBindVertexArray],rax
 invoke wglGetProcAddress, "glGenVertexArrays"
 mov [glGenVertexArrays],rax
 
+invoke wglGetProcAddress, "glGetUniformLocation"
+mov [glGetUniformLocation],rax
+
+invoke wglGetProcAddress, "glUniformMatrix4dv"
+mov [glUniformMatrix4dv],rax
 
 ret
 endp

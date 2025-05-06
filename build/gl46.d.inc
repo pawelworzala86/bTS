@@ -14,3 +14,6 @@ glUseProgram dq ?
 glVertexAttribPointer dq ?
 glBindVertexArray dq ?
 glGenVertexArrays dq ?
+
+glGetUniformLocation dq ?
+glUniformMatrix4dv dq ?

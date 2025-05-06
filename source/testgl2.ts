@@ -209,23 +209,27 @@ function renderSystem(){
 
 
 	glUseProgram(programID);
-	/*
+	
 
 	uniformLocation = glGetUniformLocation(programID, 'dprojection')
-	//lea rax, projection
-	glUniformMatrix4dv(uniformLocation, 1, 0, projection)
+	lea rax, projection
+	glUniformMatrix4dv(uniformLocation, 1, 0, rax)
 
 	uniformLocation = glGetUniformLocation(programID, 'dcamera')
-	//lea rax, camera
-	glUniformMatrix4dv(uniformLocation, 1, 0, camera)
+	lea rax, camera
+	glUniformMatrix4dv(uniformLocation, 1, 0, rax)
 
 	uniformLocation = glGetUniformLocation(programID, 'dmodel')
-	//lea rax, model
-	glUniformMatrix4dv(uniformLocation, 1, 0, model)
+	lea rax, model
+	glUniformMatrix4dv(uniformLocation, 1, 0, rax)
 
+	/*
 	//uniformLocation = glGetUniformLocation(programID, 'diffuseTexture')
 	//glUniform1d(uniformLocation, textureID)
 	*/
+
+
+
 	glBindVertexArray(VAO)
 	glDrawArrays(GL_TRIANGLES, 0, 6)
 
