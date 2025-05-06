@@ -8,7 +8,7 @@ entry start
 
 include 'include\\math.inc'
 include 'include\\opengl.inc'
-include 'include\\gl2.inc'
+include 'build\\gl46.inc'
 
 section '.text' code readable executable
 
@@ -75,6 +75,7 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 	invoke	wglCreateContext,[hdc]
 	mov	[hrc],rax
 	invoke	wglMakeCurrent,[hdc],[hrc]
+		call InitGL
 		call F1_initSystem
 	invoke	GetClientRect,[hwnd],addr rc
 	invoke	glViewport,0,0,[rc.right],[rc.bottom]
@@ -145,7 +146,7 @@ section '.data' data readable writeable
 	mth7 dq 0.0
 	mth8 dq 0.0
 
-	include 'include\\gl2d.inc'
+	include 'build\\gl46.d.inc'
 
 	{{DATA}}
 

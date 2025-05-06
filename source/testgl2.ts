@@ -57,7 +57,7 @@ function initSystem(){
 	
 	//freeimage.FreeImage_Initialise()
 	
-	call initGL
+	
 
 	msvcrt.printf("OK1 ")
 
