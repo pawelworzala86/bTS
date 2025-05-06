@@ -45,8 +45,8 @@ function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,ar
 
 	glEnableVertexAttribArray(posID)
 	glVertexAttribPointer(posID,ssizeA,GL_DOUBLE,GL_FALSE, ssizeE, 0)
-}*/
-
+}
+*/
 
 
 let buffer:number = 0
@@ -127,7 +127,7 @@ function initSystem(){
 		
 		
 			//lea rax, vertices
-			//CreateBuffer(0,3,24,144, rax)
+			//CreateBuffer(0,3,24,144, vertices)
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 				lea rbx, bufferID1
 				glGenBuffers(1, rbx)
