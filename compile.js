@@ -473,8 +473,9 @@ function Compile(file){
                     pidx += 8
                     if(['number','string'].includes(param.kind)){
                         line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
-                            prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
-                            return REG[idreg++]
+                            //prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
+                            //return REG[idreg++]
+                            return '[rbp + '+pidx+']'
                         })
                     }else{
                         line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{

@@ -35,18 +35,21 @@ let textureID:number = 0
 
 
 
-/*
+
 function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 	lea rbx, bufferID
 	glGenBuffers(1, rbx)
 
+	msvcrt.printf(' l=%i ', posID)
+
 	glBindBuffer(GL_ARRAY_BUFFER, bufferID)
+	//lea r10, vertices
 	glBufferData(GL_ARRAY_BUFFER, lengthA, array, GL_STATIC_DRAW)
 
 	glEnableVertexAttribArray(posID)
 	glVertexAttribPointer(posID,ssizeA,GL_DOUBLE,GL_FALSE, ssizeE, 0)
 }
-*/
+
 
 
 let buffer:number = 0
@@ -126,10 +129,10 @@ function initSystem(){
 		
 		
 		
-			//lea rax, vertices
-			//CreateBuffer(0,3,24,144,rax)
+			lea rax, vertices
+			CreateBuffer(0,3,24,144,rax)
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
-				lea rbx, bufferID1
+				/*lea rbx, bufferID1
 				glGenBuffers(1, rbx)
 
 				msvcrt.printf(' b=%i ', bufferID1)
@@ -139,12 +142,12 @@ function initSystem(){
 				glBufferData(GL_ARRAY_BUFFER, 144, rax, GL_STATIC_DRAW)
 			
 				glEnableVertexAttribArray(0)
-				glVertexAttribPointer(0,3,GL_DOUBLE,GL_FALSE, 24, 0)
+				glVertexAttribPointer(0,3,GL_DOUBLE,GL_FALSE, 24, 0)*/
 			//}
-			//lea rax, coords
-			//CreateBuffer(1,2,16,96, rax)
+			lea rax, coords
+			CreateBuffer(1,2,16,96, rax)
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
-				lea rbx, bufferID2
+				/*lea rbx, bufferID2
 				glGenBuffers(1, rbx)
 			
 				glBindBuffer(GL_ARRAY_BUFFER, bufferID2)
@@ -152,7 +155,7 @@ function initSystem(){
 				glBufferData(GL_ARRAY_BUFFER, 96, rax, GL_STATIC_DRAW)
 			
 				glEnableVertexAttribArray(1)
-				glVertexAttribPointer(1,2,GL_DOUBLE,GL_FALSE, 16, 0)
+				glVertexAttribPointer(1,2,GL_DOUBLE,GL_FALSE, 16, 0)*/
 			//}
 		
 		
