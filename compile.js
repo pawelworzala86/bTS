@@ -29,10 +29,41 @@ let FILE_INDEX = 1
 const FILES = {}
 
 
-let idata = fs.readFileSync('./include/idata.inc').toString()
-idata.replace(/([a-zA-Z0-9\_]+)/gm,word=>{
+let idataStr = fs.readFileSync('./include/idata.inc').toString()
+idataStr.replace(/([a-zA-Z0-9\_]+)/gm,word=>{
     INVOKERS.push(word)
 })
+
+
+
+const idata = {}
+function addDLL(name,dll){
+    if(idata[name]==undefined){
+        idata[name] = {dll,functions:[]}
+    }
+}
+function addImport(dll,aliasName,dllName){
+    idata[dll].functions.push({aliasName,dllName})
+}
+function createIData(){
+    let library = []
+    let libraryFuncs = []
+    for(const key of Object.keys(idata)){
+        let lib = idata[key]
+        library.push(`${key},'${lib.dll}'`)
+        let funcs = []
+        for(const fn of lib.functions){
+            funcs.push(`${fn.aliasName},'${fn.dllName}'`)
+        }
+        libraryFuncs.push('import '+key+',\\\n'+funcs.join(',\\\n'))
+    }
+
+    return `library ${library.join(',\\\n')}
+
+${libraryFuncs.join('\n\n')}`
+}
+
+
 
 
 
@@ -53,6 +84,16 @@ function Compile(file){
     }
 
     source = Blocks(source)
+
+
+    r(/export declare function .*/gm,match=>{
+        let name = match.split('(')[0].replace('export declare function','').trim()
+        let dll = match.split('//')[1].trim()
+        addDLL(dll,dll+'.dll')
+        addImport(dll,name,name)
+        return match
+    })
+
 
     r(/\/\/int/gm,'@@int')
 
@@ -622,3 +663,8 @@ frame = frame.replace('{{CODE}}',code)
 frame = frame.replace('{{DATA}}',data.join('\n'))
 
 fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),frame)
+
+
+
+const idataString = createIData()
+fs.writeFileSync('./cache/idata.inc', idataString)
