@@ -1,4 +1,5 @@
 import * as msvcrt from './msvcrt.ts'
+import * as gl from './gl.ts'
 
 let hDib:number = 0
 let hDib32:number = 0
@@ -35,13 +36,13 @@ export function LoadTexture(name:string){
 
     lea rax, textureID
     glGenTextures(1, rax, 0)
-    glBindTexture(GL_TEXTURE_2D, textureID)
+    glBindTexture(gl.TEXTURE_2D, textureID)
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    glTexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_BGRA_EXT, dwWidth, dwHeight, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, lpBits)
+    glTexImage2D(gl.TEXTURE_2D, 0, gl.BGRA_EXT, dwWidth, dwHeight, 0, gl.BGRA_EXT, gl.UNSIGNED_BYTE, lpBits)
 
 
     msvcrt.printf(' %i ', textureID)

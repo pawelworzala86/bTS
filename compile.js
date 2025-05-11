@@ -70,6 +70,10 @@ ${libraryFuncs.join('\n\n')}`
 function Compile(file){
     let source = fs.readFileSync('./source/'+file).toString()
 
+    if(FILES[file]!=undefined){
+        return
+    }
+
     const FILE = {
         FUNCTIONS: {},
         CLASSES: {},
@@ -143,7 +147,7 @@ function Compile(file){
     r(/import .*/gm,match=>{
         let as = match.split(' ')[3]
         let fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
-        console.log('GGG',as,fi)
+        //console.log('GGG',as,fi)
 
         let res = true
         if(FILES[fi]){
@@ -162,7 +166,7 @@ function Compile(file){
     for(let FF of FFF){
         if(FILES[FF[1]].EXPORTS){
             for(let EXP of FILES[FF[1]].EXPORTS){
-                console.log('EXP',EXP)
+                //console.log('EXP',EXP)
 
                 let name = 'F'+FILES[FF[1]].INDEX+'_'+EXP.name
 

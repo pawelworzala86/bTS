@@ -41,16 +41,16 @@ let textureID:number = 0
 
 function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 	lea rbx, bufferID
-	glGenBuffers(1, rbx)
+	gl.genBuffers(1, rbx)
 
 	msvcrt.printf(' l=%i ', posID)
 
-	glBindBuffer(GL_ARRAY_BUFFER, bufferID)
+	gl.bindBuffer(gl.ARRAY_BUFFER, bufferID)
 	//lea r10, vertices
-	glBufferData(GL_ARRAY_BUFFER, lengthA, array, GL_STATIC_DRAW)
+	gl.bufferData(gl.ARRAY_BUFFER, lengthA, array, gl.STATIC_DRAW)
 
-	glEnableVertexAttribArray(posID)
-	glVertexAttribPointer(posID,ssizeA,GL_DOUBLE,GL_FALSE, ssizeE, 0)
+	gl.enableVertexAttribArray(posID)
+	gl.vertexAttribPointer(posID,ssizeA,gl.DOUBLE,gl.FALSE, ssizeE, 0)
 }
 
 
@@ -94,12 +94,12 @@ function initSystem(){
 	
 		//msvcrt.printf('OK2')
 	
-		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
 		lea rax, fs.buffor
 	lea rbx, fs.fsize
-		glShaderSource(fragmentShader,1, rax,rbx);
+		gl.shaderSource(fragmentShader,1, rax,rbx);
 		//msvcrt.printf('OK3')
-		glCompileShader(fragmentShader);
+		gl.compileShader(fragmentShader);
 	
 		
 		
@@ -107,18 +107,18 @@ function initSystem(){
 		msvcrt.printf('OK4')
 	
 	
-		programID = glCreateProgram();
-		glAttachShader(programID, vertexShader);
-		glAttachShader(programID, fragmentShader);
-		glLinkProgram(programID);
+		programID = gl.createProgram();
+		gl.attachShader(programID, vertexShader);
+		gl.attachShader(programID, fragmentShader);
+		gl.linkProgram(programID);
 	
-		glUseProgram(programID);
+		gl.useProgram(programID);
 
-		glDetachShader(programID, vertexShader);
-		glDetachShader(programID, fragmentShader);
+		gl.detachShader(programID, vertexShader);
+		gl.detachShader(programID, fragmentShader);
 	
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
+		gl.deleteShader(vertexShader);
+		gl.deleteShader(fragmentShader);
 
 
 
@@ -129,9 +129,9 @@ function initSystem(){
 
 
 		lea rbx, VAO
-			glGenVertexArrays(1, rbx)
+			gl.genVertexArrays(1, rbx)
 			//msvcrt.printf('VAO %i', VAO)
-			glBindVertexArray(VAO)
+			gl.bindVertexArray(VAO)
 		
 		
 		
@@ -144,12 +144,12 @@ function initSystem(){
 
 				msvcrt.printf(' b=%i ', bufferID1)
 			
-				glBindBuffer(GL_ARRAY_BUFFER, bufferID1)
+				glBindBuffer(gl.ARRAY_BUFFER, bufferID1)
 				lea rax, vertices
-				glBufferData(GL_ARRAY_BUFFER, 144, rax, GL_STATIC_DRAW)
+				glBufferData(gl.ARRAY_BUFFER, 144, rax, gl.STATIC_DRAW)
 			
 				glEnableVertexAttribArray(0)
-				glVertexAttribPointer(0,3,GL_DOUBLE,GL_FALSE, 24, 0)*/
+				glVertexAttribPointer(0,3,gl.DOUBLE,gl.FALSE, 24, 0)*/
 			//}
 			lea rax, coords
 			CreateBuffer(1,2,16,96, rax)
@@ -157,12 +157,12 @@ function initSystem(){
 				/*lea rbx, bufferID2
 				glGenBuffers(1, rbx)
 			
-				glBindBuffer(GL_ARRAY_BUFFER, bufferID2)
+				glBindBuffer(gl.ARRAY_BUFFER, bufferID2)
 				lea rax, coords
-				glBufferData(GL_ARRAY_BUFFER, 96, rax, GL_STATIC_DRAW)
+				glBufferData(gl.ARRAY_BUFFER, 96, rax, gl.STATIC_DRAW)
 			
 				glEnableVertexAttribArray(1)
-				glVertexAttribPointer(1,2,GL_DOUBLE,GL_FALSE, 16, 0)*/
+				glVertexAttribPointer(1,2,gl.DOUBLE,gl.FALSE, 16, 0)*/
 			//}
 		
 		
@@ -183,12 +183,12 @@ function initSystem(){
 		
 		
 			//gl.enable(gl.DEPTH_TEST)
-			glDepthFunc(GL_LEQUAL)
-			glEnable(GL_TEXTURE_2D)
+			glDepthFunc(gl.LEQUAL)
+			glEnable(gl.TEXTURE_2D)
 		
 		
 		
-			glBindVertexArray(0)
+			gl.bindVertexArray(0)
 
 			msvcrt.printf('OK6')
 
@@ -201,8 +201,8 @@ function initSystem(){
 let uniformLocation:number = 0
 
 function renderSystem(){
-    /*invoke	glClear,GL_COLOR_BUFFER_BIT
-	invoke	glBegin,GL_QUADS
+    /*invoke	glClear,gl.COLOR_BUFFER_BIT
+	invoke	glBegin,gl.QUADS
 	invoke	glColor3f,float dword 1.0,float dword 0.1,float dword 0.1
 	invoke	glVertex3d,float -0.6,float -0.6,float 0.0
 	invoke	glColor3f,float dword 0.1,float dword 0.1,float dword 0.1
@@ -215,33 +215,33 @@ function renderSystem(){
 
 
 
-	glClear(GL_COLOR_BUFFER_BIT)
+	glClear(gl.COLOR_BUFFER_BIT)
 
 
-	glUseProgram(programID);
+	gl.useProgram(programID);
 	
 
-	uniformLocation = glGetUniformLocation(programID, 'dprojection')
+	uniformLocation = gl.getUniformLocation(programID, 'dprojection')
 	lea rax, projection
-	glUniformMatrix4dv(uniformLocation, 1, 0, rax)
+	gl.uniformMatrix4dv(uniformLocation, 1, 0, rax)
 
-	uniformLocation = glGetUniformLocation(programID, 'dcamera')
+	uniformLocation = gl.getUniformLocation(programID, 'dcamera')
 	lea rax, camera
-	glUniformMatrix4dv(uniformLocation, 1, 0, rax)
+	gl.uniformMatrix4dv(uniformLocation, 1, 0, rax)
 
-	uniformLocation = glGetUniformLocation(programID, 'dmodel')
+	uniformLocation = gl.getUniformLocation(programID, 'dmodel')
 	lea rax, model
-	glUniformMatrix4dv(uniformLocation, 1, 0, rax)
+	gl.uniformMatrix4dv(uniformLocation, 1, 0, rax)
 
 	
-	uniformLocation = glGetUniformLocation(programID, 'diffuseTexture')
-	glUniform1d(uniformLocation, textureID)
+	uniformLocation = gl.getUniformLocation(programID, 'diffuseTexture')
+	gl.uniform1d(uniformLocation, textureID)
 	
 
 
 
-	glBindVertexArray(VAO)
-	glDrawArrays(GL_TRIANGLES, 0, 6)
+	gl.bindVertexArray(VAO)
+	glDrawArrays(gl.TRIANGLES, 0, 6)
 
 
 
