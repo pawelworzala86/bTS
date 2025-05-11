@@ -89,6 +89,9 @@ function Compile(file){
     r(/export declare function .*/gm,match=>{
         let name = match.split('(')[0].replace('export declare function','').trim()
         let dll = match.split('//')[1].trim()
+        if(dll=='hard'){
+            DATA.push({name,kind:'dq',value:'?'})
+        }
         addDLL(dll,dll+'.dll')
         addImport(dll,name,name)
         return match
@@ -105,6 +108,11 @@ function Compile(file){
 
 
 
+    r(/export const .*\:/gm,match=>{
+        let name = match.split(' ')[2].trim().split(':')[0].trim()
+        FILE.EXPORTS.push({name,kind:'data'})
+        return match.replace('export ','')
+    })
     r(/export declare function .*/gm,match=>{
         let name = match.split('(')[0].replace('export declare function','').trim()
         INVOKERS.push(name)
@@ -127,6 +135,8 @@ function Compile(file){
         return match.replace('export ','')
     })
     //r(/export .*/gm,'')
+
+    r(/const (.*)\:.* = (.*)/gm,'F'+FILE.INDEX+'_$1@@=@@$2')
 
 
     let FFF = []
@@ -201,6 +211,9 @@ function Compile(file){
     //r(/\'/gm,'"')
 
 
+
+    r(/(.*) \= (wglGetProcAddress\(\".*\"\);)/gm,'invoke $2\nmov $1,rax')
+
     r(/(.*) = (gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $2\nmov $1, rax')
     r(/(.*) = (gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $2, $3\nmov $1, rax')
 
@@ -209,7 +222,7 @@ function Compile(file){
     //r(/(gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $1')
     //r(/(gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $1, $2')
 
-    
+    r(/invoke winvoke /gm,'invoke w')
 
 
 
@@ -624,6 +637,11 @@ ret`
     /*r(/invoke gl(.*)/gm,match=>{
         return match.replace(/\[|\]/gm,'')
     })*/
+
+    r(/\@\@\=\@\@/gm, ' = ')
+
+
+    r(/invoke \[([a-zA-Z0-9\_]+)\]/gm, 'invoke $1')
 
 
 
