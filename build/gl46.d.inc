@@ -17,3 +17,4 @@ glGenVertexArrays dq ?
 
 glGetUniformLocation dq ?
 glUniformMatrix4dv dq ?
+glUniform1d dq ?

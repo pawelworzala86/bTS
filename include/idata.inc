@@ -1,12 +1,30 @@
 
 
 
-            library msvcrt,'MSVCRT.DLL',\
+            library freeimage,'FREEIMAGE.DLL',\
+            msvcrt,'MSVCRT.DLL',\
             kernel,'KERNEL32.DLL',\
             user,'USER32.DLL',\
             gdi,'GDI32.DLL',\
             opengl,'OPENGL32.DLL',\
             glu,'GLU32.DLL'
+        
+        import freeimage,\
+            FreeImage_OpenMemory,'FreeImage_OpenMemory',\
+            FreeImage_LoadFromMemory,'FreeImage_LoadFromMemory',\
+            FreeImage_GetWidth,'FreeImage_GetWidth',\
+            FreeImage_GetHeight,'FreeImage_GetHeight',\
+            FreeImage_GetBits,'FreeImage_GetBits',\
+            FreeImage_ConvertTo32Bits,'FreeImage_ConvertTo32Bits',\
+            FreeImage_GetFormatFromFIF,'FreeImage_GetFormatFromFIF',\
+            FreeImage_LoadFromHandle,'FreeImage_LoadFromHandle',\
+            FreeImage_Initialise,'FreeImage_Initialise',\
+            FreeImage_Load,'FreeImage_Load',\
+            FreeImage_GetFileType,'FreeImage_GetFileType',\
+            FreeImage_GetFileTypeFromMemory,'FreeImage_GetFileTypeFromMemory',\
+            FreeImage_LoadFromMemory,'FreeImage_LoadFromMemory',\
+            FreeImage_DeInit,'FreeImage_DeInit',\
+            FreeImage_Unload,'FreeImage_Unload'
     
         import msvcrt,\
             scanf,'scanf',\

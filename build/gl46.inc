@@ -1420,6 +1420,9 @@ mov [glGetUniformLocation],rax
 invoke wglGetProcAddress, "glUniformMatrix4dv"
 mov [glUniformMatrix4dv],rax
 
+invoke wglGetProcAddress, "glUniform1d"
+mov [glUniform1d],rax
+
 ret
 endp
 

@@ -29,6 +29,13 @@ let FILE_INDEX = 1
 const FILES = {}
 
 
+let idata = fs.readFileSync('./include/idata.inc').toString()
+idata.replace(/([a-zA-Z0-9\_]+)/gm,word=>{
+    INVOKERS.push(word)
+})
+
+
+
 function Compile(file){
     let source = fs.readFileSync('./source/'+file).toString()
 
