@@ -75,6 +75,27 @@ export function initializeGL(){
 
 
 
+export declare function glClear(...args:any[]):void//opengl
+export function clear(kind:number){
+    glClear(kind)
+}
+
+export declare function glDrawArrays(...args:any[]):void//opengl
+export function drawArrays(kind:number,offset:number,count:number){
+    glDrawArrays(kind, offset, count)
+}
+
+export declare function glDepthFunc(...args:any[]):void//opengl
+export function depthFunc(kind:number){
+    glDepthFunc(kind)
+}
+
+export declare function glEnable(...args:any[]):void//opengl
+export function enable(kind:number){
+    glEnable(kind)
+}
+
+
 
 
 

@@ -183,8 +183,8 @@ function initSystem(){
 		
 		
 			//gl.enable(gl.DEPTH_TEST)
-			glDepthFunc(gl.LEQUAL)
-			glEnable(gl.TEXTURE_2D)
+			gl.depthFunc(gl.LEQUAL)
+			gl.enable(gl.TEXTURE_2D)
 		
 		
 		
@@ -215,7 +215,7 @@ function renderSystem(){
 
 
 
-	glClear(gl.COLOR_BUFFER_BIT)
+	gl.clear(gl.COLOR_BUFFER_BIT)
 
 
 	gl.useProgram(programID);
@@ -241,7 +241,7 @@ function renderSystem(){
 
 
 	gl.bindVertexArray(VAO)
-	glDrawArrays(gl.TRIANGLES, 0, 6)
+	gl.drawArrays(gl.TRIANGLES, 0, 6)
 
 
 
