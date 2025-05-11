@@ -84,8 +84,8 @@ function initSystem(){
 	msvcrt.printf("%s",fs.buffor)
 	lea rax, fs.buffor
 	lea rbx, fs.fsize
-		glShaderSource(vertexShader,1, rax, rbx);
-		glCompileShader(vertexShader);
+		gl.shaderSource(vertexShader,1, rax, rbx);
+		gl.compileShader(vertexShader);
 	
 		
 	msvcrt.printf("OKb")
