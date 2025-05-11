@@ -41,7 +41,7 @@ let textureID:number = 0
 
 function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 	lea rbx, bufferID
-	gl.genBuffers(1, rbx)
+	glGenBuffers(1, rbx)
 
 	msvcrt.printf(' l=%i ', posID)
 
@@ -64,6 +64,8 @@ function initSystem(){
 	FreeImage_Initialise()
 
 	msvcrt.printf("initiated 2")
+
+	gl.initializeGL()
 	
 	
 
@@ -77,7 +79,7 @@ function initSystem(){
 	msvcrt.printf("OK1 ")
 	
 	
-		vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		vertexShader = gl.createShader(gl.VERTEX_SHADER);
 		msvcrt.printf(" OKa")
 	msvcrt.printf("%s",fs.buffor)
 	lea rax, fs.buffor
