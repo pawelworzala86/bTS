@@ -41,7 +41,7 @@ let textureID:number = 0
 
 function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 	lea rbx, bufferID
-	glGenBuffers(1, rbx)
+	gl.genBuffers(1, rbx)
 
 	msvcrt.printf(' l=%i ', posID)
 
