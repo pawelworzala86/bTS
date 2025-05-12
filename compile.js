@@ -274,9 +274,9 @@ function Compile(file,remdir=''){
                 var matched = /(.*)\b([a-zA-Z\_0-9\\[\]\\.]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\\.]+)/gm.exec(match)
                 index++
                 if(!isInt){
-                    return 'Macro_Math_'+name+' '+matched[2]+','+matched[4]+',[mth'+index+']\n'+matched[1]+'[mth'+index+']'
+                    return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+index+']\n'+matched[1]+'[mth'+index+']'
                 }else{
-                    return 'Macro_iMath_'+name+' '+matched[2]+','+matched[4]+',[mth'+index+']\n'+matched[1]+'[mth'+index+']'
+                    return 'Macro_iMath_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+index+']\n'+matched[1]+'[mth'+index+']'
                 }
         })
         return line
@@ -322,7 +322,7 @@ function Compile(file,remdir=''){
         for(let local of locals){
             pidx += 8
             match = match.replace(new RegExp('\\b'+local.name+'\\b','gm'),mmm=>{
-                return '[rbp - '+pidx+']'
+                return 'qword [rbp - '+pidx+']'
             })
         }
         return match
@@ -702,7 +702,11 @@ ret`
 
     r(/invoke \[([a-zA-Z0-9\_]+)\]/gm, 'invoke $1')
 
-    r(/mov[\ ]*(qword\[.*\])\, ([0-9]+\.[0-9]+)/gm,'mov rax,$2\nmov $1, rax')
+    r(/mov[\ ]*(qword\[.*\])\, ((\-?)[0-9]+\.[0-9]+)/gm,'mov rax,$2\nmov $1, rax')
+
+    r(/qword qword/gm, 'qword')
+
+
 
 
     let parts = file.split('/')

@@ -186,13 +186,13 @@
     macro Macro_Math_tan aram11,aret33
     
 
-    Macro_Math_sin aram11,stp1
+    Macro_Math_sin aram11,[stp1]
 
-    Macro_Math_cos aram11,stp2
+    Macro_Math_cos aram11,[stp2]
 
-    fld stp1
+    fld [stp1]
 
-    fdiv stp2
+    fdiv [stp2]
 
     fstp aret33
 
