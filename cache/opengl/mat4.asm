@@ -1,6 +1,6 @@
 
 
-F7_create:
+F3_create:
      push rbp
     mov rbp, rsp
     sub rsp, 8*0
@@ -102,7 +102,7 @@ mov qword[rsi + 15*8], rax;
     pop rbp
 ret
 
-F7_print:
+F3_print:
      push rbp
     mov rbp, rsp
     sub rsp, 8*2
@@ -200,7 +200,7 @@ ret
 
 
 
-F7_perspective:
+F3_perspective:
      push rbp
     mov rbp, rsp
     sub rsp, 8*5
@@ -214,14 +214,14 @@ F7_perspective:
 
   
 
-Macro_Math_podziel qword [rbp + 24],qword [F7_twoDouble],qword [mth1]
+Macro_Math_podziel qword [rbp + 24],qword [F3_twoDouble],qword [mth1]
 
 mov r15, [mth1]
 mov   qword [rbp - 24], r15
 
   Macro_Math_tan qword [rbp - 24], qword [rbp - 16]
 
-Macro_Math_podziel qword [F7_oneDouble],qword [rbp - 16],qword [mth1]
+Macro_Math_podziel qword [F3_oneDouble],qword [rbp - 16],qword [mth1]
 
 mov r15, [mth1];
 mov   qword [rbp - 8], r15
@@ -311,7 +311,7 @@ Macro_Math_odejmnij qword [rbp + 40],qword [rbp + 48],qword [mth1]
 mov r15, [mth1]
 mov     qword [rbp - 24], r15
 
-Macro_Math_podziel qword [F7_oneDouble],qword [rbp - 24],qword [mth1]
+Macro_Math_podziel qword [F3_oneDouble],qword [rbp - 24],qword [mth1]
 
 mov r15, [mth1]
 mov     qword [rbp - 32], r15
@@ -332,7 +332,7 @@ Macro_Math_pomnoz qword [rbp + 40],qword [rbp - 32],qword [mth1]
 
 Macro_Math_pomnoz qword [rbp + 48],qword [mth1],qword [mth2]
 
-Macro_Math_pomnoz qword [F7_twoDouble],qword [mth2],qword [mth3]
+Macro_Math_pomnoz qword [F3_twoDouble],qword [mth2],qword [mth3]
 
 mov rsi,[rbp + 16]
 
@@ -360,23 +360,19 @@ mov qword[rsi + 14*8], rax
     pop rbp
 ret
 
-F7_translate:
+F3_translate:
      push rbp
     mov rbp, rsp
     sub rsp, 8*3
 
     
-  invoke printf,"F7_translate "
+  invoke printf,"F3_translate "
 
   
 
 mov rsi,[rbp + 32]
 
-mov rsi,[rbp + 32]
-
-mov rdi,[1]
-
-  invoke printf,"  qword[rsi + rdi*8] %f",  qword[rsi + 1*8]
+  invoke printf," v1 %f",  qword[rsi + 1*8]
 
 mov rsi,[rbp + 32]
 
@@ -539,95 +535,7 @@ mov   qword [rbp - 248], r15
 
 invoke printf,"aa "
 
-  mov rax, [rbp + 24]
-
-mov rbx, [rbp + 16]
-
-cmp rax, rbx
-
-je .if1
-
-jne .else1
-
-jmp .endif1
-
-.if1:
-
-
-
-Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 224],qword [mth1]
-
-Macro_Math_pomnoz qword [rbp - 192],qword [mth1],qword [mth2]
-
-Macro_Math_pomnoz qword [rbp - 16],qword [mth2],qword [mth3]
-
-Macro_Math_pomnoz qword [rbp - 160],qword [mth3],qword [mth4]
-
-Macro_Math_pomnoz qword [rbp - 8],qword [mth4],qword [mth5]
-
-Macro_Math_pomnoz qword [rbp - 128],qword [mth5],qword [mth6]
-
-mov rsi,[rbp + 16]
-
-mov r15, [mth6]
-mov      qword[rsi + 12*8], r15
-
-Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 232],qword [mth1]
-
-Macro_Math_pomnoz qword [rbp - 200],qword [mth1],qword [mth2]
-
-Macro_Math_pomnoz qword [rbp - 16],qword [mth2],qword [mth3]
-
-Macro_Math_pomnoz qword [rbp - 168],qword [mth3],qword [mth4]
-
-Macro_Math_pomnoz qword [rbp - 8],qword [mth4],qword [mth5]
-
-Macro_Math_pomnoz qword [rbp - 136],qword [mth5],qword [mth6]
-
-mov rsi,[rbp + 16]
-
-mov r15, [mth6]
-mov      qword[rsi + 13*8], r15
-
-Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 240],qword [mth1]
-
-Macro_Math_pomnoz qword [rbp - 208],qword [mth1],qword [mth2]
-
-Macro_Math_pomnoz qword [rbp - 16],qword [mth2],qword [mth3]
-
-Macro_Math_pomnoz qword [rbp - 176],qword [mth3],qword [mth4]
-
-Macro_Math_pomnoz qword [rbp - 8],qword [mth4],qword [mth5]
-
-Macro_Math_pomnoz qword [rbp - 144],qword [mth5],qword [mth6]
-
-mov rsi,[rbp + 16]
-
-mov r15, [mth6]
-mov      qword[rsi + 14*8], r15
-
-Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 248],qword [mth1]
-
-Macro_Math_pomnoz qword [rbp - 216],qword [mth1],qword [mth2]
-
-Macro_Math_pomnoz qword [rbp - 16],qword [mth2],qword [mth3]
-
-Macro_Math_pomnoz qword [rbp - 184],qword [mth3],qword [mth4]
-
-Macro_Math_pomnoz qword [rbp - 8],qword [mth4],qword [mth5]
-
-Macro_Math_pomnoz qword [rbp - 152],qword [mth5],qword [mth6]
-
-mov rsi,[rbp + 16]
-
-mov r15, [mth6]
-mov      qword[rsi + 15*8], r15
-
-  jmp .endif1
-
-.else1:
-
-
+  
 
 mov rsi,[rbp + 24]
 
@@ -753,9 +661,7 @@ mov      qword[rsi + 11*8], r15
 
 
 
-mov rsi,[rbp + 24]
-
-Macro_Math_pomnoz qword [rbp - 24],qword[rsi + 12*8],qword [mth1]
+Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 224],qword [mth1]
 
 Macro_Math_pomnoz qword [rbp - 96],qword [mth1],qword [mth2]
 
@@ -769,12 +675,10 @@ Macro_Math_pomnoz qword [rbp - 32],qword [mth5],qword [mth6]
 
 mov rsi,[rbp + 16]
 
-mov r15, [mth6];
+mov r15, [mth6]
 mov      qword[rsi + 12*8], r15
 
-mov rsi,[rbp + 24]
-
-Macro_Math_pomnoz qword [rbp - 24],qword[rsi + 13*8],qword [mth1]
+Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 232],qword [mth1]
 
 Macro_Math_pomnoz qword [rbp - 104],qword [mth1],qword [mth2]
 
@@ -788,12 +692,10 @@ Macro_Math_pomnoz qword [rbp - 40],qword [mth5],qword [mth6]
 
 mov rsi,[rbp + 16]
 
-mov r15, [mth6];
+mov r15, [mth6]
 mov      qword[rsi + 13*8], r15
 
-mov rsi,[rbp + 24]
-
-Macro_Math_pomnoz qword [rbp - 24],qword[rsi + 14*8],qword [mth1]
+Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 240],qword [mth1]
 
 Macro_Math_pomnoz qword [rbp - 112],qword [mth1],qword [mth2]
 
@@ -807,12 +709,10 @@ Macro_Math_pomnoz qword [rbp - 48],qword [mth5],qword [mth6]
 
 mov rsi,[rbp + 16]
 
-mov r15, [mth6];
+mov r15, [mth6]
 mov      qword[rsi + 14*8], r15
 
-mov rsi,[rbp + 24]
-
-Macro_Math_pomnoz qword [rbp - 24],qword[rsi + 15*8],qword [mth1]
+Macro_Math_pomnoz qword [rbp - 24],qword [rbp - 248],qword [mth1]
 
 Macro_Math_pomnoz qword [rbp - 120],qword [mth1],qword [mth2]
 
@@ -826,12 +726,10 @@ Macro_Math_pomnoz qword [rbp - 56],qword [mth5],qword [mth6]
 
 mov rsi,[rbp + 16]
 
-mov r15, [mth6];
+mov r15, [mth6]
 mov      qword[rsi + 15*8], r15
 
   
-
-.endif1:
 
 
 

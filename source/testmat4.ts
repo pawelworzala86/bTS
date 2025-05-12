@@ -16,7 +16,7 @@ let aspect:number = 1.0
 let near:number = 0.01
 let far:number = 1000.0
 
-let translatePos:number[] = [0.0, -2.0, 0.0]
+let translatePos:number = 0
 
 function main(){
     msvcrt.printf("ok ")
@@ -30,9 +30,13 @@ function main(){
     mat4.perspective(arrayPer,fovy,aspect,near,far)
     mat4.print(perMatCaption,arrayPer)
 
-    arrayB = mat4.create()
+    /*arrayB = mat4.create()
+    translatePos = msvcrt.malloc(3*8)
+    translatePos[0] = 0.0
+    translatePos[1] = -2.1
+    translatePos[2] = 0.0
     mat4.translate(arrayB,arrayA,translatePos)
-    mat4.print(createMatCaption,arrayB)
+    mat4.print(createMatCaption,arrayB)*/
 
 
     msvcrt.printf("end ")
