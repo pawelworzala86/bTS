@@ -670,6 +670,8 @@ ret`
 
     r(/invoke \[([a-zA-Z0-9\_]+)\]/gm, 'invoke $1')
 
+    r(/mov[\ ]*(qword\[.*\])\, ([0-9]+\.[0-9]+)/gm,'mov rax,$2\nmov $1, rax')
+
 
     let parts = file.split('/')
     if(parts.length>1){
