@@ -3,11 +3,12 @@ import * as msvcrt from './system/msvcrt.ts'
 
 
 
-let out:number = 0
+
 let arrayA:number = 0
 
 export function create(){
-  out = msvcrt.malloc(16*8)
+    let out:number = 0
+    out = msvcrt.malloc(16*8)
   
     out[1] = 0.0;
     out[2] = 0.0;

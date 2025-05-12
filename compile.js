@@ -212,6 +212,20 @@ function Compile(file,remdir=''){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     let names = []
     r(/let .*\:/gm,match=>{
         let name = match.split(':')[0].replace('let','').trim()
@@ -294,9 +308,27 @@ function Compile(file,remdir=''){
     
 
 
+    
+    r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        let locals = []
+        match = match.replace(/let (.*)/gm,mmm=>{
+            let name = mmm.split('=')[0].replace('let ','').trim().split(':')[0].trim()
+            let value = mmm.split('=')[1].trim()
+            locals.push({name,value})
+            return ''
+        })
+        let pidx = 0
+        console.log('locals',locals)
+        for(let local of locals){
+            pidx += 8
+            match = match.replace(new RegExp('\\b'+local.name+'\\b','gm'),mmm=>{
+                return '[rbp - '+pidx+']'
+            })
+        }
+        return match
+    })
 
-
-
+    
 
 
 
