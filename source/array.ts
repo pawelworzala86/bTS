@@ -1,5 +1,5 @@
 import * as imp1 from './imp1.ts'
-import * as msvcrt from './msvcrt.ts'
+import * as msvcrt from './system/msvcrt.ts'
 
 //export declare function printf(...args:any[]):void//msvcrt
 

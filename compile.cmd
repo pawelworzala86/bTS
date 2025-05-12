@@ -1,5 +1,7 @@
 node compile %1
 
+IF ERRORLEVEL 1 GOTO koniec
+
 @echo off
 
 del out\%1.exe

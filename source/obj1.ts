@@ -1,4 +1,4 @@
-import * as msvcrt from './msvcrt.ts'
+import * as msvcrt from './system/msvcrt.ts'
 
 
 export class INNOBJ{

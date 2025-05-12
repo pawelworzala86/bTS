@@ -216,17 +216,17 @@ function Compile(file){
 
 
 
-    r(/(.*) \= (wglGetProcAddress\(\".*\"\);)/gm,'invoke $2\nmov $1,rax')
+    //r(/(.*) \= (wglGetProcAddress\(\".*\"\);)/gm,'invoke $2\nmov $1,rax')
 
-    r(/(.*) = (gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $2\nmov $1, rax')
-    r(/(.*) = (gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $2, $3\nmov $1, rax')
+    //r(/(.*) = (gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $2\nmov $1, rax')
+    //r(/(.*) = (gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $2, $3\nmov $1, rax')
 
-    r(/(gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $1')
-    r(/(gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $1, $2')
+    //r(/(gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $1')
+    //r(/(gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $1, $2')
     //r(/(gl[a-zA-Z0-9\_]+)\(\)/gm,'invoke $1')
     //r(/(gl[a-zA-Z0-9\_]+)\((.*)\)/gm,'invoke $1, $2')
 
-    r(/invoke winvoke /gm,'invoke w')
+    //r(/invoke winvoke /gm,'invoke w')
 
 
 
@@ -647,6 +647,15 @@ ret`
 
     r(/invoke \[([a-zA-Z0-9\_]+)\]/gm, 'invoke $1')
 
+
+
+    let parts = file.split('/')
+    if(parts.length>1){
+        parts.splice(parts.length-1, 1)
+        parts = './cache/'+parts.join('/')+'/'
+        //console.log(parts)
+        fs.mkdirSync(parts, { recursive: true })
+    }
 
 
     fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),source)

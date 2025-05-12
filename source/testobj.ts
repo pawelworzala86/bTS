@@ -1,5 +1,5 @@
 import * as obj1 from './obj1.ts'
-import * as msvcrt from './msvcrt.ts'
+import * as msvcrt from './system/msvcrt.ts'
 
 
 

@@ -1,5 +1,5 @@
 import * as fs from './file.ts'
-import * as msvcrt from './msvcrt.ts'
+import * as msvcrt from './system/msvcrt.ts'
 
 
 let fileName:string = 'test.txt'

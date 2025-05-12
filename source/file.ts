@@ -1,5 +1,5 @@
 import * as kernel from './kernel.ts'
-import * as msvcrt from './msvcrt.ts'
+import * as msvcrt from './system/msvcrt.ts'
 
 export let handle:number = 0
 export let fsize:number = 0

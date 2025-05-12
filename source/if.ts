@@ -1,5 +1,5 @@
 import * as imp1 from './imp1.ts'
-import * as msvcrt from './msvcrt.ts'
+import * as msvcrt from './system/msvcrt.ts'
 
 let valA:number = 10.0
 let valB:number = 11.0
