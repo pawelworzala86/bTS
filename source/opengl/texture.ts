@@ -1,5 +1,5 @@
-import * as msvcrt from './system/msvcrt.ts'
-import * as gl from './opengl/gl.ts'
+import * as msvcrt from './../system/msvcrt.ts'
+import * as gl from './gl.ts'
 
 let hDib:number = 0
 let hDib32:number = 0

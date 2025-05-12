@@ -1,4 +1,4 @@
-import * as fs from './file.ts'
+import * as fs from './system/file.ts'
 import * as msvcrt from './system/msvcrt.ts'
 
 

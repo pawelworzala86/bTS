@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 
 function Blocks(source){
@@ -67,8 +68,17 @@ ${libraryFuncs.join('\n\n')}`
 
 
 
-function Compile(file){
-    let source = fs.readFileSync('./source/'+file).toString()
+function Compile(file,remdir=''){
+    let activeDir = file.replace(remdir,'').split('\\')
+    if(activeDir.length>1){
+        activeDir.splice(activeDir.length-1, 1)
+        activeDir = activeDir.join('\\')
+        console.log('activeDir',activeDir)
+    }else{
+        activeDir = ''
+    }
+
+    let source = fs.readFileSync(file).toString()
 
     if(FILES[file]!=undefined){
         return
@@ -148,20 +158,29 @@ function Compile(file){
         let as = match.split(' ')[3]
         let fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
         //console.log('GGG',as,fi)
+        //if(activeDir.length){
+            fi = 'source/'+activeDir+'/'+fi
+        //}
+
+        console.log('fi',fi,file)
+        //process.exit(1)
+        let pat = path.resolve(fi)
+        console.log('path',pat)
+        fi = pat
 
         let res = true
         if(FILES[fi]){
             res = false
         }
 
-        Compile(fi)
+        Compile(fi,remdir)
 
         FFF.push([as, fi])
 
         if(!res){
             return ''
         }
-        return 'include \''+fi.replace('.ts','.asm')+'\''
+        return 'include \''+fi.replace('source','cache').replace('.ts','.asm')+'\''
     })
     for(let FF of FFF){
         if(FILES[FF[1]].EXPORTS){
@@ -648,7 +667,6 @@ ret`
     r(/invoke \[([a-zA-Z0-9\_]+)\]/gm, 'invoke $1')
 
 
-
     let parts = file.split('/')
     if(parts.length>1){
         parts.splice(parts.length-1, 1)
@@ -658,7 +676,7 @@ ret`
     }
 
 
-    fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),source)
+    fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
 
     return source
 }
@@ -669,7 +687,11 @@ ret`
 
 let file = process.argv[2]+'.ts'
 
-let code = Compile(file)
+let pat = path.resolve('source/'+file)
+console.log('path',pat)
+file = pat
+
+let code = Compile(file,'C:\\bTS\\source\\')
 
 let data = []
 for(const DTA of DATA){
@@ -693,7 +715,7 @@ let frame = fs.readFileSync('./frame/'+form).toString()
 frame = frame.replace('{{CODE}}',code)
 frame = frame.replace('{{DATA}}',data.join('\n'))
 
-fs.writeFileSync('./cache/'+file.replace('.ts','.asm'),frame)
+fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),frame)
 
 
 

@@ -1,5 +1,5 @@
 import * as msvcrt from './system/msvcrt.ts'
-import * as fs from './file.ts'
+import * as fs from './system/file.ts'
 
 import * as gl from './opengl/gl.ts'
 import * as texture from './opengl/texture.ts'
