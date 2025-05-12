@@ -207,7 +207,7 @@
 
     fld aram11
 
-    fmul deg2rad
+    fmul qword [deg2rad]
 
     fstp aret33
 

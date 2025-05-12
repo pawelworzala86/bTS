@@ -36,6 +36,9 @@ section '.data' data readable writeable
     mth7 dq 0.0
     mth8 dq 0.0
 
+    PI dq 3.141592653589793238
+    deg2rad dq 0.017453292519943295
+
     {{DATA}}
 
 

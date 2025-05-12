@@ -59,14 +59,14 @@ let twoDouble:number = 2.0
 
 
 export function perspective(out:number,fovy:number,aspect:number,near:number,far:number){
-  msvcrt.printf(" perspective ")
+  //msvcrt.printf(" perspective ")
   let fff:number = 0.0
   let tan:number = 0.0
   let tmp:number = 0.0
   tmp = fovy / twoDouble
   Macro_Math_tan qword tmp, qword tan
   fff = oneDouble / tan;
-  msvcrt.printf(" p3 ")
+  //msvcrt.printf(" p3 ")
   out[0] = fff / aspect;
   out[1] = 0.0;
   out[2] = 0.0;

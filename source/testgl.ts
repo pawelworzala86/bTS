@@ -3,15 +3,27 @@ import * as fs from './system/file.ts'
 
 import * as gl from './opengl/gl.ts'
 import * as texture from './opengl/texture.ts'
+import * as mat4 from './opengl/mat4.ts'
 
 
 let vertices:number[] = [1.0,1.0,0.0,1.0,-1.0,0.0,-1.0,-1.0,0.0,1.0,1.0,0.0,-1.0,-1.0,0.0,-1.0,1.0,0.0]
 let coords:number[] = [1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0]
 
 
-let projection:number[] = [1.3737387097273113,0.0,0.0,0.0,0.0,1.3737387097273113,0.0,0.0,0.0,0.0,-1.02020202020202,-1.0,0.0,0.0,-2.0202020202020203,0.0]
-let camera:number[] = [1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,-2.100090086,1.0]
-let model:number[] = [1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]
+//let projection:number[] = [1.3737387097273113,0.0,0.0,0.0,0.0,1.3737387097273113,0.0,0.0,0.0,0.0,-1.02020202020202,-1.0,0.0,0.0,-2.0202020202020203,0.0]
+let perspective:number = 0
+//let camera:number[] = [1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,-2.100090086,1.0]
+let camera:number = 0
+//let model:number[] = [1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]
+let model:number = 0
+
+let fovy:number = 45.0
+let aspect:number = 1.0
+let near:number = 0.01
+let far:number = 1000.0
+
+let cameraPos:number = -2.1
+
 
 
 let VAO:number = 0
@@ -65,6 +77,21 @@ function initSystem(){
 	
 
 	msvcrt.printf("OK1 ")
+
+
+
+	model = mat4.create()
+
+	camera = mat4.create()
+	camera[14] = cameraPos
+
+	//Macro_Math_Deg2Rad qword fovy, qword fovy
+
+	perspective = mat4.create()
+	mat4.perspective(perspective,fovy,aspect,near,far)
+
+
+
 
 
 
@@ -217,16 +244,16 @@ function renderSystem(){
 	
 
 	uniformLocation = gl.getUniformLocation(programID, 'dprojection')
-	lea rax, projection
-	gl.uniformMatrix4dv(uniformLocation, 1, 0, rax)
+	//lea rax, projection
+	gl.uniformMatrix4dv(uniformLocation, 1, 0, perspective)
 
 	uniformLocation = gl.getUniformLocation(programID, 'dcamera')
-	lea rax, camera
-	gl.uniformMatrix4dv(uniformLocation, 1, 0, rax)
+	//lea rax, camera
+	gl.uniformMatrix4dv(uniformLocation, 1, 0, camera)
 
 	uniformLocation = gl.getUniformLocation(programID, 'dmodel')
-	lea rax, model
-	gl.uniformMatrix4dv(uniformLocation, 1, 0, rax)
+	//lea rax, model
+	gl.uniformMatrix4dv(uniformLocation, 1, 0, model)
 
 	
 	uniformLocation = gl.getUniformLocation(programID, 'diffuseTexture')
