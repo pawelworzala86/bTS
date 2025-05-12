@@ -272,7 +272,8 @@ function Compile(file,remdir=''){
     var parseMaths=(line,op,name,isInt=false)=>{
         let idx=0
         while(idx<16){
-            line=line.replace( new RegExp('(.*)= ([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm'), 
+            //console.log('LINE',line)
+            line=line.replace( new RegExp('^(.*)=.*([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm'), 
                 match=>{
                     console.log('MATH', match)
                     var matched = /(.*)\b([a-zA-Z\_0-9\.\]\[]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\.]+)(.*)/gm.exec(match)
@@ -333,6 +334,8 @@ function Compile(file,remdir=''){
         return line
     })
     source=lines.join('\n')
+
+    
 
 
 
