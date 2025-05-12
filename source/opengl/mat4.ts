@@ -97,14 +97,17 @@ export function perspective(out:number,fovy:number,aspect:number,near:number,far
   //}
   return out;
 }
-/*
+
 export function translate(out:number,a:number,v:number){
+  msvcrt.printf("translate ")
   let x:number = 0
+  msvcrt.printf(" v[1] %f", v[1])
   x = v[0]
   let y:number = 0
   y = v[1]
   let z:number = 0
   z = v[2]
+  msvcrt.printf("t ")
   let a00:number = 0
   let a01:number = 0
   let a02:number = 0
@@ -117,12 +120,45 @@ export function translate(out:number,a:number,v:number){
   let a21:number = 0
   let a22:number = 0
   let a23:number = 0
-
+msvcrt.printf("a ")
+  let aa0:number = 0
+  aa0 = a[0]
+  let aa1:number = 0
+  aa1 = a[1]
+  let aa2:number = 0
+  aa2 = a[2]
+  let aa3:number = 0
+  aa3 = a[3]
+  let aa4:number = 0
+  aa4 = a[4]
+  let aa5:number = 0
+  aa5 = a[5]
+  let aa6:number = 0
+  aa6 = a[6]
+  let aa7:number = 0
+  aa7 = a[7]
+  let aa8:number = 0
+  aa8 = a[8]
+  let aa9:number = 0
+  aa9 = a[9]
+  let aa10:number = 0
+  aa10 = a[10]
+  let aa11:number = 0
+  aa11 = a[11]
+  let aa12:number = 0
+  aa12 = a[12]
+  let aa13:number = 0
+  aa13 = a[13]
+  let aa14:number = 0
+  aa14 = a[14]
+  let aa15:number = 0
+  aa15 = a[15]
+msvcrt.printf("aa ")
   if(a==out){
-    out[12] = a[0] * x + a[4] * y + a[8] * z + a[12];
-    out[13] = a[1] * x + a[5] * y + a[9] * z + a[13];
-    out[14] = a[2] * x + a[6] * y + a[10] * z + a[14];
-    out[15] = a[3] * x + a[7] * y + a[11] * z + a[15];
+    out[12] = aa0 * x + aa4 * y + aa8 * z + aa12
+    out[13] = aa1 * x + aa5 * y + aa9 * z + aa13
+    out[14] = aa2 * x + aa6 * y + aa10 * z + aa14
+    out[15] = aa3 * x + aa7 * y + aa11 * z + aa15
   }else{
     a00 = a[0];
     a01 = a[1];
@@ -157,4 +193,4 @@ export function translate(out:number,a:number,v:number){
   }
 
   return out;
-}*/
+}
