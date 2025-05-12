@@ -2,7 +2,7 @@ import * as msvcrt from './system/msvcrt.ts'
 import * as fs from './file.ts'
 
 import * as gl from './opengl/gl.ts'
-import * as texture from './texture.ts'
+import * as texture from './opengl/texture.ts'
 
 
 let vertices:number[] = [1.0,1.0,0.0,1.0,-1.0,0.0,-1.0,-1.0,0.0,1.0,1.0,0.0,-1.0,-1.0,0.0,-1.0,1.0,0.0]
