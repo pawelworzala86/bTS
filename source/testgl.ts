@@ -17,11 +17,6 @@ let model:number[] = [1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.
 let VAO:number = 0
 let bufferID:number = 0
 
-let bufferID1:number = 0
-let bufferID2:number = 0
-
-let bytes:number = 8
-
 
 let vertexShader:number = 0
 let fragmentShader:number = 0
@@ -63,7 +58,7 @@ function initSystem(){
 
 	FreeImage_Initialise()
 
-	msvcrt.printf("initiated 2")
+	//msvcrt.printf("initiated 2")
 
 	gl.initializeGL()
 	
@@ -81,7 +76,7 @@ function initSystem(){
 	
 		vertexShader = gl.createShader(gl.VERTEX_SHADER);
 		msvcrt.printf(" OKa")
-	msvcrt.printf("%s",fs.buffor)
+	//msvcrt.printf("%s",fs.buffor)
 	lea rax, fs.buffor
 	lea rbx, fs.fsize
 		gl.shaderSource(vertexShader,1, rax, rbx);

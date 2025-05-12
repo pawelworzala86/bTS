@@ -73,7 +73,7 @@ function Compile(file,remdir=''){
     if(activeDir.length>1){
         activeDir.splice(activeDir.length-1, 1)
         activeDir = activeDir.join('\\')
-        console.log('activeDir',activeDir)
+        //console.log('activeDir',activeDir)
     }else{
         activeDir = ''
     }
@@ -118,6 +118,9 @@ function Compile(file,remdir=''){
     r(/\/\*[\s\S]+?\*\//gm,'')
 
     r(/\@\@int/gm,'//int')
+
+
+    r(/var /gm,'let ')
     
 
 
@@ -162,10 +165,10 @@ function Compile(file,remdir=''){
             fi = 'source/'+activeDir+'/'+fi
         //}
 
-        console.log('fi',fi,file)
+        //console.log('fi',fi,file)
         //process.exit(1)
         let pat = path.resolve(fi)
-        console.log('path',pat)
+        //console.log('path',pat)
         fi = pat
 
         let res = true
@@ -688,7 +691,7 @@ ret`
 let file = process.argv[2]+'.ts'
 
 let pat = path.resolve('source/'+file)
-console.log('path',pat)
+//console.log('path',pat)
 file = pat
 
 let code = Compile(file,'C:\\bTS\\source\\')
