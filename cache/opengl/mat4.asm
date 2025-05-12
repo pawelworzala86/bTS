@@ -330,13 +330,13 @@ mov      qword[rsi + 10*8], r15
 
 Macro_Math_pomnoz qword [rbp + 40],qword [rbp - 32],qword [mth1]
 
-Macro_Math_pomnoz qword [rbp + 48],qword [mth1],qword [mth3]
+Macro_Math_pomnoz qword [rbp + 48],qword [mth1],qword [mth2]
 
-Macro_Math_pomnoz qword [F3_twoDouble],qword [mth3],qword [mth5]
+Macro_Math_pomnoz qword [F3_twoDouble],qword [mth2],qword [mth3]
 
 mov rsi,[rbp + 16]
 
-mov r15, [mth5];
+mov r15, [mth3];
 mov      qword[rsi + 14*8], r15
 
 

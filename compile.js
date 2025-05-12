@@ -268,17 +268,38 @@ function Compile(file,remdir=''){
 
 
     var index = 0
+    let indexInn = 0
     var parseMaths=(line,op,name,isInt=false)=>{
-        line=line.replace( new RegExp('(.*)\\b([a-zA-Z\\_0-9\\[\\]\\.]+)[\ ]+'+op+'[\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)','gm'), 
-            match=>{
-                var matched = /(.*)\b([a-zA-Z\_0-9\\[\]\\.]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\\.]+)/gm.exec(match)
-                index++
-                if(!isInt){
-                    return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+index+']\n'+matched[1]+'[mth'+index+']'
-                }else{
-                    return 'Macro_iMath_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+index+']\n'+matched[1]+'[mth'+index+']'
-                }
-        })
+        let idx=0
+        while(idx<16){
+            line=line.replace( new RegExp('(.*)= ([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm'), 
+                match=>{
+                    console.log('MATH', match)
+                    var matched = /(.*)\b([a-zA-Z\_0-9\.\]\[]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\.]+)(.*)/gm.exec(match)
+                    indexInn++
+                    if(!isInt){
+                        return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
+                    }else{
+                        return 'Macro_iMath_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
+                    }
+            })
+            idx++
+        }
+        /*idx=0
+        while(idx<16){
+            line=line.replace( new RegExp('(.*)= ([a-zA-Z\\_0-9\\[\\]\\.]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm'), 
+                match=>{
+                    console.log('MATH', match)
+                    var matched = /(.*)\b([a-zA-Z\_0-9\[\]\.]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\.]+)(.*)/gm.exec(match)
+                    indexInn++
+                    if(!isInt){
+                        return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
+                    }else{
+                        return 'Macro_iMath_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
+                    }
+            })
+            idx++
+        }*/
         return line
 
     }
@@ -286,11 +307,26 @@ function Compile(file,remdir=''){
     lines=lines.map(line=>{
         let Int = line.indexOf('//int')>-1
         line=line.replace(/\/\/int/gm,'')
+
+        indexInn = 0
+
         index = 0
         while(index<16){
             line=parseMaths(line,'\\*','pomnoz',Int)
+            index++
+        }
+        index = 0
+        while(index<16){
             line=parseMaths(line,'\\/','podziel',Int)
+            index++
+        }
+        index = 0
+        while(index<16){
             line=parseMaths(line,'\\+','dodaj',Int)
+            index++
+        }
+        index = 0
+        while(index<16){
             line=parseMaths(line,'\\-','odejmnij',Int)
             index++
         }
@@ -704,7 +740,7 @@ ret`
 
     r(/mov[\ ]*(qword\[.*\])\, ((\-?)[0-9]+\.[0-9]+)/gm,'mov rax,$2\nmov $1, rax')
 
-    r(/qword qword/gm, 'qword')
+    r(/qword[\ ]*qword/gm, 'qword')
 
 
 
