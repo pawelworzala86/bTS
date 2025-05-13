@@ -63,11 +63,14 @@ export function perspective(out:number,fovy:number,aspect:number,near:number,far
   let fff:number = 0.0
   let tan:number = 0.0
   let tmp:number = 0.0
-  tmp = fovy / twoDouble
+  //tmp = fovy / twoDouble
+  Macro_Math_podziel qword fovy, qword twoDouble, qword tmp
   Macro_Math_tan qword tmp, qword tan
-  fff = oneDouble / tan;
+  //fff = oneDouble / tan;
+  Macro_Math_podziel qword oneDouble, qword tan, qword fff
   //msvcrt.printf(" p3 ")
-  out[0] = fff / aspect;
+  //out[0] = fff / aspect;
+  Macro_Math_podziel qword fff, qword aspect, qword out[0]
   out[1] = 0.0;
   out[2] = 0.0;
   out[3] = 0.0;
@@ -85,7 +88,8 @@ export function perspective(out:number,fovy:number,aspect:number,near:number,far
     let nf:number = 0.0
     let tmp:number = 0.0
     tmp = near - far
-    nf = oneDouble / tmp
+    //nf = oneDouble / tmp
+    Macro_Math_podziel qword oneDouble, qword tmp, qword nf
     tmp = far + near
     out[10] = tmp * nf;
     out[14] = twoDouble * far * near * nf;

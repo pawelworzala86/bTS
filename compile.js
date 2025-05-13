@@ -272,11 +272,12 @@ function Compile(file,remdir=''){
     var parseMaths=(line,op,name,isInt=false)=>{
         let idx=0
         while(idx<16){
+            const regex = new RegExp('^(.*)=.*\\b([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)\\b(.*)','gm')
             //console.log('LINE',line)
-            line=line.replace( new RegExp('^(.*)=.*([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm'), 
+            line=line.replace( regex, 
                 match=>{
                     console.log('MATH', match)
-                    var matched = /(.*)\b([a-zA-Z\_0-9\.\]\[]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\.]+)(.*)/gm.exec(match)
+                    var matched = regex.exec(match)
                     indexInn++
                     if(!isInt){
                         return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
@@ -288,10 +289,11 @@ function Compile(file,remdir=''){
         }
         /*idx=0
         while(idx<16){
-            line=line.replace( new RegExp('(.*)= ([a-zA-Z\\_0-9\\[\\]\\.]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm'), 
+            const regex = new RegExp('(.*)= ([a-zA-Z\\_0-9\\[\\]\\.]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)(.*)','gm')
+            line=line.replace( regex, 
                 match=>{
                     console.log('MATH', match)
-                    var matched = /(.*)\b([a-zA-Z\_0-9\[\]\.]+)[\ ]+([\+\-\*\/])[\ ]+([a-zA-Z\_0-9\[\]\.]+)(.*)/gm.exec(match)
+                    var matched = regex.exec(match)
                     indexInn++
                     if(!isInt){
                         return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
