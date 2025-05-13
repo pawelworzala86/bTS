@@ -272,17 +272,18 @@ function Compile(file,remdir=''){
     var parseMaths=(line,op,name,isInt=false)=>{
         let idx=0
         while(idx<16){
-            const regex = new RegExp('^(.*)=.*\\b([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)\\b(.*)','gm')
+            const regex = new RegExp('^(.*\=.*\\ )([a-zA-Z\\_0-9\\.\\]\\]]+)[\\ ]+'+op+'[\\ ]+([a-zA-Z\\_0-9\\[\\]\\.]+)\\b(.*)','gm')
             //console.log('LINE',line)
             line=line.replace( regex, 
                 match=>{
                     console.log('MATH', match)
                     var matched = regex.exec(match)
+                    console.log('matched', matched)
                     indexInn++
                     if(!isInt){
-                        return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
+                        return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[3]+',qword mth'+indexInn+'\n'+matched[1]+'mth'+indexInn+''+matched[4]
                     }else{
-                        return 'Macro_iMath_'+name+' qword '+matched[2]+',qword '+matched[4]+',qword [mth'+indexInn+']\n'+matched[1]+'[mth'+indexInn+']'+matched[5]
+                        return 'Macro_iMath_'+name+' qword '+matched[2]+',qword '+matched[3]+',qword mth'+indexInn+'\n'+matched[1]+'mth'+indexInn+''+matched[4]
                     }
             })
             idx++
@@ -337,7 +338,7 @@ function Compile(file,remdir=''){
     })
     source=lines.join('\n')
 
-    
+    r(/(mth[0-9]+)/gm,'[$1]')
 
 
 
