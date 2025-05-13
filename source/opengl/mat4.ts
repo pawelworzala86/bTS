@@ -157,7 +157,7 @@ msvcrt.printf("a ")
   aa14 = a[14]
   let aa15:number = 0
   aa15 = a[15]
-msvcrt.printf("aa ")
+msvcrt.printf("aa %f ",aa15)
   /*if(a==out){
     out[12] = aa0 * x + aa4 * y + aa8 * z + aa12
     out[13] = aa1 * x + aa5 * y + aa9 * z + aa13

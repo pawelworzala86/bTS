@@ -10,6 +10,7 @@ let arrayPer:number = 0
 
 let createMatCaption:string = 'create'
 let perMatCaption:string = 'perspective'
+let transMatCaption:string = 'translate'
 
 let fovy:number = 45.0
 let aspect:number = 1.0
@@ -30,13 +31,13 @@ function main(){
     mat4.perspective(arrayPer,fovy,aspect,near,far)
     mat4.print(perMatCaption,arrayPer)
 
-    /*arrayB = mat4.create()
+    arrayB = mat4.create()
     translatePos = msvcrt.malloc(3*8)
     translatePos[0] = 0.0
-    translatePos[1] = -2.1
-    translatePos[2] = 0.0
+    translatePos[1] = 0.0
+    translatePos[2] = -2.1
     mat4.translate(arrayB,arrayA,translatePos)
-    mat4.print(createMatCaption,arrayB)*/
+    mat4.print(transMatCaption,arrayB)
 
 
     msvcrt.printf("end ")

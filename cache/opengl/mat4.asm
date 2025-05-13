@@ -529,7 +529,7 @@ mov rsi,[rbp + 24]
 mov r15,  qword[rsi + 15*8]
 mov   qword [rbp - 248], r15
 
-invoke printf,"aa "
+invoke printf,"aa %f ",qword [rbp - 248]
 
   
 
