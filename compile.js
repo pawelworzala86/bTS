@@ -39,11 +39,17 @@ idataStr.replace(/([a-zA-Z0-9\_]+)/gm,word=>{
 
 const idata = {}
 function addDLL(name,dll){
+    if(dll=='hard'){
+        return
+    }
     if(idata[name]==undefined){
         idata[name] = {dll,functions:[]}
     }
 }
 function addImport(dll,aliasName,dllName){
+    if(dll=='hard'){
+        return
+    }
     idata[dll].functions.push({aliasName,dllName})
 }
 function createIData(){
