@@ -1,7 +1,4 @@
-
-
-
-            library freeimage,'FREEIMAGE.DLL',\
+        library freeimage,'FREEIMAGE.DLL',\
             msvcrt,'MSVCRT.DLL',\
             kernel,'KERNEL32.DLL',\
             user,'USER32.DLL',\
