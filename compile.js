@@ -822,6 +822,8 @@ ret`
 
     r(/qword[\ ]*qword/gm, 'qword')
 
+    r(/\[qword \[([\S\s]+?)]\]/gm,'qword[$1]')
+
 
 
 
