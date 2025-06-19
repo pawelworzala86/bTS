@@ -144,12 +144,14 @@ function Compile(file,remdir=''){
 
     r(/export declare function .*/gm,match=>{
         let name = match.split('(')[0].replace('export declare function','').trim()
-        let dll = match.split('//')[1].trim()
-        if(dll=='hard'){
-            DATA.push({name,kind:'dq',value:'?'})
+        if(match.indexOf('//')>-1){
+            let dll = match.split('//')[1].trim()
+            if(dll=='hard'){
+                DATA.push({name,kind:'dq',value:'?'})
+            }
+            addDLL(dll,dll+'.dll')
+            addImport(dll,name,name)
         }
-        addDLL(dll,dll+'.dll')
-        addImport(dll,name,name)
         return match
     })
 
@@ -163,6 +165,23 @@ function Compile(file,remdir=''){
 
 
     r(/var /gm,'let ')
+
+
+    let slines = source.split('\n')
+    slines = slines.map(line=>{
+        let idx = 0
+        let prefix = ''
+        for(let i=0;i<8;i++){
+            line=line.replace(/^(.*)utils\.lea\(([\s\S]+?)\)(.*)$/gm,match=>{
+                let params = /^(.*)utils\.lea\(([\s\S]+?)\)(.*)$/gm.exec(match)
+                let reg = REG[idx++]
+                prefix+=`lea ${reg},${params[2]}\n`
+                return `${params[1]}${reg}${params[3]}`
+            })
+        }
+        return prefix+line
+    })
+    source = slines.join('\n')
     
 
 

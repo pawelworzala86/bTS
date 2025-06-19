@@ -1,5 +1,6 @@
 import * as msvcrt from './system/msvcrt.ts'
 import * as fs from './system/file.ts'
+import * as utils from './system/utils.ts'
 
 import * as gl from './opengl/gl.ts'
 import * as texture from './opengl/texture.ts'
@@ -49,8 +50,7 @@ let textureID:number = 0
 
 
 function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
-	lea rbx, bufferID
-	gl.genBuffers(1, rbx)
+	gl.genBuffers(1, utils.lea(bufferID))
 
 	msvcrt.printf(' l=%i ', posID)
 
@@ -106,9 +106,9 @@ function initSystem(){
 		vertexShader = gl.createShader(gl.VERTEX_SHADER);
 		msvcrt.printf(" OKa")
 	//msvcrt.printf("%s",fs.buffor)
-	lea rax, fs.buffor
-	lea rbx, fs.fsize
-		gl.shaderSource(vertexShader,1, rax, rbx);
+	//lea rax, fs.buffor
+	//lea rbx, fs.fsize
+		gl.shaderSource(vertexShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
 		gl.compileShader(vertexShader);
 	
 		
@@ -119,9 +119,9 @@ function initSystem(){
 		//msvcrt.printf('OK2')
 	
 		fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-		lea rax, fs.buffor
-	lea rbx, fs.fsize
-		gl.shaderSource(fragmentShader,1, rax,rbx);
+		//lea rax, fs.buffor
+	//lea rbx, fs.fsize
+		gl.shaderSource(fragmentShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
 		//msvcrt.printf('OK3')
 		gl.compileShader(fragmentShader);
 	
@@ -152,16 +152,16 @@ function initSystem(){
 
 
 
-		lea rbx, VAO
-			gl.genVertexArrays(1, rbx)
+		//lea rbx, VAO
+			gl.genVertexArrays(1, utils.lea(VAO))
 			//msvcrt.printf('VAO %i', VAO)
 			gl.bindVertexArray(VAO)
 		
 		
 		
 		
-			lea rax, vertices
-			CreateBuffer(0,3,24,144,rax)
+			//lea rax, vertices
+			CreateBuffer(0,3,24,144,utils.lea(vertices))
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 				/*lea rbx, bufferID1
 				glGenBuffers(1, rbx)
@@ -175,8 +175,8 @@ function initSystem(){
 				glEnableVertexAttribArray(0)
 				glVertexAttribPointer(0,3,gl.DOUBLE,gl.FALSE, 24, 0)*/
 			//}
-			lea rax, coords
-			CreateBuffer(1,2,16,96, rax)
+			//lea rax, coords
+			CreateBuffer(1,2,16,96,utils.lea(coords))
 			//function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,array:number){
 				/*lea rbx, bufferID2
 				glGenBuffers(1, rbx)

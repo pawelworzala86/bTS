@@ -1,0 +1,1 @@
+export declare function lea(...args:any[]):any
