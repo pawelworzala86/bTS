@@ -7,28 +7,37 @@ format PE64 console
 entry start
 
 section '.data' data readable writeable
-    F1_fileName db "example.txt", 0
+    textA db "example.txt", 0
 
 section '.text' code readable executable
+
+
+StrLen:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 8*1
+
+    mov rbx, qword [rbp - 8]
+
+    movzx rax, byte [rbp - 8]
+
+    invoke printf, '%s', rbx
+
+    mov rsp, rbp
+    pop rbp
+ret
+
+
 start:
-    lea rax, [F1_fileName] ; Załaduj adres ciągu znaków do RAX
-    push rax               ; Umieść wskaźnik na stosie
-    call F2_readFile       ; Wywołaj funkcję
-    add rsp, 8             ; Oczyść stos (zwróć stos do poprzedniego stanu)
+    sub rsp, 8
+
+    push qword[textA]
+    call StrLen
+    add rsp, 8
 
     invoke ExitProcess, 0  ; Zakończ program
 
-F2_readFile:
-    push rbp               ; Zachowaj poprzednią wartość RBP
-    mov rbp, rsp           ; Ustaw nową bazę stosu
-    sub rsp, 8             ; Przygotuj miejsce na lokalne zmienne (jeśli potrzebne)
 
-    mov rax, [rbp + 16]    ; Pobierz pierwszy argument (wskaźnik do ciągu znaków)
-    invoke printf, "%s", rax ; Wywołaj printf, aby wyświetlić ciąg znaków
-
-    mov rsp, rbp           ; Przywróć poprzedni stos
-    pop rbp                ; Przywróć poprzedni RBP
-    ret                    ; Powrót z funkcji
 
 section '.idata' import data readable writeable
     library kernel32, 'kernel32.dll', \
