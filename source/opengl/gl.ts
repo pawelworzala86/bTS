@@ -43,7 +43,7 @@ export declare function uniformMatrix4dv(...args:any[]):any//hard
 
 
 
-export declare function wglGetProcAddress(...args:any[]):Function//opengl
+export declare function wglGetProcAddress(...args:any[]):Function//opengl32
 export function initializeGL(){
     uniform1i = wglGetProcAddress("glUniform1i");
     uniform1f = wglGetProcAddress("glUniform1f");
@@ -75,22 +75,22 @@ export function initializeGL(){
 
 
 
-export declare function glClear(...args:any[]):void//opengl
+export declare function glClear(...args:any[]):void//opengl32
 export function clear(kind:number){
     glClear(kind)
 }
 
-export declare function glDrawArrays(...args:any[]):void//opengl
+export declare function glDrawArrays(...args:any[]):void//opengl32
 export function drawArrays(kind:number,offset:number,count:number){
     glDrawArrays(kind, offset, count)
 }
 
-export declare function glDepthFunc(...args:any[]):void//opengl
+export declare function glDepthFunc(...args:any[]):void//opengl32
 export function depthFunc(kind:number){
     glDepthFunc(kind)
 }
 
-export declare function glEnable(...args:any[]):void//opengl
+export declare function glEnable(...args:any[]):void//opengl32
 export function enable(kind:number){
     glEnable(kind)
 }
@@ -99,8 +99,10 @@ export function enable(kind:number){
 
 
 
-
-
+export declare function glGenTextures(...args:any[]):void//opengl32
+export declare function glBindTexture(...args:any[]):void//opengl32
+export declare function glTexParameteri(...args:any[]):void//opengl32
+export declare function glTexImage2D(...args:any[]):void//opengl32
 
 
 

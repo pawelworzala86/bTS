@@ -42,6 +42,8 @@ function addDLL(name,dll){
     if(dll=='hard'){
         return
     }
+    dll = dll.toUpperCase()
+    name = name.replace('32','')
     if(idata[name]==undefined){
         idata[name] = {dll,functions:[]}
     }
@@ -50,12 +52,16 @@ function addImport(dll,aliasName,dllName){
     if(dll=='hard'){
         return
     }
+    dll = dll.replace('32','')
     idata[dll].functions.push({aliasName,dllName})
 }
 function createIData(){
     let library = []
     let libraryFuncs = []
     for(const key of Object.keys(idata)){
+        if(key=='hard'){
+            continue
+        }
         let lib = idata[key]
         library.push(`${key},'${lib.dll}'`)
         let funcs = []
@@ -70,29 +76,38 @@ function createIData(){
 ${libraryFuncs.join('\n\n')}`
 }
 
-addDLL('kernel32','kernel32.dll')
-addImport('kernel32', 'ExitProcess', 'ExitProcess')
-addImport('kernel32', 'GetModuleHandle', 'GetModuleHandle')
-addImport('kernel32', 'GetTickCount', 'GetTickCount')
+addDLL('kernel','kernel32.dll')
+addImport('kernel', 'ExitProcess', 'ExitProcess')
+addImport('kernel', 'GetModuleHandle', 'GetModuleHandle')
+addImport('kernel', 'GetTickCount', 'GetTickCount')
 
-addDLL('user32','user32.dll')
-addImport('user32', 'LoadIcon', 'LoadIcon')
-addImport('user32', 'LoadCursor', 'LoadCursor')
-addImport('user32', 'RegisterClass', 'RegisterClass')
-addImport('user32', 'CreateWindowEx', 'CreateWindowEx')
-addImport('user32', 'GetMessage', 'GetMessage')
-addImport('user32', 'TranslateMessage', 'TranslateMessage')
-addImport('user32', 'DispatchMessage', 'DispatchMessage')
-addImport('user32', 'DefWindowProc', 'DefWindowProc')
-addImport('user32', 'GetDC', 'GetDC')
-addImport('user32', 'GetClientRect', 'GetClientRect')
-addImport('user32', 'ReleaseDC', 'ReleaseDC')
-addImport('user32', 'PostQuitMessage', 'PostQuitMessage')
+addDLL('user','user32.dll')
+addImport('user', 'LoadIcon', 'LoadIcon')
+addImport('user', 'LoadCursor', 'LoadCursor')
+addImport('user', 'RegisterClass', 'RegisterClass')
+addImport('user', 'CreateWindowEx', 'CreateWindowEx')
+addImport('user', 'GetMessage', 'GetMessage')
+addImport('user', 'TranslateMessage', 'TranslateMessage')
+addImport('user', 'DispatchMessage', 'DispatchMessage')
+addImport('user', 'DefWindowProc', 'DefWindowProc')
+addImport('user', 'GetDC', 'GetDC')
+addImport('user', 'GetClientRect', 'GetClientRect')
+addImport('user', 'ReleaseDC', 'ReleaseDC')
+addImport('user', 'PostQuitMessage', 'PostQuitMessage')
 
-addDLL('gdi32','gdi32.dll')
-addImport('gdi32', 'ChoosePixelFormat', 'ChoosePixelFormat')
-addImport('gdi32', 'SetPixelFormat', 'SetPixelFormat')
-addImport('gdi32', 'SwapBuffers', 'SwapBuffers')
+addDLL('gdi','gdi32.dll')
+addImport('gdi', 'ChoosePixelFormat', 'ChoosePixelFormat')
+addImport('gdi', 'SetPixelFormat', 'SetPixelFormat')
+addImport('gdi', 'SwapBuffers', 'SwapBuffers')
+
+addDLL('opengl','opengl32.dll')
+addImport('opengl', 'wglCreateContext', 'wglCreateContext')
+addImport('opengl', 'wglMakeCurrent', 'wglMakeCurrent')
+addImport('opengl', 'glViewport', 'glViewport')
+addImport('opengl', 'wglDeleteContext', 'wglDeleteContext')
+
+
+
 
 
 function Compile(file,remdir=''){
