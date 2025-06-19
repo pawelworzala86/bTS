@@ -3,7 +3,7 @@
 F3_create:
      push rbp
     mov rbp, rsp
-    sub rsp, 8*0
+    sub rsp, 8*1
 
     
     
@@ -203,7 +203,7 @@ ret
 F3_perspective:
      push rbp
     mov rbp, rsp
-    sub rsp, 8*5
+    sub rsp, 8*10
 
     
   
@@ -359,16 +359,14 @@ ret
 F3_translate:
      push rbp
     mov rbp, rsp
-    sub rsp, 8*3
+    sub rsp, 8*34
 
     
-  invoke printf,"F3_translate "
+  
 
   
 
-mov rsi,[rbp + 32]
-
-  invoke printf," v1 %f",  qword[rsi + 1*8]
+  
 
 mov rsi,[rbp + 32]
 
@@ -389,8 +387,6 @@ mov rsi,[rbp + 32]
 mov r15,  qword[rsi + 2*8]
 mov   qword [rbp - 24], r15
 
-  invoke printf,"t "
-
   
 
   
@@ -415,7 +411,9 @@ mov   qword [rbp - 24], r15
 
   
 
-invoke printf,"[rbp + 24] "
+  
+
+
 
   
 
@@ -529,7 +527,7 @@ mov rsi,[rbp + 24]
 mov r15,  qword[rsi + 15*8]
 mov   qword [rbp - 248], r15
 
-invoke printf,"aa %f ",qword [rbp - 248]
+
 
   
 

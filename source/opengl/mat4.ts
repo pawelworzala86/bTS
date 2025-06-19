@@ -103,15 +103,15 @@ export function perspective(out:number,fovy:number,aspect:number,near:number,far
 }
 
 export function translate(out:number,a:number,v:number){
-  msvcrt.printf("translate ")
+  //msvcrt.printf("translate ")
   let x:number = 0
-  msvcrt.printf(" v1 %f", v[1])
+  //msvcrt.printf(" v1 %f", v[1])
   x = v[0]
   let y:number = 0
   y = v[1]
   let z:number = 0
   z = v[2]
-  msvcrt.printf("t ")
+  //msvcrt.printf("t ")
   let a00:number = 0
   let a01:number = 0
   let a02:number = 0
@@ -124,7 +124,7 @@ export function translate(out:number,a:number,v:number){
   let a21:number = 0
   let a22:number = 0
   let a23:number = 0
-msvcrt.printf("a ")
+//msvcrt.printf("a ")
   let aa0:number = 0
   aa0 = a[0]
   let aa1:number = 0
@@ -157,7 +157,7 @@ msvcrt.printf("a ")
   aa14 = a[14]
   let aa15:number = 0
   aa15 = a[15]
-msvcrt.printf("aa %f ",aa15)
+//msvcrt.printf("aa %f ",aa15)
   /*if(a==out){
     out[12] = aa0 * x + aa4 * y + aa8 * z + aa12
     out[13] = aa1 * x + aa5 * y + aa9 * z + aa13

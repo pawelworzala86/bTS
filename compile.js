@@ -367,6 +367,8 @@ function Compile(file,remdir=''){
                 return 'qword [rbp - '+pidx+']'
             })
         }
+        let name = match.split('(')[0].replace('function','').trim()
+        FILE.FUNCTIONS[name] = {locals:Object.keys(locals).length}
         return match
     })
 
@@ -667,12 +669,19 @@ function Compile(file,remdir=''){
         body = lines.join('\n')
 
         //process.exit(1)
-        FILE.FUNCTIONS[name] = {params}
+
+        FILE.FUNCTIONS[name].params = params
+
+        const locals = FILE.FUNCTIONS[name].locals
+
+        console.log('LOCALS COUNT', locals)
+
+        const offset = params.length + locals 
 
         return `${name}:
      push rbp
     mov rbp, rsp
-    sub rsp, 8*${params.length}
+    sub rsp, 8*${offset}
 
     ${body}
     
@@ -700,6 +709,10 @@ ret`
                 prms.push(params[idx])
             }
             let count = params.length
+
+            //const locals = FILE.FUNCTIONS[name].locals
+            //count += locals
+
             return `${prms.join('\n')}
     call ${name}
     add rsp, ${count*8}`
