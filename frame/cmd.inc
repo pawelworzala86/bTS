@@ -43,4 +43,4 @@ section '.data' data readable writeable
 
 
 section '.idata' import data readable writeable
-    include 'include\\idata.inc'
+    include 'idata.inc'

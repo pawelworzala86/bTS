@@ -5,6 +5,8 @@ import * as gl from './opengl/gl.ts'
 import * as texture from './opengl/texture.ts'
 import * as mat4 from './opengl/mat4.ts'
 
+import * as freeimage from './system/freeimage.ts'
+
 
 let vertices:number[] = [1.0,1.0,0.0,1.0,-1.0,0.0,-1.0,-1.0,0.0,1.0,1.0,0.0,-1.0,-1.0,0.0,-1.0,1.0,0.0]
 let coords:number[] = [1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0]
@@ -68,7 +70,7 @@ function initSystem(){
 
 	msvcrt.printf("initiated")
 
-	FreeImage_Initialise()
+	freeimage.FreeImage_Initialise()
 
 	//msvcrt.printf("initiated 2")
 

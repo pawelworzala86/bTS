@@ -70,8 +70,29 @@ function createIData(){
 ${libraryFuncs.join('\n\n')}`
 }
 
+addDLL('kernel32','kernel32.dll')
+addImport('kernel32', 'ExitProcess', 'ExitProcess')
+addImport('kernel32', 'GetModuleHandle', 'GetModuleHandle')
+addImport('kernel32', 'GetTickCount', 'GetTickCount')
 
+addDLL('user32','user32.dll')
+addImport('user32', 'LoadIcon', 'LoadIcon')
+addImport('user32', 'LoadCursor', 'LoadCursor')
+addImport('user32', 'RegisterClass', 'RegisterClass')
+addImport('user32', 'CreateWindowEx', 'CreateWindowEx')
+addImport('user32', 'GetMessage', 'GetMessage')
+addImport('user32', 'TranslateMessage', 'TranslateMessage')
+addImport('user32', 'DispatchMessage', 'DispatchMessage')
+addImport('user32', 'DefWindowProc', 'DefWindowProc')
+addImport('user32', 'GetDC', 'GetDC')
+addImport('user32', 'GetClientRect', 'GetClientRect')
+addImport('user32', 'ReleaseDC', 'ReleaseDC')
+addImport('user32', 'PostQuitMessage', 'PostQuitMessage')
 
+addDLL('gdi32','gdi32.dll')
+addImport('gdi32', 'ChoosePixelFormat', 'ChoosePixelFormat')
+addImport('gdi32', 'SetPixelFormat', 'SetPixelFormat')
+addImport('gdi32', 'SwapBuffers', 'SwapBuffers')
 
 
 function Compile(file,remdir=''){

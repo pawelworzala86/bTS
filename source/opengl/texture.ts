@@ -1,5 +1,6 @@
 import * as msvcrt from './../system/msvcrt.ts'
 import * as gl from './gl.ts'
+import * as freeimage from './../system/freeimage.ts'
 
 let hDib:number = 0
 let hDib32:number = 0
@@ -14,23 +15,23 @@ export function LoadTexture(name:string){
 
     msvcrt.printf(' %s ', name)
 
-    wFormat = FreeImage_GetFileType(name, 0)
+    wFormat = freeimage.FreeImage_GetFileType(name, 0)
    
-    hDib = FreeImage_Load(wFormat, name, 0)
+    hDib = freeimage.FreeImage_Load(wFormat, name, 0)
 
-    hDib32 = FreeImage_ConvertTo32Bits(hDib)
+    hDib32 = freeimage.FreeImage_ConvertTo32Bits(hDib)
 
     msvcrt.printf(' aaa ')
 
-    lpBits = FreeImage_GetBits(hDib32, NULL, 0)
+    lpBits = freeimage.FreeImage_GetBits(hDib32, NULL, 0)
   
 
-    dwWidth = FreeImage_GetWidth(hDib32)
+    dwWidth = freeimage.FreeImage_GetWidth(hDib32)
     
-    dwHeight = FreeImage_GetHeight(hDib32)
+    dwHeight = freeimage.FreeImage_GetHeight(hDib32)
     
 
-    FreeImage_Unload(hDib)
+    freeimage.FreeImage_Unload(hDib)
 
     msvcrt.printf(' bbb ')
 

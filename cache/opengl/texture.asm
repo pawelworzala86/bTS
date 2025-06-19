@@ -1,5 +1,6 @@
 
 
+include 'C:\bTS\cache\system\freeimage.asm'
 
 
 

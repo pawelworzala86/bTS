@@ -1,6 +1,6 @@
 
 
-F7_create:
+F8_create:
      push rbp
     mov rbp, rsp
     sub rsp, 8*1
@@ -102,7 +102,7 @@ mov qword[rsi + 15*8], rax;
     pop rbp
 ret
 
-F7_print:
+F8_print:
      push rbp
     mov rbp, rsp
     sub rsp, 8*2
@@ -200,7 +200,7 @@ ret
 
 
 
-F7_perspective:
+F8_perspective:
      push rbp
     mov rbp, rsp
     sub rsp, 8*10
@@ -216,13 +216,13 @@ F7_perspective:
 
   
 
-  Macro_Math_podziel qword [rbp + 24], qword [F7_twoDouble], qword [rbp - 24]
+  Macro_Math_podziel qword [rbp + 24], qword [F8_twoDouble], qword [rbp - 24]
 
   Macro_Math_tan qword [rbp - 24], qword [rbp - 16]
 
   
 
-  Macro_Math_podziel qword [F7_oneDouble], qword [rbp - 16], qword [rbp - 8]
+  Macro_Math_podziel qword [F8_oneDouble], qword [rbp - 16], qword [rbp - 8]
 
   
 
@@ -310,7 +310,7 @@ mov     qword [rbp - 24], r15
 
     
 
-    Macro_Math_podziel qword [F7_oneDouble], qword [rbp - 24], qword [rbp - 32]
+    Macro_Math_podziel qword [F8_oneDouble], qword [rbp - 24], qword [rbp - 32]
 
 Macro_Math_dodaj qword [rbp + 48],qword [rbp + 40],qword [mth1]
 
@@ -328,7 +328,7 @@ Macro_Math_pomnoz qword [rbp + 40],qword [rbp - 32],qword [mth1]
 
 Macro_Math_pomnoz qword [rbp + 48],qword [mth1],qword [mth2]
 
-Macro_Math_pomnoz qword [F7_twoDouble],qword [mth2],qword [mth3]
+Macro_Math_pomnoz qword [F8_twoDouble],qword [mth2],qword [mth3]
 
 mov rsi,[rbp + 16]
 
@@ -356,7 +356,7 @@ mov qword[rsi + 14*8], rax
     pop rbp
 ret
 
-F7_translate:
+F8_translate:
      push rbp
     mov rbp, rsp
     sub rsp, 8*34
