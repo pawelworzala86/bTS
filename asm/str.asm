@@ -17,9 +17,9 @@ StrLen:
     mov rbp, rsp
     sub rsp, 8*1
 
-    mov rbx, qword [rbp - 8]
+    mov rbx, qword [rbp - 16]
 
-    movzx rax, byte [rbp - 8]
+    movzx rax, byte [rbx + 0]
 
     invoke printf, '%s', rbx
 
@@ -31,7 +31,7 @@ ret
 start:
     sub rsp, 8
 
-    push qword[textA]
+    push textA
     call StrLen
     add rsp, 8
 
