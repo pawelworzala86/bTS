@@ -40,15 +40,22 @@ ret
 StrCopy:
     push rbp
     mov rbp, rsp
-    sub rsp, 8*2
+    sub rsp, 8*1
 
     mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
-    mov rdi, [rbp + 24]           ; wskaźnik na string (argument 2)
+    ;mov rdi, [rbp + 24]           ; wskaźnik na string (argument 2)
+
+    push rsi
+    call StrLen
+    add rsp, 8
+    invoke malloc, rax
+    mov rdi, rax
+
     xor rdx, rdx           ; licznik długości = 0
 
 .while:
     mov al, [rsi + rdx]
-    mov [rdi + rdx],al
+    mov [rdi + rdx], al
     cmp al, 0
     je .end
     inc rdx
@@ -56,7 +63,7 @@ StrCopy:
 .end:
     ; wynik długości jest w rdx
 
-    mov rax, rdx
+    mov rax, rdi
 
     mov rsp, rbp
     pop rbp
@@ -71,11 +78,11 @@ start:
     add rsp, 8
     invoke printf, '%i', rax
 
-    push textB
+    ;push textB
     push textA
     call StrCopy
-    add rsp, 16
-    invoke printf, '%s', textB
+    add rsp, 8
+    invoke printf, '%s', rax
 
     invoke ExitProcess, 0  ; Zakończ program
 
