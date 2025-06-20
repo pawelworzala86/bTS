@@ -7,7 +7,7 @@ format PE64 console
 entry start
 
 section '.data' data readable writeable
-    textA db "example.txt", 0
+    textA db "example", 0
 
 section '.text' code readable executable
 
@@ -17,13 +17,19 @@ StrLen:
     mov rbp, rsp
     sub rsp, 8*1
 
-    mov rbx, [rbp + 16]
+    mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
+    xor rdx, rdx           ; licznik długości = 0
 
-    invoke printf, '%s', rbx
+.while:
+    mov al, [rsi + rdx]
+    cmp al, 0
+    je .end
+    inc rdx
+    jmp .while
+.end:
+    ; wynik długości jest w rdx
 
-    ;movzx rax, byte [rbx + 0]
-
-    ;invoke printf, '%s', rbx
+    invoke printf, '%i', rdx
 
     mov rsp, rbp
     pop rbp
