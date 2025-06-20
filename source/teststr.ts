@@ -4,10 +4,15 @@ function funcA(propA:string){
     msvcrt.printf(" %s ", propA)
 
     mov rbx, propA
-    movzx rax, byte [rbx + 0]
-    if(rax!=0){
-        msvcrt.printf(" %c ", rax)
+    mov r9, 0
+    movzx rax, byte [rbx]
+    while(rax!=0){
+        //msvcrt.printf(" %c ", rax)
+        inc rbx
+        inc r9
+        movzx rax, byte [rbx]
     }
+    msvcrt.printf(" %i ", r9)
 }
 
 let strA:string = '11'

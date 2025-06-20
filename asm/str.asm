@@ -17,11 +17,13 @@ StrLen:
     mov rbp, rsp
     sub rsp, 8*1
 
-    mov rbx, qword [rbp - 16]
+    invoke printf, '%s', [rbp + 16]
 
-    movzx rax, byte [rbx + 0]
+    ;mov rbx, qword [rbp - 16]
 
-    invoke printf, '%s', rbx
+    ;movzx rax, byte [rbx + 0]
+
+    ;invoke printf, '%s', rbx
 
     mov rsp, rbp
     pop rbp
