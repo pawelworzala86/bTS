@@ -29,7 +29,7 @@ StrLen:
 .end:
     ; wynik długości jest w rdx
 
-    invoke printf, '%i', rdx
+    mov rax, rdx
 
     mov rsp, rbp
     pop rbp
@@ -42,6 +42,7 @@ start:
     push textA
     call StrLen
     add rsp, 8
+    invoke printf, '%i', rax
 
     invoke ExitProcess, 0  ; Zakończ program
 
@@ -51,4 +52,5 @@ section '.idata' import data readable writeable
     library kernel32, 'kernel32.dll', \
             msvcrt, 'msvcrt.dll'
     import kernel32, ExitProcess, 'ExitProcess'
-    import msvcrt, printf, 'printf'
+    import msvcrt, printf, 'printf',\
+        malloc, 'malloc'
