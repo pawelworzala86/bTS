@@ -49,7 +49,7 @@ StrCopy:
     call StrLen
     add rsp, 8
     invoke malloc, rax
-    mov rdi, rax
+    mov rdi, rax                ; wskaźnik na string (argument 2)
 
     xor rdx, rdx           ; licznik długości = 0
 
