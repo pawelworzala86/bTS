@@ -5,7 +5,9 @@ function funcA(propA:string){
 
     mov rbx, propA
     movzx rax, byte [rbx + 0]
-    msvcrt.printf(" %c ", rax)
+    if(rax!=0){
+        msvcrt.printf(" %c ", rax)
+    }
 }
 
 let strA:string = '11'
