@@ -9,6 +9,7 @@ entry start
 section '.data' data readable writeable
     textA db "example", 0
     textB db "am", 0
+    textC db "qq",0
 
 section '.text' code readable executable
 
@@ -90,7 +91,7 @@ StrPos:
     mov bl, [rdi + r9]
     ;invoke printf, '%c', bl
     cmp bl, 0
-    je .end
+    je .endA
     cmp bl, al
     je .secStr
     ;xor r9, r9
@@ -99,9 +100,13 @@ StrPos:
     inc rdx
     jmp .while
 .end:
-    ; wynik długości jest w rdx
-
+    mov rax, -1
+    jmp .endB
+.endA:
     mov rax, rdx
+.endB:
+
+    ;mov rax, rdx
 
     mov rsp, rbp
     pop rbp
@@ -170,6 +175,13 @@ start:
 
     push 0
     push textB
+    push textA
+    call StrPos
+    add rsp, 8*3
+    invoke printf, '%i', rax
+
+    push 0
+    push textC
     push textA
     call StrPos
     add rsp, 8*3
