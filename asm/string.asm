@@ -77,10 +77,11 @@ StrPos:
 
     mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
     mov rdi, [rbp + 24]           ; wskaźnik na string (argument 2)
+    mov rdx, [rbp + 32]           ; wskaźnik na string (argument 3)
 
     ;invoke printf, '%s', rdi
 
-    xor rdx, rdx           ; licznik długości = 0
+    ;xor rdx, rdx           ; licznik długości = 0
     xor r9, r9           ; licznik długości = 0
 
 .while:
