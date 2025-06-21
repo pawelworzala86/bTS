@@ -122,14 +122,13 @@ StrSub:
     mov r12, [rbp + 32]           ; licznik długości = 3
     ;dec r10
 
-    invoke printf, '%i', rbx
-    invoke printf, '%i', r12
+    ;invoke printf, '%i', rbx
+    ;invoke printf, '%i', r12
 
     mov rax, r12
     sub rax, rbx
 
     inc rax
-    ;invoke printf, '%i', r10
     invoke malloc, rax
     mov rdi, rax                ; wskaźnik na string (argument 2)
 
