@@ -109,18 +109,13 @@ ret
 StrSub:
     push rbp
     mov rbp, rsp
-    sub rsp, 8*1
+    sub rsp, 8*3
 
     mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
-    ;mov rdi, [rbp + 24]           ; wskaźnik na string (argument 2)
 
-    push rsi
-    call StrLen
-    add rsp, 8
-    invoke malloc, rax
-    mov rdi, rax                ; wskaźnik na string (argument 2)
+    mov rdi, 3                
 
-    xor rdx, rdx           ; licznik długości = 0
+    mov rdx, 3           ; licznik długości = 3
 
 .while:
     mov al, [rsi + rdx]
@@ -159,6 +154,14 @@ start:
     call StrPos
     add rsp, 8*3
     invoke printf, '%i', rax
+
+    push 3
+    push 3
+    push textA
+    call StrSub
+    add rsp, 8*3
+    invoke printf, '%i', rax
+
 
     invoke ExitProcess, 0  ; Zakończ program
 
