@@ -114,15 +114,15 @@ StrSub:
 
     mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
 
-    mov rbx, 3;[rbp + 24]           ; licznik długości = 3
+    mov rbx, [rbp + 24]           ; licznik długości = 3
     ;dec rbx
-    mov r10, 4;[rbp + 32]           ; licznik długości = 3
+    mov r12, [rbp + 32]           ; licznik długości = 3
     ;dec r10
 
-    ;invoke printf, '%i', rbx
-    ;invoke printf, '%i', r10
+    invoke printf, '%i', rbx
+    invoke printf, '%i', r12
 
-    mov rax, 4
+    mov rax, r12
     sub rax, rbx
 
     inc rax
@@ -138,7 +138,7 @@ StrSub:
     inc r9
     inc rbx
 
-    cmp rbx, 4
+    cmp rbx, r12
     je .end
     cmp al, 0
     je .end
