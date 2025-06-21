@@ -168,7 +168,6 @@ StrCon:
     call StrLen
     add rsp, 8
     add r10,rax
-    ;invoke printf, '%i', r10
 
     inc r10
     invoke malloc, r10
@@ -191,9 +190,9 @@ StrCon:
     inc r12
     jmp .while
 .end:
-    ;invoke printf, '%s', r11
-    ;inc r12
+
     xor rdx,rdx
+    
 .while2:
     mov al, [rdi + rdx]
     mov [r11+r12],al
@@ -203,9 +202,7 @@ StrCon:
     inc r12
     jmp .while2
 .end2:
-    ;inc r12
-    ;mov byte[r11+r12],0
-;invoke printf, '%s', r11
+
     mov rax, r11
 
     mov rsp, rbp
