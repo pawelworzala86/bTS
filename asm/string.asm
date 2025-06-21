@@ -177,7 +177,7 @@ StrCon:
     mov rdi, [rbp + 24]
     xor rdx, rdx
 
-    mov r10,0
+    ;mov r10,0
 
     xor r12,r12
 
@@ -192,7 +192,7 @@ StrCon:
 .end:
 
     xor rdx,rdx
-    
+
 .while2:
     mov al, [rdi + rdx]
     mov [r11+r12],al
