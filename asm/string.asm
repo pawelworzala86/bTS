@@ -149,6 +149,68 @@ StrSub:
     pop rbp
 ret
 
+StrCon:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 8*2
+
+    mov rsi, [rbp + 16]
+    mov rdi, [rbp + 24]
+    xor rdx, rdx
+
+    mov r10,0
+
+    push rsi
+    call StrLen
+    add rsp, 8
+    add r10,rax
+    push rdi
+    call StrLen
+    add rsp, 8
+    add r10,rax
+    ;invoke printf, '%i', r10
+
+    inc r10
+    invoke malloc, r10
+    mov r11, rax
+
+    mov rsi, [rbp + 16]
+    mov rdi, [rbp + 24]
+    xor rdx, rdx
+
+    mov r10,0
+
+    xor r12,r12
+
+.while:
+    mov al, [rsi + rdx]
+    cmp al, 0
+    je .end
+    mov [r11+r12],al
+    inc rdx
+    inc r12
+    jmp .while
+.end:
+    ;invoke printf, '%s', r11
+    ;inc r12
+    xor rdx,rdx
+.while2:
+    mov al, [rdi + rdx]
+    mov [r11+r12],al
+    cmp al, 0
+    je .end2
+    inc rdx
+    inc r12
+    jmp .while2
+.end2:
+    ;inc r12
+    ;mov byte[r11+r12],0
+;invoke printf, '%s', r11
+    mov rax, r11
+
+    mov rsp, rbp
+    pop rbp
+ret
 
 start:
     sub rsp, 8
@@ -183,6 +245,12 @@ start:
     push textA
     call StrSub
     add rsp, 8*3
+    invoke printf, '%s', rax
+
+    push textB
+    push textA
+    call StrCon
+    add rsp, 8*2
     invoke printf, '%s', rax
 
 
