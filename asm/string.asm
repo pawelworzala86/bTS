@@ -10,6 +10,7 @@ section '.data' data readable writeable
     textA db "example", 0
     textB db "am", 0
     textC db "qq",0
+    textD db "example", 0
 
 section '.text' code readable executable
 
@@ -209,6 +210,33 @@ StrCon:
     pop rbp
 ret
 
+StrComp:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 8*2
+
+    mov rsi, [rbp + 16]
+    mov rdi, [rbp + 24]
+    xor rdx, rdx
+
+.while:
+    mov al, [rsi + rdx]
+    cmp al, 0
+    je .end
+    mov bl, [rdi + rdx]
+    inc rdx
+    cmp al, bl
+    je .while
+    mov rax, -1
+    jmp .endFalse
+.end:
+    mov rax, 1
+.endFalse:
+
+    mov rsp, rbp
+    pop rbp
+ret
+
 start:
     sub rsp, 8
 
@@ -217,7 +245,6 @@ start:
     add rsp, 8
     invoke printf, '%i', rax
 
-    ;push textB
     push textA
     call StrCopy
     add rsp, 8
@@ -249,6 +276,18 @@ start:
     call StrCon
     add rsp, 8*2
     invoke printf, '%s', rax
+
+    push textB
+    push textA
+    call StrComp
+    add rsp, 8*2
+    invoke printf, '%i', rax
+
+    push textD
+    push textA
+    call StrComp
+    add rsp, 8*2
+    invoke printf, '%i', rax
 
 
     invoke ExitProcess, 0
