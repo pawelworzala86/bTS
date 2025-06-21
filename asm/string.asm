@@ -221,15 +221,17 @@ StrComp:
 
 .while:
     mov al, [rsi + rdx]
+    mov bl, [rdi + rdx]
     cmp al, 0
     je .end
-    mov bl, [rdi + rdx]
     inc rdx
     cmp al, bl
     je .while
     mov rax, -1
     jmp .endFalse
 .end:
+    cmp bl,0
+    jne .endFalse
     mov rax, 1
 .endFalse:
 
