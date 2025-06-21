@@ -19,8 +19,8 @@ StrLen:
     mov rbp, rsp
     sub rsp, 8*1
 
-    mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
-    xor rdx, rdx           ; licznik długości = 0
+    mov rsi, [rbp + 16]
+    xor rdx, rdx
 
 .while:
     mov al, [rsi + rdx]
@@ -29,7 +29,6 @@ StrLen:
     inc rdx
     jmp .while
 .end:
-    ; wynik długości jest w rdx
 
     mov rax, rdx
 
@@ -43,16 +42,16 @@ StrCopy:
     mov rbp, rsp
     sub rsp, 8*2
 
-    mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
+    mov rsi, [rbp + 16]
 
     push rsi
     call StrLen
     add rsp, 8
     inc rax
     invoke malloc, rax
-    mov rdi, rax                ; wskaźnik na string (argument 2)
+    mov rdi, rax
 
-    xor rdx, rdx           ; licznik długości = 0
+    xor rdx, rdx
 
 .while:
     mov al, [rsi + rdx]
@@ -75,11 +74,11 @@ StrPos:
     mov rbp, rsp
     sub rsp, 8*3
 
-    mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
-    mov rdi, [rbp + 24]           ; wskaźnik na string (argument 2)
-    mov rdx, [rbp + 32]           ; licznik długości - od pos (argument 3)
+    mov rsi, [rbp + 16]
+    mov rdi, [rbp + 24]
+    mov rdx, [rbp + 32]
 
-    xor r9, r9           ; licznik długości = 0
+    xor r9, r9
 
 .while:
     xor r9, r9
@@ -115,24 +114,19 @@ StrSub:
     mov rbp, rsp
     sub rsp, 8*3
 
-    mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
+    mov rsi, [rbp + 16]
 
-    mov rbx, [rbp + 24]           ; licznik długości = 3
-    ;dec rbx
-    mov r12, [rbp + 32]           ; licznik długości = 3
-    ;dec r10
-
-    ;invoke printf, '%i', rbx
-    ;invoke printf, '%i', r12
+    mov rbx, [rbp + 24]
+    mov r12, [rbp + 32]
 
     mov rax, r12
     sub rax, rbx
 
     inc rax
     invoke malloc, rax
-    mov rdi, rax                ; wskaźnik na string (argument 2)
+    mov rdi, rax
 
-    mov r9, 0          ; licznik długości = 3             
+    mov r9, 0          
 
 .while:
     mov al, [rsi + rbx]
@@ -192,7 +186,7 @@ start:
     invoke printf, '%s', rax
 
 
-    invoke ExitProcess, 0  ; Zakończ program
+    invoke ExitProcess, 0
 
 
 
