@@ -47,6 +47,7 @@ StrCopy:
     push rsi
     call StrLen
     add rsp, 8
+    inc rax
     invoke malloc, rax
     mov rdi, rax                ; wskaźnik na string (argument 2)
 
@@ -113,19 +114,32 @@ StrSub:
 
     mov rsi, [rbp + 16]           ; wskaźnik na string (argument 1)
 
-    mov rdi, 3                
+    mov rbx, [rbp + 24]           ; licznik długości = 3
+    dec rbx
+    mov rcx, [rbp + 32]           ; licznik długości = 3
+    dec rcx
 
-    mov rdx, 3           ; licznik długości = 3
+    mov rax, rcx
+    sub rax, rbx
+
+    inc rax
+    invoke malloc, rax
+    mov rdi, rax                ; wskaźnik na string (argument 2)
+
+    mov r9, 0          ; licznik długości = 3             
 
 .while:
-    mov al, [rsi + rdx]
-    mov [rdi + rdx], al
+    cmp rbx, rcx
+    je .end
     cmp al, 0
     je .end
-    inc rdx
+
+    mov al, [rsi + rbx]
+    mov [rdi + r9], al
+    inc r9
+    inc rbx
     jmp .while
 .end:
-    ; wynik długości jest w rdx
 
     mov rax, rdi
 
@@ -155,12 +169,12 @@ start:
     add rsp, 8*3
     invoke printf, '%i', rax
 
-    push 3
+    push 5
     push 3
     push textA
     call StrSub
     add rsp, 8*3
-    invoke printf, '%i', rax
+    invoke printf, '%s', rax
 
 
     invoke ExitProcess, 0  ; Zakończ program
