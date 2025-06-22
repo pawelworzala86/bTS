@@ -151,4 +151,4 @@ section '.data' data readable writeable
 	{{DATA}}
 
 section '.idata' import data readable writeable
-    include 'include\\idata.inc'
+    include 'idata.inc'
