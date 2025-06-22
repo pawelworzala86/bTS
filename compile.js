@@ -30,10 +30,10 @@ let FILE_INDEX = 1
 const FILES = {}
 
 
-let idataStr = fs.readFileSync('./include/idata.inc').toString()
+/*let idataStr = fs.readFileSync('./include/idata.inc').toString()
 idataStr.replace(/([a-zA-Z0-9\_]+)/gm,word=>{
     INVOKERS.push(word)
-})
+})*/
 
 
 
@@ -45,7 +45,7 @@ function addDLL(name,dll){
     dll = dll.toUpperCase()
     name = name.replace('32','')
     if(idata[name]==undefined){
-        idata[name] = {dll,functions:[]}
+        idata[name] = {dll,functions:{}}
     }
 }
 function addImport(dll,aliasName,dllName){
@@ -53,7 +53,8 @@ function addImport(dll,aliasName,dllName){
         return
     }
     dll = dll.replace('32','')
-    idata[dll].functions.push({aliasName,dllName})
+    idata[dll].functions[aliasName]=dllName
+    INVOKERS.push(aliasName)
 }
 function createIData(){
     let library = []
@@ -65,8 +66,8 @@ function createIData(){
         let lib = idata[key]
         library.push(`${key},'${lib.dll}'`)
         let funcs = []
-        for(const fn of lib.functions){
-            funcs.push(`${fn.aliasName},'${fn.dllName}'`)
+        for(const fn of Object.keys(lib.functions)){
+            funcs.push(`${fn},'${lib.functions[fn]}'`)
         }
         libraryFuncs.push('import '+key+',\\\n'+funcs.join(',\\\n'))
     }
@@ -730,6 +731,10 @@ function Compile(file,remdir=''){
         body = lines.join('\n')
 
         //process.exit(1)
+
+        if(FILE.FUNCTIONS[name]==undefined){
+            FILE.FUNCTIONS[name] = {locals:0}
+        }
 
         FILE.FUNCTIONS[name].params = params
 

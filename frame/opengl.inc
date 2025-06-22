@@ -7,7 +7,7 @@ format PE64 CONSOLE 5.0
 entry start
 
 include 'include\\math.inc'
-include 'include\\opengl.inc'
+;include 'include\\opengl.inc'
 
 section '.text' code readable executable
 
@@ -119,7 +119,7 @@ section '.data' data readable writeable
   _title db 'OpenGL example',0
   _class db 'FASMOPENGL32',0
 
-  theta GLfloat 0.6
+  theta dq 0.6
 
   wc WNDCLASS style:0, lpfnWndProc:WindowProc, lpszClassName:_class
 
