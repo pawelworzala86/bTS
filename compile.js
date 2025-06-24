@@ -275,9 +275,20 @@ function Compile(file,remdir=''){
 
 
 
+    let dataNames = []
+    //      STRINGS
+    r(/let .* \= \'.*\'/gm,match=>{
+        let name = 'F'+FILE.INDEX+'_'+match.split('=')[0].replace('let','').trim().split(':')[0]
+        //let value = match.split('=')[1].trim().replace(/\'|\"/gm,'')
+        console.log('str name',name)
 
-
-
+        dataNames.push(name)
+        return match
+    })
+    for(const name of dataNames){
+        r(new RegExp('(.*)('+name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
+        r(new RegExp('(.*)('+name+') \\+ ([a-zA-Z0-9\_]+)','gm'),'StrCon($2,$3)\nmov r11,rax\n$1r11')
+    }
 
 
 
@@ -769,13 +780,12 @@ ret`
 
 
 
-    //      STRINGS
+    
     for(const DTA of DATA){
         if(DTA.kind=='db'){
             r(new RegExp('(.*)('+DTA.name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
         }
     }
-
 
 
     for(const INVOKE of INVOKERS){
