@@ -829,6 +829,8 @@ ret`
 
     r(/\[qword \[([\S\s]+?)]\]/gm,'qword[$1]')
 
+    r(/this/gm,'[rbp + 16]')
+
 
 
 
