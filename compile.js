@@ -281,6 +281,16 @@ function Compile(file,remdir=''){
 
 
 
+    
+
+
+
+
+
+
+
+
+
 
 
 
@@ -757,6 +767,17 @@ ret`
     })
 
 
+
+
+    //      STRINGS
+    for(const DTA of DATA){
+        if(DTA.kind=='db'){
+            r(new RegExp('(.*)('+DTA.name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
+        }
+    }
+
+
+
     for(const INVOKE of INVOKERS){
         r(new RegExp('\\b('+INVOKE+')\\(\\)','gm'),'invoke $1')
         r(new RegExp('\\b('+INVOKE+')\\((.*)\\)','gm'),'invoke $1,$2')
@@ -830,6 +851,35 @@ ret`
     r(/\[qword \[([\S\s]+?)]\]/gm,'qword[$1]')
 
     r(/this/gm,'[rbp + 16]')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
