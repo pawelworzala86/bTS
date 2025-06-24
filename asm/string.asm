@@ -11,6 +11,7 @@ section '.data' data readable writeable
     textB db "am", 0
     textC db "qq",0
     textD db "example", 0
+    textE db "AM", 0
 
 section '.text' code readable executable
 
@@ -239,6 +240,93 @@ StrComp:
     pop rbp
 ret
 
+StrRepl:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 8*3
+
+    ;mov rsi, [rbp + 16]
+    ;mov rdi, [rbp + 24]
+    push 0
+    push [rbp + 24]
+    push [rbp + 16]
+    call StrPos
+    add rsp, 8*3
+    ;invoke printf, '%i', rax
+    mov r11, rax
+    ;i = str_pos
+
+    push [rbp + 24]
+    call StrLen
+    add rsp, 8
+    ;invoke printf, '%i', rax
+    mov r12, rax
+    ;l = str_len_from
+
+    ;l2 = str_len_dest
+
+    ;//ll = str_len + (l2-l)
+    ;//malloc ll
+
+    push [rbp + 16]
+    call StrLen
+    add rsp, 8
+    ;invoke printf, '%i', rax
+    mov r13, rax
+    ;original_str
+
+    dec r11
+    push r11
+    push 0
+    push [rbp + 16]
+    call StrSub
+    add rsp, 8*3
+    ;invoke printf, '%s', rax
+    mov r14, rax
+
+    push 0
+    push [rbp + 24]
+    push [rbp + 16]
+    call StrPos
+    add rsp, 8*3
+    ;invoke printf, '%i', rax
+    mov r11, rax
+
+    dec r11
+    mov rax, r11
+    add rax, r12
+    ;invoke printf, '%i', r13
+    push r13
+    push rax
+    push [rbp + 16]
+    call StrSub
+    add rsp, 8*3
+    ;invoke printf, '%s', rax
+    mov r15, rax
+
+    ;from = subst 0, i
+    ;rest = subst i+l, len original_str,
+    ;con from, dest
+    ;con rax,rest
+
+    push [rbp + 32]
+    push r14
+    call StrCon
+    add rsp, 8*2
+    ;invoke printf, '%s', rax
+
+    push r15
+    push rax
+    call StrCon
+    add rsp, 8*2
+    ;invoke printf, '%s', rax
+
+    ;return rax
+
+    mov rsp, rbp
+    pop rbp
+ret
+
 start:
     sub rsp, 8
 
@@ -290,6 +378,13 @@ start:
     call StrComp
     add rsp, 8*2
     invoke printf, '%i', rax
+
+    push textE
+    push textB
+    push textA
+    call StrRepl
+    add rsp, 8*3
+    invoke printf, '%s', rax
 
 
     invoke ExitProcess, 0
