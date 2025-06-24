@@ -13,7 +13,7 @@ function main(){
     msvcrt.printf(" %i ", txtA.length)
 
     let txt:string = ''
-    txt = StrCon(txtA,txtB)
+    txt = txtA + txtB
     msvcrt.printf(" %s ", txt)
 
     msvcrt.printf(" end")
