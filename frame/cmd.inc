@@ -7,8 +7,7 @@ format PE64 CONSOLE 5.0
 entry start
 
 include 'include\\math.inc'
-
-;include 'include\\opengl.inc'
+include 'include\\string.inc'
 
 
 section '.text' code readable executable
