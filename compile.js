@@ -111,6 +111,29 @@ addImport('opengl', 'wglDeleteContext', 'wglDeleteContext')
 
 
 
+
+
+
+function getDATA(name){
+    for(const DTA of DATA){
+        if(DTA.name==name){
+            return DTA
+        }
+    }
+    return null
+}
+
+
+
+
+
+
+
+
+
+
+
+
 function Compile(file,remdir=''){
     let activeDir = file.replace(remdir,'').split('\\')
     if(activeDir.length>1){
@@ -275,20 +298,23 @@ function Compile(file,remdir=''){
 
 
 
-    let dataNames = []
+    let dataStringNames = {}
     //      STRINGS
     r(/let .* \= \'.*\'/gm,match=>{
         let name = 'F'+FILE.INDEX+'_'+match.split('=')[0].replace('let','').trim().split(':')[0]
         //let value = match.split('=')[1].trim().replace(/\'|\"/gm,'')
-        console.log('str name',name)
+        //console.log('str name',name)
 
-        dataNames.push(name)
+        dataStringNames[name]={}
         return match
     })
+    /*
     for(const name of dataNames){
-        r(new RegExp('(.*)('+name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
-        r(new RegExp('(.*)('+name+') \\+ ([a-zA-Z0-9\_]+)','gm'),'StrCon($2,$3)\nmov r11,rax\n$1r11')
-    }
+        //r(new RegExp('(.*)('+name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
+        r(new RegExp('(.*)('+name+')[\ ]*\\+[\ ]*([a-zA-Z0-9\\_]+)','gm'),'StrCon($2,$3)\nmov r11,rax\n$1r11')
+        //console.log(new RegExp('(.*)('+name+') \\+ ([a-zA-Z0-9\\_]+)','gm'))
+    }*/
+
 
 
 
@@ -362,6 +388,14 @@ function Compile(file,remdir=''){
                     console.log('MATH', match)
                     var matched = regex.exec(match)
                     console.log('matched', matched)
+                    let DTA = getDATA(matched[2])
+                    console.log('DTA',DTA)
+                    if(DTA&&(DTA.kind=='db')){
+                        return 'StrCon('+matched[2]+','+matched[3]+')\nmov r11,rax\n'+matched[1]+'r11'
+                    }
+                    if(dataStringNames[matched[2]]){
+                        return 'StrCon('+matched[2]+','+matched[3]+')\nmov r11,rax\n'+matched[1]+'r11'
+                    }
                     indexInn++
                     if(!isInt){
                         return 'Macro_Math_'+name+' qword '+matched[2]+',qword '+matched[3]+',qword mth'+indexInn+'\n'+matched[1]+'mth'+indexInn+''+matched[4]
