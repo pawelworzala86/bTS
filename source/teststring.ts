@@ -1,7 +1,10 @@
 import * as msvcrt from './system/msvcrt.ts'
 
-let txtA:string = 'test'
+let txtA:string = 'test wrd'
 let txtB:string = 'ABC'
+
+let search:string = 'st'
+let index:number = 0
 
 function main(){
     msvcrt.printf("ok ")
@@ -15,6 +18,9 @@ function main(){
     let txt:string = ''
     txt = txtA + txtB
     msvcrt.printf(" %s ", txt)
+
+    index = StrPos(txtA,search,0)
+    msvcrt.printf(" %i ", rax)
 
     msvcrt.printf(" end")
 }

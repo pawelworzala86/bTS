@@ -814,10 +814,11 @@ ret`
 
 
 
-    
+    //      STRINGS
     for(const DTA of DATA){
         if(DTA.kind=='db'){
             r(new RegExp('(.*)('+DTA.name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
+            r(new RegExp('(.*)('+DTA.name+')\\.indexOf\\((.*)\\)','gm'),'StrPos($2,$3,0)\nmov r11,rax\n$1r11')
         }
     }
 
