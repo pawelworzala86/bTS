@@ -1,13 +1,5 @@
 import * as msvcrt from './system/msvcrt.ts'
 
-class String{
-    length(){
-        let len:number = 0
-        len = StrLen(this)
-        return len
-    }
-}
-
 let txtA:string = 'test'
 
 function main(){
