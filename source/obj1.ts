@@ -1,6 +1,5 @@
 import * as msvcrt from './system/msvcrt.ts'
 
-
 export class INNOBJ{
     fieldA:number = 12
     fieldB:number = 13

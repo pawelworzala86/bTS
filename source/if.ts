@@ -1,4 +1,3 @@
-import * as imp1 from './imp1.ts'
 import * as msvcrt from './system/msvcrt.ts'
 
 let valA:number = 10.0

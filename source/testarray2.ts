@@ -10,11 +10,9 @@ function main(){
     let idx:number = 0
     valA[idx] = 11
     valA[1] = 12
-    //idx = 0
+
     msvcrt.printf("%i ", valA[idx])
-    //idx = 0
     msvcrt.printf("%i ", valA[1])
-    //idx = 0
     msvcrt.printf("%i ", valA[idx])
 
 
