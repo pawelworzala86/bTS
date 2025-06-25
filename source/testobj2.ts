@@ -10,7 +10,7 @@ let objA = {
 function main(){
     msvcrt.printf("ok")
 
-    //msvcrt.printf(" %i ", objA.fieldA)
+    msvcrt.printf(" %i ", objA.fieldA)
 
     let {fieldA,fieldB} = objA
 
