@@ -4,6 +4,7 @@ let txtA:string = 'hello'
 let txtB:string = ' world'
 
 let search:string = 'lo'
+let dest:string = 'LO'
 let index:number = 0
 
 function main(){
@@ -21,6 +22,9 @@ function main(){
     msvcrt.printf(" %i ", index)
 
     txt = txtA.substring(0,2)
+    msvcrt.printf(" %s ", txt)
+
+    txt = txtA.replace(search,dest)
     msvcrt.printf(" %s ", txt)
 
     msvcrt.printf(" end")
