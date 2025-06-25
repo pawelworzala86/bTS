@@ -17,9 +17,8 @@ function main(){
     txt = txtA + txtB
     msvcrt.printf(" %s ", txt)
 
-    msvcrt.printf(" %s ", txtA)
-    StrPos(txtA,search,0)
-    msvcrt.printf(" %i ", rax)
+    index = txtA.indexOf(search)
+    msvcrt.printf(" %i ", index)
 
     msvcrt.printf(" end")
 }
