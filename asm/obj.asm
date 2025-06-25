@@ -38,8 +38,13 @@ start:
 section '.data' data readable writeable
     lf db 13,10,0
 
+    dataA dq 123
     objA OBJ
 
 
 section '.idata' import data readable writeable
-    include 'include\\idata.inc'
+    library kernel32, 'kernel32.dll', \
+            msvcrt, 'msvcrt.dll'
+    import kernel32, ExitProcess, 'ExitProcess'
+    import msvcrt, printf, 'printf',\
+        malloc, 'malloc'
