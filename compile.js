@@ -343,8 +343,22 @@ function Compile(file,remdir=''){
     })
     
 
-
-
+    r(/let (?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\} = (.*)/gm,match=>{
+        let fields = match.split('{')[1].split('}')[0].trim()
+        fields=fields.substring(0,fields.length-2)
+        fields=fields.split(',')
+        let obj = match.split('=')[1].trim()
+        console.log('DESTUCT',fields,obj)
+        let ret = fields.map(field=>{
+            return `let ${field}:number = 0`
+        }).join('\n')
+        console.log('ret',ret)
+        let init = fields.map(field=>{
+            return `${field} = ${obj}.${field}`
+        }).join('\n')
+        console.log('init',init)
+        return ret+'\n'+init
+    })
 
 
 
@@ -503,8 +517,12 @@ function Compile(file,remdir=''){
         console.log('locals',locals)
         for(let local of locals){
             pidx += 8
+            console.log('local.name',local.name)
             match = match.replace(new RegExp('\\b'+local.name+'\\b','gm'),mmm=>{
                 return 'qword [rbp - '+pidx+']'
+            })
+            match = match.replace(new RegExp('\\.qword \\[rbp \\- '+pidx+'\\]','gm'),mmm=>{
+                return '.'+local.name
             })
         }
         let name = match.split('(')[0].replace('function','').trim()
@@ -513,7 +531,7 @@ function Compile(file,remdir=''){
     })
 
     
-
+    
 
 
 
