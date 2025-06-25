@@ -819,6 +819,8 @@ ret`
         if(DTA.kind=='db'){
             r(new RegExp('(.*)('+DTA.name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
             r(new RegExp('(.*)('+DTA.name+')\\.indexOf\\((.*)\\)','gm'),'StrPos($2,$3,0)\nmov r11,rax\n$1r11')
+            r(new RegExp('(.*)('+DTA.name+')\\.substring\\((.*)\\,(.*)\\)','gm'),'StrSub($2,$3,$4)\nmov r11,rax\n$1r11')
+            //r(new RegExp('mov[\ ]*('+DTA.name+'), rax','gm'),'mov qword[$1],rax')
         }
     }
 

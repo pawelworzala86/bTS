@@ -20,5 +20,8 @@ function main(){
     index = txtA.indexOf(search)
     msvcrt.printf(" %i ", index)
 
+    txt = txtA.substring(0,2)
+    msvcrt.printf(" %s ", txt)
+
     msvcrt.printf(" end")
 }
