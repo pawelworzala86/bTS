@@ -123,7 +123,11 @@ function getDATA(name){
     return null
 }
 
-
+let smOBJ = 0
+function getSMOBJ(){
+    smOBJ++
+    return 'SMOBJ'+smOBJ
+}
 
 
 
@@ -317,7 +321,26 @@ function Compile(file,remdir=''){
 
 
 
-
+    r(/let (.*) = (?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        console.log('SIMPLE OBJECT')
+        let name = match.trim().split(' ')[1].trim()
+        let lines = match.split('\n')
+        lines.splice(0,1)
+        lines.splice(lines.length-1,1)
+        lines=lines.map(line=>{
+            line = line.trim()
+            let name = line.split(':')[0].trim()
+            let value = line.split(':')[1].trim()
+            value=value.replace(',','')
+            return `${name}:number = ${value}`
+        })
+        console.log('lines',lines)
+        let objname = getSMOBJ()
+        return `class ${objname}:1{
+            ${lines.join('\n')}
+        :1}
+        let ${name}:${objname} = new ${objname}()`
+    })
     
 
 
@@ -557,6 +580,8 @@ function Compile(file,remdir=''){
     ends
     ${FUNCS}`
     })
+
+    console.log(FILE.CLASSES)
 
     r(/let .* \= new .*\(\)/gm,match=>{
         let name = match.split(' ')[1].trim().split(':')[0]
