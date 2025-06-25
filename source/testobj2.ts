@@ -9,4 +9,6 @@ let objA = {
 
 function main(){
     msvcrt.printf("ok")
+
+    msvcrt.printf(" %i ", objA.fieldA)
 }
