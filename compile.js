@@ -573,6 +573,12 @@ function Compile(file,remdir=''){
         return `struct ${name}
         ${props.join('\n')}
     ends
+    function ${name}_initialize(this:${name}):1{
+    ${props.map(prop=>{
+        prop = 'this.'+prop.replace('dq','=').trim()
+        return prop
+    }).join('\n')}
+    :1}
     ${name}_sizeof dq $-${name}
     ${FUNCS}`
     })
@@ -586,7 +592,7 @@ function Compile(file,remdir=''){
         console.log({name,kind,value,isObj:true})
         DATA.push({name,kind,value,isObj:true})
         FILE.CLASSES[kind].objs.push(name)
-        return ''
+        return kind+'_initialize('+name+')'
     })
 
     r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
