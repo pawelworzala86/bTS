@@ -505,30 +505,7 @@ function Compile(file,remdir=''){
 
 
     
-    r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
-        let locals = []
-        match = match.replace(/let (.*)/gm,mmm=>{
-            let name = mmm.split('=')[0].replace('let ','').trim().split(':')[0].trim()
-            let value = mmm.split('=')[1].trim()
-            locals.push({name,value})
-            return ''
-        })
-        let pidx = 0
-        console.log('locals',locals)
-        for(let local of locals){
-            pidx += 8
-            console.log('local.name',local.name)
-            match = match.replace(new RegExp('\\b'+local.name+'\\b','gm'),mmm=>{
-                return 'qword [rbp - '+pidx+']'
-            })
-            match = match.replace(new RegExp('\\.qword \\[rbp \\- '+pidx+'\\]','gm'),mmm=>{
-                return '.'+local.name
-            })
-        }
-        let name = match.split('(')[0].replace('function','').trim()
-        FILE.FUNCTIONS[name] = {locals:Object.keys(locals).length}
-        return match
-    })
+    
 
     
     
@@ -596,6 +573,7 @@ function Compile(file,remdir=''){
         return `struct ${name}
         ${props.join('\n')}
     ends
+    ${name}_sizeof dq $-${name}
     ${FUNCS}`
     })
 
@@ -609,6 +587,31 @@ function Compile(file,remdir=''){
         DATA.push({name,kind,value,isObj:true})
         FILE.CLASSES[kind].objs.push(name)
         return ''
+    })
+
+    r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        let locals = []
+        match = match.replace(/let (.*)/gm,mmm=>{
+            let name = mmm.split('=')[0].replace('let ','').trim().split(':')[0].trim()
+            let value = mmm.split('=')[1].trim()
+            locals.push({name,value})
+            return ''
+        })
+        let pidx = 0
+        console.log('locals',locals)
+        for(let local of locals){
+            pidx += 8
+            console.log('local.name',local.name)
+            match = match.replace(new RegExp('\\b'+local.name+'\\b','gm'),mmm=>{
+                return 'qword [rbp - '+pidx+']'
+            })
+            match = match.replace(new RegExp('\\.qword \\[rbp \\- '+pidx+'\\]','gm'),mmm=>{
+                return '.'+local.name
+            })
+        }
+        let name = match.split('(')[0].replace('function','').trim()
+        FILE.FUNCTIONS[name] = {locals:Object.keys(locals).length}
+        return match
     })
 
     r(/let .* \= \'.*\'/gm,match=>{
