@@ -571,9 +571,11 @@ function Compile(file,remdir=''){
         }
 
         return `struct ${name}
-        ${props.join('\n')}
+        ${props.map(prop=>{
+            return prop.split('dq')[0].trim()+' dq ?'
+        }).join('\n')}
     ends
-    function ${name}_initialize(this:${name}):1{
+    function ${name}_constructor(this:${name}):1{
     ${props.map(prop=>{
         prop = 'this.'+prop.replace('dq','=').trim()
         return prop
@@ -592,7 +594,7 @@ function Compile(file,remdir=''){
         console.log({name,kind,value,isObj:true})
         DATA.push({name,kind,value,isObj:true})
         FILE.CLASSES[kind].objs.push(name)
-        return kind+'_initialize('+name+')'
+        return kind+'_constructor('+name+')'
     })
 
     r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
