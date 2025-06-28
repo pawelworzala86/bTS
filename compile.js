@@ -1031,8 +1031,17 @@ if(code.indexOf('renderSystem:')>-1){
     form = 'opengl.inc'
 }
 
+const FUNCTIONS = []
+//if(form=='cmd.inc'){
+    code = code.replace(/^(.*)\:$([\s\S]+?)ret/gm,match=>{
+        FUNCTIONS.push(match)
+        return ''
+    })
+//}
+
 let frame = fs.readFileSync('./frame/'+form).toString()
 frame = frame.replace('{{CODE}}',code)
+frame = frame.replace('{{FUNCTIONS}}',FUNCTIONS.join('\n'))
 frame = frame.replace('{{DATA}}',data.join('\n'))
 
 fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),frame)

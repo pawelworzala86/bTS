@@ -11,6 +11,8 @@ include 'include\\string.inc'
 
 section '.text' code readable executable
 
+	{{FUNCTIONS}}
+
 	{{CODE}}
 
   start:
