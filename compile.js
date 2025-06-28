@@ -329,10 +329,17 @@ function Compile(file,remdir=''){
         lines.splice(lines.length-1,1)
         lines=lines.map(line=>{
             line = line.trim()
-            let name = line.split(':')[0].trim()
-            let value = line.split(':')[1].trim()
-            value=value.replace(',','')
-            return `${name}:number = ${value}`
+            if(line.indexOf(':')>-1){
+                let name = line.split(':')[0].trim()
+                let value = line.split(':')[1].trim()
+                value=value.replace(',','')
+                return `${name}:number = ${value}`
+            }else{
+                line=line.replace(',','')
+                let name = line
+                let value = name
+                return `${name}:number = ${value}`
+            }
         })
         console.log('lines',lines)
         let objname = getSMOBJ()
@@ -955,6 +962,8 @@ ret`
     r(/this/gm,'[rbp + 16]')
 
     r(/^r11$/gm,'')
+
+    r(/\[(.*)\] dq/gm,'$1 dq')
 
 
 
