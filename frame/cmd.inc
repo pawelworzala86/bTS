@@ -11,13 +11,13 @@ include 'include\\string.inc'
 
 
 section '.text' code readable executable
-    
-    {{FUNCTIONS}}
+
+    {{CODE}}
 
 start:
     sub	rsp,8		; Make stack dqword aligned
     
-    {{CODE}}
+    call F1_main
 
     invoke	ExitProcess,0
 
