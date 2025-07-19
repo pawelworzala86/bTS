@@ -7,7 +7,7 @@ function calle(func:Function){
 function main(){
     msvcrt.printf("ok")
 
-    calle(function(){
+    calle(function t(){
         msvcrt.printf("ok")
     })
 

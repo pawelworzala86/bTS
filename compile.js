@@ -513,11 +513,12 @@ function Compile(file,remdir=''){
 
 
     let repl = []
-    r(/^(.*)function\(([\s\S]+?)?\)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
-        let func = 'function FN'+(++UUID)+''+match.split('function')[1]
+    r(/^(.*)\((.*)function([\s\S]+?)?\(([\s\S]+?)?\)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        let func = 'function FN'+(++UUID)+''+match.split('function')[1].trim()
         let pref = ''+match.split('function')[0]
         repl.push(func)
-        return '\n'+pref+'FN'+UUID
+        let name = func.split(' ')[1].split('(')[0].trim()
+        return '\n'+pref+name
     })
     r(/^(.*function F1_main\()/gm,repl.join('\n\n')+'\n\n$1')
 
