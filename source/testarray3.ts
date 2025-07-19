@@ -12,14 +12,14 @@ class ARRAY{
         let size:number = 0
         size = this.total * arrayRecordSize//int
         this.array = msvcrt.realloc(this.array, size)
-        let array:number = 0
-        array = this.array
-        array[index] = value
+        let arr:number = 0
+        arr = this.array
+        arr[index] = value
     }
     get(index:number){
-        //let array:number = 0
-        //array = this.array
-        return this.array[0]
+        let arr:number = 0
+        arr = this.array
+        return arr[0]
     }
 }
 
