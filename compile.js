@@ -966,7 +966,7 @@ ret`
     r(/\[(.*)\] dq/gm,'$1 dq')
 
 
-
+    //r(/mov[\ ]*\[(.*)\]\. qword\[(.*)\]/gm,'mov rsi,[$1]\nmov rax,[$2]\nmov rax')
 
 
 
