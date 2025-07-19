@@ -136,7 +136,7 @@ function getSMOBJ(){
 
 
 
-
+let UUID = 1
 
 function Compile(file,remdir=''){
     let activeDir = file.replace(remdir,'').split('\\')
@@ -512,10 +512,16 @@ function Compile(file,remdir=''){
     fs.writeFileSync('./cache/ba2.js',source)
 
 
-    
-    
+    let repl = []
+    r(/^(.*)function\(([\s\S]+?)?\)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        let func = 'function FN'+(++UUID)+''+match.split('function')[1]
+        let pref = ''+match.split('function')[0]
+        repl.push(func)
+        return '\n'+pref+'FN'+UUID
+    })
+    r(/^(.*function F1_main\()/gm,repl.join('\n\n')+'\n\n$1')
 
-    
+    fs.writeFileSync('./cache/ba3.js',source)
     
 
 
@@ -614,7 +620,7 @@ function Compile(file,remdir=''){
             return ''
         })
         let pidx = 0
-        console.log('locals',locals)
+        //console.log('locals',locals,match)
         for(let local of locals){
             pidx += 8
             console.log('local.name',local.name)
@@ -778,7 +784,7 @@ function Compile(file,remdir=''){
 
 
 
-
+    
 
 
 
@@ -819,6 +825,12 @@ function Compile(file,remdir=''){
                             //prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
                             //return REG[idreg++]
                             return '[rbp + '+pidx+']'
+                        })
+                    }else if(['Function'].includes(param.kind)){
+                        line = 'mov rax, [rbp + '+pidx+']\n'+line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
+                            //prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
+                            //return REG[idreg++]
+                            return 'rax'
                         })
                     }else{
                         line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{
