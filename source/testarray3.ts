@@ -28,7 +28,7 @@ function main(){
 
     let value:number = 0
     value = arra.get(0)
-
+    msvcrt.printf(" %i ",value)
 
 
     msvcrt.printf("end ")
