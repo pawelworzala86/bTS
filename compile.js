@@ -502,13 +502,14 @@ function Compile(file,remdir=''){
     r(/(mth[0-9]+)/gm,'[$1]')
 
 
+    fs.writeFileSync('./cache/ba.js',source)
 
-
+    r(/^(.*)\b(this\.[a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'mov rsi,$2\n$1 qword[rsi + $3*8]')
+    r(/^(.*)\b(this\.[a-zA-Z0-9\_]+)\[([a-zA-Z0-9\_]+)\]/gm,'mov rsi,$2\nmov rdi,[$3]\n$1 qword[rsi + rdi*8]')
     r(/^(.*)\b([a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'mov rsi,$2\n$1 qword[rsi + $3*8]')
-
     r(/^(.*)\b([a-zA-Z0-9\_]+)\[([a-zA-Z0-9\_]+)\]/gm,'mov rsi,$2\nmov rdi,[$3]\n$1 qword[rsi + rdi*8]')
 
-    
+    fs.writeFileSync('./cache/ba2.js',source)
 
 
     
