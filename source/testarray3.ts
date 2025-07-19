@@ -11,7 +11,7 @@ class ARRAY{
         this.total++
         let size:number = 0
         size = this.total * arrayRecordSize//int
-        this.array = msvcrt.realloc(this.array, size)
+        this.array = msvcrt.malloc(size)
         this.array[index] = value
     }
     get(index:number){
