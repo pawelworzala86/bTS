@@ -23,15 +23,15 @@ class ARRAY{
     }
 }
 
-let array:ARRAY = new ARRAY()
+let arra:ARRAY = new ARRAY()
 
 function main(){
     msvcrt.printf("ok ")
 
-    array.push(111)
+    arra.push(111)
 
     let value:number = 0
-    value = array.get(0)
+    value = arra.get(0)
 
 
 
