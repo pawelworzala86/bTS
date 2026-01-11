@@ -2,6 +2,9 @@ const fs = require('fs')
 const path = require('path')
 
 
+fs.mkdirSync('./cache/', { recursive: true })
+
+
 function Blocks(source){
     let newSource = ''
     var tab = 1
