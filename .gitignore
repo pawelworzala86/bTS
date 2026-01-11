@@ -1,5 +1,2 @@
 out/*.exe
-cache/*.asm
-cache/*.ts
-cache/*.js
-cache/*.inc
+/cache/

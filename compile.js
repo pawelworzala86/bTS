@@ -537,16 +537,25 @@ function Compile(file,remdir=''){
 
         //console.log('body',body)
 
+        let cnstrCode = ''
         let FUNCS = []
         const fnames = []
         body = body.replace(/(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
             let fname = match.split('(')[0].trim()
             fnames.push(fname)
-            match = 'function '+name+'_'+match.trim()
-            match = match.replace(/\(/,'(this:'+name+',')
-            match = match.replace(/\,\)/gm,')')
-            //console.log('FUNC',match)
-            FUNCS.push(match)
+            if(fname=='constructor'){
+                cnstrCode = match.trim().split('\n')
+                cnstrCode.splice(0,1)
+                cnstrCode.splice(cnstrCode.length-1,1)
+                cnstrCode = cnstrCode.join('\n')
+                //console.log('cnstrCode',cnstrCode)
+            }else{
+                match = 'function '+name+'_'+match.trim()
+                match = match.replace(/\(/,'(this:'+name+',')
+                match = match.replace(/\,\)/gm,')')
+                //console.log('FUNC',match)
+                FUNCS.push(match)
+            }
             return ``
         })
 
@@ -587,14 +596,23 @@ function Compile(file,remdir=''){
 
         return `struct ${name}
         ${props.map(prop=>{
-            return prop.split('dq')[0].trim()+' dq ?'
+            if(prop.indexOf('dq')>-1){
+                return prop.split('dq')[0].trim()+' dq ?'
+            }else{
+                return prop.split('dq')[0].trim()
+            }
         }).join('\n')}
     ends
     function ${name}_constructor(this:${name}):1{
     ${props.map(prop=>{
-        prop = 'this.'+prop.replace('dq','=').trim()
-        return prop
+        if(prop.indexOf('dq')>-1){
+            prop = 'this.'+prop.replace('dq','=').trim()
+            return prop
+        }else{
+            return ''
+        }
     }).join('\n')}
+    ${cnstrCode}
     :1}
     ${name}_sizeof dq $-${name}
     ${FUNCS}`
@@ -1010,10 +1028,12 @@ ret`
 
 
 
-    let parts = file.split('/')
+    let parts = file.split(/\/|\\/gm)
+    //console.log(parts)
     if(parts.length>1){
         parts.splice(parts.length-1, 1)
-        parts = './cache/'+parts.join('/')+'/'
+        parts = parts.join('/')+'/'
+        parts = parts.replace('source','cache')
         //console.log(parts)
         fs.mkdirSync(parts, { recursive: true })
     }
