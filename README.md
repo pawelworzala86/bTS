@@ -1,3 +1,3 @@
 # bTS
 \
-.\compile.cmd test
+.\compile.cmd test - run ./source/test.ts
