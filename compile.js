@@ -621,8 +621,6 @@ function Compile(file,remdir=''){
     ${FUNCS}`
     })
 
-    console.log(FILE.CLASSES)
-
     r(/let .* \= new .*\(\)/gm,match=>{
         let name = match.split(' ')[1].trim().split(':')[0]
         let kind = match.split(' ')[4].split('(')[0].trim()
@@ -671,6 +669,31 @@ function Compile(file,remdir=''){
         return ''
     })
 
+
+    console.log('FC',FILE.CLASSES)
+    let callbacks = []
+    let callIdx = 1
+    for(const CLASS of Object.values(FILE.CLASSES)){
+        console.log('CLASS',CLASS)
+        for(const OB of CLASS.objs){
+        for(const FN of CLASS.fnames){
+            r(new RegExp('([a-zA-Z0-9\\_]+)\\('+OB+'\\.'+FN+'\\)','gm'),match=>{
+                console.log('FN.CALLBACK', match)
+                let call = match.split('(')[1].split(')')[0].trim()
+                callbacks[callIdx++]=call
+                return match.replace(call,'funcCalle'+(callIdx-1))
+            })
+        }}
+    }
+    let calls = ''
+    callbacks.map((calle,index)=>{
+        calls += `function funcCalle${index}():11{
+    ${calle}()
+:11}`
+    })
+    console.log(calls)
+    //fs.writeFileSync('./cache/calls.asm',source)
+    r(/function\ /,calls+'\nfunction ')
 
 
     //todo: CLASS.objs - funkcje starty
