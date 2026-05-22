@@ -372,9 +372,25 @@ function Compile(file,remdir=''){
 
 
 
-
-
-
+    //let objA:obj1.OBJ = new obj1.OBJ()
+    let constructors = ''
+    r(/function([\s\S]+?)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
+        match = match.replace(/((let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*))\n/gm,'$1\n$3.constructor()')
+        return match
+    })
+    r(/(let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*)/gm,match=>{
+        let name = match.split(':')[0].split(' ')[1].trim()
+        console.log('AAA:::')
+        constructors+=name+'.constructor()'
+        return match
+    })
+    r(/function main/gm,match=>{
+        return `function defConstructors():11{
+        ${constructors}
+        :11}\n`+match
+    })
+    r(/(function main.*)/gm,'$1\ndefConstructors()\n')
+    //fs.writeFileSync('./cache/cnstr.asm',source)
 
 
 
@@ -578,6 +594,7 @@ function Compile(file,remdir=''){
                 }else{
                     props.push(`${name} ${kind}`)
                     inOBJS.push({name,obj:FILE.CLASSES[kind]})
+                    cnstrCode += '\n'+kind+'_constructor(this.'+name+')\n'
                 }
             }
         })
@@ -951,6 +968,7 @@ ret`
     }
 
     for(const FUNC of Object.keys(FILE.FUNCTIONS)){
+        //console.log('FUNC',FUNC)
         r(new RegExp('\\b(.*)\\(\\)','gm'),'call $1')
         r(new RegExp('\\b(.*)\\((.*)\\)','gm'),match=>{
             let name = match.split('\(')[0].trim()
@@ -1030,9 +1048,12 @@ ret`
     r(/\[\[/gm,'[')
     r(/\]\]/gm,']')
 
+    r(/(.*)\(\[([a-zA-Z0-9\_]+)\]\)/gm,`push $2
+        call $1
+        add rsp, 8`)
 
-
-
+    r(/push (\[rax \+ .*\..*\])/gm,`lea rax, $1
+push rax`)
 
 
 

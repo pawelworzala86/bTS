@@ -6,7 +6,7 @@ let objA:obj1.OBJ = new obj1.OBJ()
 function main(){
     msvcrt.printf("ok")
 
-    objA.constructor()
+    //objA.constructor()
     msvcrt.printf(" %i ", objA.fieldA)
 
     objA.testFunc()

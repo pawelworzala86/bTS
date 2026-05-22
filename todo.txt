@@ -1,1 +1,0 @@
-globalne konstruktory po 'new OBJ' w funkcji main lub lokalnych miejscach
