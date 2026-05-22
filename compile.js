@@ -687,8 +687,8 @@ function Compile(file,remdir=''){
     }
     let calls = ''
     callbacks.map((calle,index)=>{
-        calls += `function funcCalle${index}():11{
-    ${calle}()
+        calls += `function funcCalle${index}(paramA:any,paramB:any,paramC:any,paramD:any,paramE:any):11{
+    ${calle}(paramA,paramB,paramC,paramD,paramE)
 :11}`
     })
     console.log(calls)
@@ -865,7 +865,7 @@ function Compile(file,remdir=''){
 
                 for(const param of params){
                     pidx += 8
-                    if(['number','string'].includes(param.kind)){
+                    if(['number','string','any'].includes(param.kind)){
                         line = line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
                             //prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
                             //return REG[idreg++]
