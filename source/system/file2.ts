@@ -6,8 +6,6 @@ export class FS{
     handle:number = 0
     fsize:number = 0
     buffor:number = 0
-    constructor(){
-    }
     readFile(fileName:string){
         this.handle = kernel.CreateFileA(fileName, GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL, 0)
         
