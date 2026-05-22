@@ -136,7 +136,7 @@ function getSMOBJ(){
 
 
 
-
+let constructors = ''
 
 
 let UUID = 1
@@ -373,7 +373,7 @@ function Compile(file,remdir=''){
 
 
     //let objA:obj1.OBJ = new obj1.OBJ()
-    let constructors = ''
+    //let constructors = ''
     r(/function([\s\S]+?)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
         match = match.replace(/((let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*))\n/gm,'$1\n$3.constructor()')
         return match
@@ -647,6 +647,7 @@ function Compile(file,remdir=''){
         FILE.CLASSES[kind].objs.push(name)
         return kind+'_constructor('+name+')'
     })
+    //fs.writeFileSync('./cache/classCnstr.asm',source)
 
     r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
         let locals = []
