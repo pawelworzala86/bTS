@@ -20,7 +20,7 @@ class ARRAY{
         if(ls==rs){
             let size:number = 0
             size = this.total * arrayRecordSize//int
-            this.array = msvcrt.realloc(size)
+            this.array = msvcrt.realloc(this.array,size)
         }
         this.array[index] = value
     }
