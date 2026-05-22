@@ -243,6 +243,12 @@ function Compile(file,remdir=''){
         FILE.EXPORTS.push({name,kind:'class'})
         return match.replace('export ','')
     })
+    r(/export default .*/gm,match=>{
+        let name = match.split(' ')[2].trim()
+        //kind - auto detect
+        FILE.EXPORTS.push({name,kind:'object'})
+        return ''//match.replace('export ','')
+    })
     //r(/export .*/gm,'')
 
     r(/const (.*)\:.* = (.*)/gm,'F'+FILE.INDEX+'_$1@@=@@$2')
@@ -250,9 +256,14 @@ function Compile(file,remdir=''){
 
     let FFF = []
     r(/import .*/gm,match=>{
-        let as = match.split(' ')[3]
-        let fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
-        //console.log('GGG',as,fi)
+        if(match.indexOf('as')>-1){
+            var as = match.split(' ')[3]
+            var fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
+        }else{
+            var as = match.split(' ')[1]
+            var fi = match.split(' ')[3].replace(/\'/gm,'').replace('./','')
+        }
+        console.log('GGG',as,fi)
         //if(activeDir.length){
             fi = 'source/'+activeDir+'/'+fi
         //}
@@ -277,31 +288,36 @@ function Compile(file,remdir=''){
         }
         return 'include \''+fi.replace('source','cache').replace('.ts','.asm')+'\''
     })
-    for(let FF of FFF){
-        if(FILES[FF[1]].EXPORTS){
-            for(let EXP of FILES[FF[1]].EXPORTS){
-                //console.log('EXP',EXP)
+    function IMPEXP(){
+        for(let FF of FFF){
+            if(FILES[FF[1]].EXPORTS){
+                for(let EXP of FILES[FF[1]].EXPORTS){
+                    //console.log('EXP',EXP)
 
-                let name = 'F'+FILES[FF[1]].INDEX+'_'+EXP.name
+                    let name = 'F'+FILES[FF[1]].INDEX+'_'+EXP.name
 
-                if(EXP.kind=='function'){
-                    FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
-                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
-                }else if(EXP.kind=='class'){
-                    FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
-                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
-                }else if(EXP.kind=='invoke'){
-                    //FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
-                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), EXP.name)
-                }else{
-                    r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                    if(EXP.kind=='function'){
+                        FILE.FUNCTIONS[name]=FILES[FF[1]].FUNCTIONS[name]
+                        r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                    }else if(EXP.kind=='class'){
+                        FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
+                        r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                    }else if(EXP.kind=='invoke'){
+                        //FILE.CLASSES[name]=FILES[FF[1]].CLASSES[name]
+                        r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), EXP.name)
+                    }else if(EXP.kind=='object'){
+                        console.log('OBJ::IMP:::', FF[0], name)
+                        r(new RegExp('\\b'+FF[0]+'\\.','gm'), name+'.')
+                    }else{
+                        r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
+                    }
                 }
             }
         }
     }
+    IMPEXP()
 
-
-
+    fs.writeFileSync('./cache/objimp.asm',source)
 
 
 
@@ -380,6 +396,7 @@ function Compile(file,remdir=''){
     })
     r(/(let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*)/gm,match=>{
         let name = match.split(':')[0].split(' ')[1].trim()
+        let type = match.split(':')[1].split(' ')[0].trim()
         console.log('AAA:::')
         constructors+=name+'.constructor()'
         return match
@@ -649,6 +666,9 @@ function Compile(file,remdir=''){
     })
     //fs.writeFileSync('./cache/classCnstr.asm',source)
 
+    fs.writeFileSync('./cache/objimp2.asm',source)
+    IMPEXP()
+
     r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
         let locals = []
         match = match.replace(/let (.*)/gm,mmm=>{
@@ -710,7 +730,7 @@ function Compile(file,remdir=''){
 :11}`
     })
     console.log(calls)
-    //fs.writeFileSync('./cache/calls.asm',source)
+    ///fs.writeFileSync('./cache/calls.asm',source)
     r(/function\ /,calls+'\nfunction ')
 
 
@@ -727,8 +747,7 @@ function Compile(file,remdir=''){
     r(/(.*) = (.*)\((.*)/gm,'$2($3\nmov $1, rax')
 
 
-
-
+    
 
     //function inner replacements
     let whileIndex = 0
@@ -879,7 +898,7 @@ function Compile(file,remdir=''){
             lines = lines.map(line=>{
                 let pidx = 8
                 let prefix = ''
-                let idreg = 0
+                let idreg = 1
 
                 for(const param of params){
                     pidx += 8
@@ -890,10 +909,10 @@ function Compile(file,remdir=''){
                             return '[rbp + '+pidx+']'
                         })
                     }else if(['Function'].includes(param.kind)){
-                        line = 'mov rax, [rbp + '+pidx+']\n'+line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
+                        line = 'mov rbx, [rbp + '+pidx+']\n'+line.replace(new RegExp('\\b'+param.name+'\\b','gm'),mmm=>{
                             //prefix+='mov '+REG[idreg]+',[rbp + '+pidx+']\n'
                             //return REG[idreg++]
-                            return 'rax'
+                            return 'rbx'
                         })
                     }else{
                         line = line.replace(new RegExp('\\b'+param.name+'\\.([a-zA-Z0-9\_]+)\\b','gm'),mmm=>{
