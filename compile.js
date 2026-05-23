@@ -269,7 +269,7 @@ function Compile(file,remdir='',fileWrite=true){
         console.log('GGG',as,fi, activeDir)
         //if(activeDir.length){
         let fio = fi
-            fi = 'source/'+activeDir+'/'+fi
+            fi = ''+activeDir+'/'+fi
         //}
 
         console.log('fi',fi,file)

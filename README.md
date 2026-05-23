@@ -1,3 +1,5 @@
 # bTS
 \
-.\bts.cmd source\testgl2.ts
+add root dir bTS to PATH\
+\
+cmd: bts source\testgl2.ts
