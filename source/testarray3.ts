@@ -8,6 +8,7 @@ class ARRAY{
     array:number = 0
     size:number = 0
     total:number = 0
+    step:number = 128
     constructor(){
         this.array = msvcrt.malloc(8)
     }
@@ -19,7 +20,7 @@ class ARRAY{
         rs = this.size
         if(ls==rs){
             let size:number = 0
-            this.size++
+            this.size = this.size + this.step
             size = this.total * arrayRecordSize//int
             this.array = msvcrt.realloc(this.array,size)
         }
