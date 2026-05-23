@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { exec } = require('child_process')
+//const { exec } = require('child_process')
 
 
 fs.mkdirSync('./cache/', { recursive: true })
@@ -1235,7 +1235,7 @@ fs.writeFileSync('./cache/idata.inc', idataString)
 
 
 
-
+/*
 function cmd(command){
     exec(command, (error, stdout, stderr) => {
     if (error) {
@@ -1247,7 +1247,7 @@ function cmd(command){
     })
 }
 
-cmd(".\\compile.cmd "+fileName)
+cmd(".\\compile.cmd "+fileName)*/
 /*cmd("@echo off")
 cmd("del out\\"+fileName+".exe")
 cmd("set include=C:\\fasmg\\packages\\x86\\include")
