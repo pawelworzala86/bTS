@@ -1,3 +1,3 @@
 # bTS
 \
-.\compile.cmd source\testgl2
+.\bts.cmd source\testgl2
