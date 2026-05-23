@@ -320,6 +320,12 @@ function Compile(file,remdir=''){
     fs.writeFileSync('./cache/objimp.asm',source)
 
 
+    r(/(function initSystem.*)/gm,`function main():11{
+        :11}
+        $1
+    main()`)
+
+
 
     let dataStringNames = {}
     //      STRINGS
@@ -337,6 +343,31 @@ function Compile(file,remdir=''){
         r(new RegExp('(.*)('+name+')[\ ]*\\+[\ ]*([a-zA-Z0-9\\_]+)','gm'),'StrCon($2,$3)\nmov r11,rax\n$1r11')
         //console.log(new RegExp('(.*)('+name+') \\+ ([a-zA-Z0-9\\_]+)','gm'))
     }*/
+
+    let strs = []
+    let idx = 1
+    r(/\ (.*)\:string \= \'(.*)\'/gm,match=>{
+        let name = match.split(':')[0].trim()
+        let value = match.split('=')[1].trim()
+        strs.push({
+            name,
+            tmpName: idx++,
+            value,
+        })
+        return ' '+name+':number = 0'
+    })
+    let strInits = ''
+    for(const str of strs){
+        strInits += `let strInit${str.tmpName}:string = ${str.value}\n`
+    }
+    r(/(function main)/gm,strInits+'\n$1')
+    let strSetVals = ''
+    for(const str of strs){
+        strSetVals += `${str.name} = strInit${str.tmpName}\n`
+    }
+    r(/(function main.*)/gm,`function strSetVals():11{
+        `+strSetVals+'\n:11}\n$1\nstrSetVals()\n')
+    fs.writeFileSync('./cache/str.asm',source)
 
 
 
@@ -977,13 +1008,13 @@ ret`
 
     //      STRINGS
     for(const DTA of DATA){
-        if(DTA.kind=='db'){
+        //if(DTA.kind=='db'){
             r(new RegExp('(.*)('+DTA.name+')\\.length','gm'),'StrLen($2)\nmov r11,rax\n$1r11')
             r(new RegExp('(.*)('+DTA.name+')\\.indexOf\\((.*)\\)','gm'),'StrPos($2,$3,0)\nmov r11,rax\n$1r11')
             r(new RegExp('(.*)('+DTA.name+')\\.substring\\((.*)\\,(.*)\\)','gm'),'StrSub($2,$3,$4)\nmov r11,rax\n$1r11')
             r(new RegExp('(.*)('+DTA.name+')\\.replace\\((.*)\\,(.*)\\)','gm'),'StrRepl($2,$3,$4)\nmov r11,rax\n$1r11')
             //r(new RegExp('mov[\ ]*('+DTA.name+'), rax','gm'),'mov qword[$1],rax')
-        }
+        //}
     }
 
 

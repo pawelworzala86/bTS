@@ -1,1 +1,0 @@
-niedopracowane operacje na stringach - przetworzony string to pointer - na start :number = 0

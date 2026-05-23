@@ -60,7 +60,6 @@ function CreateBuffer(posID:number,ssizeA:number,ssizeE:number,lengthA:number,ar
 }
 
 
-
 let buffer:number = 0
 
 function initSystem(){
@@ -149,7 +148,7 @@ function initSystem(){
 
 	msvcrt.printf('OK6')
 
-
+	//msvcrt.printf(' textureFileName=%s ',textureFileName)
 	textureID = texture.LoadTexture(textureFileName)
 }
 

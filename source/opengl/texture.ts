@@ -13,7 +13,8 @@ let textureID:number = 0
 
 export function LoadTexture(name:string){
 
-    msvcrt.printf(' %s ', name)
+    //lea rax, name
+    //msvcrt.printf(' txname=%s ', [name])
 
     wFormat = freeimage.FreeImage_GetFileType(name, 0)
    
