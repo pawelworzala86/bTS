@@ -142,7 +142,7 @@ let constructors = ''
 
 let UUID = 1
 
-function Compile(file,remdir=''){
+function Compile(file,remdir='',fileWrite=true){
     let activeDir = file.replace(remdir,'').split('\\')
     if(activeDir.length>1){
         activeDir.splice(activeDir.length-1, 1)
@@ -1170,7 +1170,7 @@ push $2`)
         fs.mkdirSync(parts, { recursive: true })
     }
 
-    if(file.indexOf('source')>-1){
+    if(fileWrite){
         fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
     }
 
@@ -1187,7 +1187,7 @@ let pat = path.resolve(file)
 //console.log('path',pat)
 file = pat
 
-let code = Compile(file,'C:\\bTS\\source\\')
+let code = Compile(file,'C:\\bTS\\source\\',false)
 
 let data = []
 for(const DTA of DATA){
@@ -1247,7 +1247,7 @@ function cmd(command){
     })
 }
 
-cmd(".\\_compile.cmd "+fileName)
+cmd(".\\compile.cmd "+fileName)
 /*cmd("@echo off")
 cmd("del out\\"+fileName+".exe")
 cmd("set include=C:\\fasmg\\packages\\x86\\include")

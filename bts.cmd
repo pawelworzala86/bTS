@@ -1,0 +1,1 @@
+node compile %1.ts
