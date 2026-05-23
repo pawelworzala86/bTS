@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const { exec } = require('child_process')
 
 
 fs.mkdirSync('./cache/', { recursive: true })
@@ -151,7 +152,7 @@ function Compile(file,remdir=''){
         activeDir = ''
     }
 
-    let source = fs.readFileSync(file).toString()
+    var source = fs.readFileSync(file).toString()
 
     if(FILES[file]!=undefined){
         return
@@ -263,14 +264,22 @@ function Compile(file,remdir=''){
             var as = match.split(' ')[1]
             var fi = match.split(' ')[3].replace(/\'/gm,'').replace('./','')
         }
-        console.log('GGG',as,fi)
+        console.log('GGG',as,fi, activeDir)
         //if(activeDir.length){
+        let fio = fi
             fi = 'source/'+activeDir+'/'+fi
         //}
 
-        //console.log('fi',fi,file)
+        console.log('fi',fi,file)
         //process.exit(1)
         let pat = path.resolve(fi)
+
+        if(!fs.existsSync(pat)){
+            fi = activeDir+'/source/'+fio
+            pat = path.resolve(fi)
+        }
+        console.log('pat',pat)
+
         //console.log('path',pat)
         fi = pat
 
@@ -1171,9 +1180,9 @@ push $2`)
 
 
 
-let file = process.argv[2]+'.ts'
+let file = process.argv[2]//+'.ts'
 
-let pat = path.resolve('source/'+file)
+let pat = path.resolve(file)
 //console.log('path',pat)
 file = pat
 
@@ -1210,9 +1219,39 @@ frame = frame.replace('{{CODE}}',code)
 //frame = frame.replace('{{FUNCTIONS}}',FUNCTIONS.join('\n'))
 frame = frame.replace('{{DATA}}',data.join('\n'))
 
-fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),frame)
+let fileName = file
+fileName = fileName.split('\\')
+fileName = fileName[fileName.length-1].replace('.ts', '')
+console.log(fileName)
+
+fs.writeFileSync('./cache/'+fileName+'.asm',frame)
 
 
 
 const idataString = createIData()
 fs.writeFileSync('./cache/idata.inc', idataString)
+
+
+
+
+
+function cmd(command){
+    exec(command, (error, stdout, stderr) => {
+    if (error) {
+    console.error('Błąd:', error.message);
+    return;
+    }
+    console.log(stdout)
+    //console.log('STDERR:', stderr);
+    })
+}
+
+cmd(".\\_compile.cmd "+fileName)
+/*cmd("@echo off")
+cmd("del out\\"+fileName+".exe")
+cmd("set include=C:\\fasmg\\packages\\x86\\include")
+cmd("C:\\fasmg\\core\\fasmg cache\\"+fileName+".asm out\\"+fileName+".exe")
+cmd("cd out")
+cmd("@echo on")
+cmd(""+fileName+".exe")
+cmd("cd ..")*/
