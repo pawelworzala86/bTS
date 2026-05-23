@@ -1170,8 +1170,9 @@ push $2`)
         fs.mkdirSync(parts, { recursive: true })
     }
 
-
-    fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
+    if(file.indexOf('source')>-1){
+        fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
+    }
 
     return source
 }
