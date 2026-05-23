@@ -1184,7 +1184,7 @@ push $2`)
 let file = process.argv[2]//+'.ts'
 
 let pat = path.resolve(file)
-//console.log('path',pat)
+console.log('path',pat)
 file = pat
 
 let code = Compile(file,'C:\\bTS\\source\\',false)
