@@ -1,9 +1,11 @@
 const fs = require('fs')
 const path = require('path')
-//const { exec } = require('child_process')
 
+let filePath = __filename
+filePath=filePath.replace(/([a-zA-Z0-9\_]+\.js)/gm,'')
+console.log(filePath);
 
-fs.mkdirSync('./cache/', { recursive: true })
+fs.mkdirSync(filePath+'cache/', { recursive: true })
 
 
 function Blocks(source){
@@ -34,7 +36,7 @@ let FILE_INDEX = 1
 const FILES = {}
 
 
-/*let idataStr = fs.readFileSync('./include/idata.inc').toString()
+/*let idataStr = fs.readFileSync(filePath+'include/idata.inc').toString()
 idataStr.replace(/([a-zA-Z0-9\_]+)/gm,word=>{
     INVOKERS.push(word)
 })*/
@@ -259,10 +261,10 @@ function Compile(file,remdir='',fileWrite=true){
     r(/import .*/gm,match=>{
         if(match.indexOf('as')>-1){
             var as = match.split(' ')[3]
-            var fi = match.split(' ')[5].replace(/\'/gm,'').replace('./','')
+            var fi = match.split(' ')[5].replace(/\'/gm,'').replace(filePath+'','')
         }else{
             var as = match.split(' ')[1]
-            var fi = match.split(' ')[3].replace(/\'/gm,'').replace('./','')
+            var fi = match.split(' ')[3].replace(/\'/gm,'').replace(filePath+'','')
         }
         console.log('GGG',as,fi, activeDir)
         //if(activeDir.length){
@@ -275,7 +277,7 @@ function Compile(file,remdir='',fileWrite=true){
         let pat = path.resolve(fi)
 
         if(!fs.existsSync(pat)){
-            fi = activeDir+'/source/'+fio
+            fi = filePath+'/source/'+fio
             pat = path.resolve(fi)
         }
         console.log('pat',pat)
@@ -326,7 +328,7 @@ function Compile(file,remdir='',fileWrite=true){
     }
     IMPEXP()
 
-    fs.writeFileSync('./cache/objimp.asm',source)
+    fs.writeFileSync(filePath+'cache/objimp.asm',source)
 
 
     r(/(function initSystem.*)/gm,`function main():11{
@@ -376,7 +378,7 @@ function Compile(file,remdir='',fileWrite=true){
     }
     r(/(function main.*)/gm,`function strSetVals():11{
         `+strSetVals+'\n:11}\n$1\nstrSetVals()\n')
-    fs.writeFileSync('./cache/str.asm',source)
+    fs.writeFileSync(filePath+'cache/str.asm',source)
 
 
 
@@ -448,7 +450,7 @@ function Compile(file,remdir='',fileWrite=true){
         :11}\n`+match
     })
     r(/(function main.*)/gm,'$1\ndefConstructors()\n')
-    //fs.writeFileSync('./cache/cnstr.asm',source)
+    //fs.writeFileSync(filePath+'cache/cnstr.asm',source)
 
 
 
@@ -579,14 +581,14 @@ function Compile(file,remdir='',fileWrite=true){
     r(/(mth[0-9]+)/gm,'[$1]')
 
 
-    fs.writeFileSync('./cache/ba.js',source)
+    fs.writeFileSync(filePath+'cache/ba.js',source)
 
     r(/^(.*)\b(this\.[a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'lea rsi,$2\n$1 qword[rsi + $3*8]')
     r(/^(.*)\b(this\.[a-zA-Z0-9\_]+)\[([a-zA-Z0-9\_]+)\]/gm,'lea rsi,$2\nmov rdi,[$3]\n$1 qword[rsi + rdi*8]')
     r(/^(.*)\b([a-zA-Z0-9\_]+)\[([0-9]+)\]/gm,'mov rsi,$2\n$1 qword[rsi + $3*8]')
     r(/^(.*)\b([a-zA-Z0-9\_]+)\[([a-zA-Z0-9\_]+)\]/gm,'mov rsi,$2\nmov rdi,[$3]\n$1 qword[rsi + rdi*8]')
 
-    fs.writeFileSync('./cache/ba2.js',source)
+    fs.writeFileSync(filePath+'cache/ba2.js',source)
 
 
     let repl = []
@@ -599,7 +601,7 @@ function Compile(file,remdir='',fileWrite=true){
     })
     r(/^(.*function F1_main\()/gm,repl.join('\n\n')+'\n\n$1')
 
-    fs.writeFileSync('./cache/ba3.js',source)
+    fs.writeFileSync(filePath+'cache/ba3.js',source)
     
 
 
@@ -709,9 +711,9 @@ function Compile(file,remdir='',fileWrite=true){
         FILE.CLASSES[kind].objs.push(name)
         return kind//+'_constructor('+name+''+(params.length?(','+params):'')+')'
     })
-    //fs.writeFileSync('./cache/classCnstr.asm',source)
+    //fs.writeFileSync(filePath+'cache/classCnstr.asm',source)
 
-    fs.writeFileSync('./cache/objimp2.asm',source)
+    fs.writeFileSync(filePath+'cache/objimp2.asm',source)
     IMPEXP()
 
     r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
@@ -775,7 +777,7 @@ function Compile(file,remdir='',fileWrite=true){
 :11}`
     })
     console.log(calls)
-    ///fs.writeFileSync('./cache/calls.asm',source)
+    ///fs.writeFileSync(filePath+'cache/calls.asm',source)
     r(/function\ /,calls+'\nfunction ')
 
 
@@ -1187,7 +1189,7 @@ let pat = path.resolve(file)
 console.log('path',pat)
 file = pat
 
-let code = Compile(file,'C:\\bTS\\source\\',false)
+let code = Compile(file,filePath+'\\source\\',false)
 
 let data = []
 for(const DTA of DATA){
@@ -1215,7 +1217,7 @@ if(code.indexOf('renderSystem:')>-1){
     })
 //}*/
 
-let frame = fs.readFileSync('./frame/'+form).toString()
+let frame = fs.readFileSync(filePath+'/frame/'+form).toString()
 frame = frame.replace('{{CODE}}',code)
 //frame = frame.replace('{{FUNCTIONS}}',FUNCTIONS.join('\n'))
 frame = frame.replace('{{DATA}}',data.join('\n'))
@@ -1225,12 +1227,12 @@ fileName = fileName.split('\\')
 fileName = fileName[fileName.length-1].replace('.ts', '')
 console.log(fileName)
 
-fs.writeFileSync('./cache/'+fileName+'.asm',frame)
+fs.writeFileSync(filePath+'cache/'+fileName+'.asm',frame)
 
 
 
 const idataString = createIData()
-fs.writeFileSync('./cache/idata.inc', idataString)
+fs.writeFileSync(filePath+'cache/idata.inc', idataString)
 
 
 

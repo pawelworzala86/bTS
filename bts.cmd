@@ -1,4 +1,4 @@
-node c:\bts\compile.js %1
+node %~dp0\compile.js %1
 
 IF ERRORLEVEL 1 GOTO koniec
 
@@ -6,16 +6,16 @@ IF ERRORLEVEL 1 GOTO koniec
 
 set FILENAME=%~n1
 
-del out\%FILENAME%.exe
+del %~dp0\out\%FILENAME%.exe
 
 set include=C:\fasmg\packages\x86\include
-C:\fasmg\core\fasmg cache\%FILENAME%.asm out\%FILENAME%.exe
+C:\fasmg\core\fasmg %~dp0\cache\%FILENAME%.asm %~dp0\out\%FILENAME%.exe
 IF ERRORLEVEL 1 GOTO koniec
 
 
-cd out
+cd %~dp0\out
 @echo on
 %FILENAME%.exe
-cd ..
+cd %~dp0\
 
 :koniec
