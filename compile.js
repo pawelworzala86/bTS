@@ -391,14 +391,15 @@ function Compile(file,remdir=''){
     //let objA:obj1.OBJ = new obj1.OBJ()
     //let constructors = ''
     r(/function([\s\S]+?)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
-        match = match.replace(/((let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*))\n/gm,'$1\n$3.constructor()')
+        match = match.replace(/((let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*)\((.*)\))\n/gm,'$1\n$3.constructor($6)')
         return match
     })
-    r(/(let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*)/gm,match=>{
+    r(/^(let|var|const)\ (.*)\:(.*)\ \=\ new\ (.*)/gm,match=>{
         let name = match.split(':')[0].split(' ')[1].trim()
         let type = match.split(':')[1].split(' ')[0].trim()
+        let params = match.split('(')[1].split(')')[0].trim()
         console.log('AAA:::')
-        constructors+=name+'.constructor()'
+        constructors+=name+'.constructor('+(params.length?(''+params):'')+')'
         return match
     })
     r(/function main/gm,match=>{
@@ -574,17 +575,20 @@ function Compile(file,remdir=''){
         //console.log('body',body)
 
         let cnstrCode = ''
+        let cnstrParams = ''
         let FUNCS = []
         const fnames = []
         body = body.replace(/(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,match=>{
             let fname = match.split('(')[0].trim()
             fnames.push(fname)
+            console.log('fname=',fname)
             if(fname=='constructor'){
                 cnstrCode = match.trim().split('\n')
                 cnstrCode.splice(0,1)
                 cnstrCode.splice(cnstrCode.length-1,1)
                 cnstrCode = cnstrCode.join('\n')
-                //console.log('cnstrCode',cnstrCode)
+                cnstrParams = match.split('(')[1].split(')')[0].trim()
+                console.log('cnstrParams',cnstrParams)
             }else{
                 match = 'function '+name+'_'+match.trim()
                 match = match.replace(/\(/,'(this:'+name+',')
@@ -640,7 +644,7 @@ function Compile(file,remdir=''){
             }
         }).join('\n')}
     ends
-    function ${name}_constructor(this:${name}):1{
+    function ${name}_constructor(this:${name}${cnstrParams.length?(','+cnstrParams):''}):1{
     ${props.map(prop=>{
         if(prop.indexOf('dq')>-1){
             prop = 'this.'+prop.replace('dq','=').trim()
@@ -655,14 +659,15 @@ function Compile(file,remdir=''){
     ${FUNCS}`
     })
 
-    r(/let .* \= new .*\(\)/gm,match=>{
+    r(/let .* \= new .*\((.*)?\)/gm,match=>{
         let name = match.split(' ')[1].trim().split(':')[0]
         let kind = match.split(' ')[4].split('(')[0].trim()
+        let params = match.split('(')[1].split(')')[0].trim()
         let value = null
         console.log({name,kind,value,isObj:true})
         DATA.push({name,kind,value,isObj:true})
         FILE.CLASSES[kind].objs.push(name)
-        return kind+'_constructor('+name+')'
+        return kind//+'_constructor('+name+''+(params.length?(','+params):'')+')'
     })
     //fs.writeFileSync('./cache/classCnstr.asm',source)
 
@@ -1072,8 +1077,8 @@ ret`
         call $1
         add rsp, 8`)
 
-    r(/push (\[rax \+ .*\..*\])/gm,`lea rax, $1
-push rax`)
+    r(/push (\[([a-z]+) \+ .*\..*\])/gm,`lea $2, $1
+push $2`)
 
 
 
