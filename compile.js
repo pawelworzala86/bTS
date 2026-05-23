@@ -1018,10 +1018,14 @@ ret`
     }
 
 
+    console.log('DATA',DATA)
     for(const DTA of DATA){
-        if(DTA.kind!='db'){
+        if(DTA.kind!='db'){ 
             r(new RegExp('\\b('+DTA.name+')\\b','gm'),'[$1]')
         }
+        //if(DTA.kind=='db'){
+        //    r(new RegExp('(.*) \\= (.*)','gm'),'mov r15, qword[$2]\nmov qword[$1], r15')
+        //}
     }
     for(const CLASSname of Object.keys(FILE.CLASSES)){
         let CLASS = FILE.CLASSES[CLASSname]
@@ -1034,6 +1038,7 @@ ret`
 
 
     r(/(.*) \= ([0-9\.\-]+)/gm,'mov $1, $2')
+    r(/(.*) \= \'(.*)\'/gm,'mov r15, "$2"\nmov qword[$1], r15')
     r(/(.*) \= (.*)/gm,'mov r15, $2\nmov $1, r15')
 
 
@@ -1080,8 +1085,13 @@ ret`
     r(/push (\[([a-z]+) \+ .*\..*\])/gm,`lea $2, $1
 push $2`)
 
-
-
+    for(const DTA of DATA){
+        if(DTA.kind=='db'){ 
+            r(new RegExp('mov[\\ ]+('+DTA.name+')\\, rax','gm'),'mov qword[$1], rax')
+            r(new RegExp('\\b('+DTA.name+')\\b','gm'),'[$1]')
+        }
+    }
+    r(/\[([\ ]+)?\[(.*)\]\]/gm,'[$2]')
 
 
 
@@ -1136,7 +1146,7 @@ for(const DTA of DATA){
         if(DTA.kind=='dq'){
             data.push(`${DTA.name} dq ${DTA.value}`)
         }else if(DTA.kind=='db'){
-            data.push(`${DTA.name} db "${DTA.value}",0`)
+            data.push(`${DTA.name} dq "${DTA.value}",0`)
         }
     }
 }

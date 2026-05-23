@@ -1,0 +1,1 @@
+niedopracowane operacje na stringach - zawsze pointer - zmienić na kopiowanie - txtA = txtB
