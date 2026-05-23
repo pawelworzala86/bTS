@@ -144,7 +144,7 @@ let constructors = ''
 
 let UUID = 1
 
-function Compile(file,remdir='',fileWrite=true){
+function Compile(file,remdir='',fileWrite=true,savePath=''){
     let activeDir = file.replace(remdir,'').split('\\')
     if(activeDir.length>1){
         activeDir.splice(activeDir.length-1, 1)
@@ -154,6 +154,7 @@ function Compile(file,remdir='',fileWrite=true){
         activeDir = ''
     }
 
+    console.log('file::::',file)
     var source = fs.readFileSync(file).toString()
 
     if(FILES[file]!=undefined){
@@ -275,6 +276,7 @@ function Compile(file,remdir='',fileWrite=true){
         console.log('fi',fi,file)
         //process.exit(1)
         let pat = path.resolve(fi)
+        console.log('pat::',pat)
 
         if(!fs.existsSync(pat)){
             fi = filePath+'/source/'+fio
@@ -290,14 +292,16 @@ function Compile(file,remdir='',fileWrite=true){
             res = false
         }
 
-        Compile(fi,remdir)
+        console.log('fio,remdir',fi,remdir)
+        Compile(fi,remdir,true,''+remdir+'/'+fio)
 
         FFF.push([as, fi])
 
         if(!res){
             return ''
         }
-        return 'include \''+fi.replace('source','cache').replace('.ts','.asm')+'\''
+        pat = path.resolve(remdir.replace('source','cache')+''+fio.replace('.ts','.asm'))
+        return 'include \''+pat+'\''
     })
     function IMPEXP(){
         for(let FF of FFF){
@@ -1173,7 +1177,15 @@ push $2`)
     }
 
     if(fileWrite){
-        fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
+        console.log('file',file)
+        if(savePath.length){
+            console.log('savePath',savePath,filePath)
+            const fl = savePath.replace(filePath+'\/','').replace('source','cache').replace('.ts','.asm')
+            console.log('fl',fl)
+            fs.writeFileSync(fl,source)
+        }else{
+            fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
+        }
     }
 
     return source
