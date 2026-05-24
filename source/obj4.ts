@@ -11,3 +11,5 @@ export class OBJ{
         msvcrt.printf(" %i ", this.fieldA)
     }
 }
+
+export default OBJ

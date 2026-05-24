@@ -140,6 +140,10 @@ function getSMOBJ(){
 
 
 let constructors = ''
+let strInits = ''
+let strSetVals = ''
+//let strs = []
+let strsidx = 1
 
 
 let UUID = 1
@@ -323,7 +327,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
                         r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), EXP.name)
                     }else if(EXP.kind=='object'){
                         console.log('OBJ::IMP:::', FF[0], name)
-                        r(new RegExp('\\b'+FF[0]+'\\.','gm'), name+'.')
+                        r(new RegExp('\\b'+FF[0]+'','gm'), name+'')
                     }else{
                         r(new RegExp('\\b'+FF[0]+'\\.('+EXP.name+')','gm'), name)
                     }
@@ -360,30 +364,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         //console.log(new RegExp('(.*)('+name+') \\+ ([a-zA-Z0-9\\_]+)','gm'))
     }*/
 
-    let strs = []
-    let idx = 1
-    r(/\ (.*)\:string \= \'(.*)\'/gm,match=>{
-        let name = match.split(':')[0].trim()
-        let value = match.split('=')[1].trim()
-        strs.push({
-            name,
-            tmpName: idx++,
-            value,
-        })
-        return ' '+name+':number = 0'
-    })
-    let strInits = ''
-    for(const str of strs){
-        strInits += `let strInit${str.tmpName}:string = ${str.value}\n`
-    }
-    r(/(function main)/gm,strInits+'\n$1')
-    let strSetVals = ''
-    for(const str of strs){
-        strSetVals += `${str.name} = strInit${str.tmpName}\n`
-    }
-    r(/(function main.*)/gm,`function strSetVals():11{
-        `+strSetVals+'\n:11}\n$1\nstrSetVals()\n')
-    fs.writeFileSync(filePath+'cache/str.asm',source)
+    
 
 
 
@@ -485,6 +466,36 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
     //FILE.EXPORT = names
 
 
+    let strs = []
+    //let strRepl = []
+    r(/\ (.*)\:string \= \'(.*)\'/gm,match=>{
+        //let name = 'F'+FILE.INDEX+'_'+match.split(':')[0].trim()
+        let name = match.split(':')[0].trim()
+        /*strRepl.push({
+            name: match.split(':')[0].trim(),
+            newName: name,
+        })*/
+        let value = match.split('=')[1].trim()
+        strs.push({
+            name,
+            tmpName: strsidx++,
+            value,
+        })
+        return ' '+name+':number = 0'
+    })
+    //for(const strR of strRepl){
+    //    r(new RegExp(strR.name,'gm'),strR.newName)
+    //}
+    for(const str of strs){
+        strInits += `let strInit${str.tmpName}:string = ${str.value}\n`
+    }
+    r(/(function F1_main)/gm,strInits+'\n$1')
+    for(const str of strs){
+        strSetVals += `${str.name} = strInit${str.tmpName}\n`
+    }
+    r(/(function F1_main.*)/gm,`function strSetVals():11{
+        `+strSetVals+'\n:11}\n$1\nstrSetVals()\n')
+    fs.writeFileSync(filePath+'cache/str.asm',source)
     //r(/\'/gm,'"')
 
 
@@ -754,8 +765,13 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
     })
     r(/let .* \= .*/gm,match=>{
         let name = match.split('=')[0].replace('let','').trim().split(':')[0]
+        let kind = match.split('=')[0].replace('let','').trim().split(':')[1]
         let value = match.split('=')[1].replace(/\[|\]/gm,'').trim()
-        DATA.push({name,kind:'dq',value})
+        if(['number','number[]'].includes(kind)){
+            DATA.push({name,kind:'dq',value})
+        }else{
+            DATA.push({name,kind,value,isObj:true})
+        }
         return ''
     })
 
