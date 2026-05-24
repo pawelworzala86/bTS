@@ -300,7 +300,8 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         if(!res){
             return ''
         }
-        pat = path.resolve(remdir.replace('source','cache')+''+fio.replace('.ts','.asm'))
+        pat = path.resolve(fi.replace('source','cache').replace('.ts','.asm'))
+        console.log('pat2',pat)
         return 'include \''+pat+'\''
     })
     function IMPEXP(){
@@ -1178,14 +1179,14 @@ push $2`)
 
     if(fileWrite){
         console.log('file',file)
-        if(savePath.length){
+        /*if(savePath.length){
             console.log('savePath',savePath,filePath)
             const fl = savePath.replace(filePath+'\/','').replace('source','cache').replace('.ts','.asm')
             console.log('fl',fl)
-            fs.writeFileSync(fl,source)
-        }else{
+            fs.writeFileSync(file,source)
+        }else{*/
             fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
-        }
+        //}
     }
 
     return source
