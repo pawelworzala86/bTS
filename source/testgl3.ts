@@ -31,7 +31,7 @@ let VAO:number = 0
 let bufferID:number = 0
 
 
-
+let shaderDefaultFileName:string = 'default'
 
 let textureFileName:string = 'texture.jpg'
 let textureID:number = 0
@@ -86,7 +86,7 @@ function initSystem(){
 	//msvcrt.printf('shader constructor...')
 	//F10_Shader_constructor(shaderDefault)
 	msvcrt.printf('shader load...')
-	shaderDefault.load()
+	shaderDefault.load(shaderDefaultFileName)
 
 
 

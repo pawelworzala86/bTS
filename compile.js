@@ -376,6 +376,16 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         //console.log(new RegExp('(.*)('+name+') \\+ ([a-zA-Z0-9\\_]+)','gm'))
     }*/
 
+    let stringNames = []
+    r(/([a-zA-Z0-9\_]+)\:string/gm,match=>{
+        stringNames.push(match.split(':')[0].trim())
+        return match
+    })
+    for(const stringName of stringNames){
+        r(new RegExp('('+stringName+') \\= (.*) \\+ (.*)','gm'),'$1 = StrCon($2,$3)')
+        r(new RegExp('(.*) \\= ('+stringName+') \\+ (.*)','gm'),'$1 = StrCon($2,$3)')
+        r(new RegExp('(.*) \\= (.*) \\+ ('+stringName+')','gm'),'$1 = StrCon($2,$3)')
+    }
     
 
 

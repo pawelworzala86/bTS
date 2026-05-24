@@ -9,23 +9,27 @@ import * as gl from './gl.ts'
 let vertexShader:number = 0
 let fragmentShader:number = 0
 
-
-let vertFileName:string = 'default.vert'
-let fragFileName:string = 'default.frag'
+let vertFileExt:string = '.vert'
+let fragFileExt:string = '.frag'
+let vertFileName:string = ''
+let fragFileName:string = ''
 
 let programID:number = 0
 
 export class Shader{
-    load(){
-        msvcrt.printf('shader begin...')
+    load(fileName:string){
+        msvcrt.printf('shader begin... %s ...',fileName)
 
-        msvcrt.printf('vertName=',vertFileName)
+        vertFileName = fileName + vertFileExt
+
+        msvcrt.printf('vertName=%s',vertFileName)
         fs.readFile(vertFileName)
         vertexShader = gl.createShader(gl.VERTEX_SHADER);
         gl.shaderSource(vertexShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
         gl.compileShader(vertexShader);
         
-    
+        fragFileName = fileName + fragFileExt
+
         fs.readFile(fragFileName)
         fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
