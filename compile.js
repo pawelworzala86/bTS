@@ -285,6 +285,10 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         if(!fs.existsSync(pat)){
             fi = filePath+'/source/'+fio
             pat = path.resolve(fi)
+        }else{
+            console.log('FFFFFFF', fio)
+            //fi = ''+remdir+'/'+fio
+            //pat = path.resolve(fi)
         }
         console.log('pat',pat)
 
@@ -297,16 +301,24 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         }
 
         console.log('fio,remdir',fi,remdir)
-        Compile(fi,remdir,true,''+remdir+'/'+fio)
+
+        let saveD = ''+remdir+'/'+fio//path.resolve(fi.replace('source','cache').replace('.ts','.asm'))
+        //if(savePath.length){
+            saveD = saveD.replace('source','cache').replace('.ts','.asm')
+        if(!fs.existsSync(saveD)){
+            saveD = path.resolve(fi.replace('source','cache').replace('.ts','.asm'))
+        }
+
+        Compile(fi,remdir,true,saveD)
 
         FFF.push([as, fi])
 
         if(!res){
             return ''
         }
-        pat = path.resolve(fi.replace('source','cache').replace('.ts','.asm'))
+        //}
         console.log('pat2',pat)
-        return 'include \''+pat+'\''
+        return 'include \''+saveD+'\''
     })
     function IMPEXP(){
         for(let FF of FFF){
@@ -1194,14 +1206,15 @@ push $2`)
     }
 
     if(fileWrite){
-        console.log('file',file)
+        //savePath
+        console.log('savePath',savePath)
         /*if(savePath.length){
             console.log('savePath',savePath,filePath)
             const fl = savePath.replace(filePath+'\/','').replace('source','cache').replace('.ts','.asm')
             console.log('fl',fl)
             fs.writeFileSync(file,source)
         }else{*/
-            fs.writeFileSync(file.replace('source','cache').replace('.ts','.asm'),source)
+            fs.writeFileSync(savePath.replace('source','cache').replace('.ts','.asm'),source)
         //}
     }
 
