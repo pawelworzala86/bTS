@@ -208,7 +208,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
 
     let slines = source.split('\n')
     slines = slines.map(line=>{
-        let idx = 0
+        let idx = 4
         let prefix = ''
         for(let i=0;i<8;i++){
             line=line.replace(/^(.*)utils\.lea\(([\s\S]+?)\)(.*)$/gm,match=>{

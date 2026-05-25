@@ -6,17 +6,19 @@ import * as gl from './gl.ts'
 
 
 
-let vertexShader:number = 0
-let fragmentShader:number = 0
+
 
 let vertFileExt:string = '.vert'
 let fragFileExt:string = '.frag'
 let vertFileName:string = ''
 let fragFileName:string = ''
 
-let programID:number = 0
+
 
 export class Shader{
+    vertexShader:number = 0
+    fragmentShader:number = 0
+    program:number = 0
     load(fileName:string){
         msvcrt.printf('shader begin... %s ...',fileName)
 
@@ -24,16 +26,16 @@ export class Shader{
 
         msvcrt.printf('vertName=%s',vertFileName)
         fs.readFile(vertFileName)
-        vertexShader = gl.createShader(gl.VERTEX_SHADER);
-        gl.shaderSource(vertexShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
-        gl.compileShader(vertexShader);
+        this.vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(this.vertexShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
+        gl.compileShader(this.vertexShader);
         
         fragFileName = fileName + fragFileExt
 
         fs.readFile(fragFileName)
-        fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-        gl.shaderSource(fragmentShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
-        gl.compileShader(fragmentShader);
+        this.fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(this.fragmentShader,1, utils.lea(fs.buffor), utils.lea(fs.fsize));
+        gl.compileShader(this.fragmentShader);
     
         
         
@@ -41,22 +43,21 @@ export class Shader{
         msvcrt.printf('OK4')
     
     
-        programID = gl.createProgram();
-        gl.attachShader(programID, vertexShader);
-        gl.attachShader(programID, fragmentShader);
-        gl.linkProgram(programID);
+        this.program = gl.createProgram();
+        gl.attachShader(this.program, this.vertexShader);
+        gl.attachShader(this.program, this.fragmentShader);
+        gl.linkProgram(this.program);
     
-        gl.useProgram(programID);
+        gl.useProgram(this.program);
     
-        gl.detachShader(programID, vertexShader);
-        gl.detachShader(programID, fragmentShader);
+        gl.detachShader(this.program, this.vertexShader);
+        gl.detachShader(this.program, this.fragmentShader);
     
-        gl.deleteShader(vertexShader);
-        gl.deleteShader(fragmentShader);
+        gl.deleteShader(this.vertexShader);
+        gl.deleteShader(this.fragmentShader);
     }
     use(){
-        gl.useProgram(programID);
-        return programID
+        gl.useProgram(this.program);
     }
 }
 

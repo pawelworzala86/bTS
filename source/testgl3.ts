@@ -130,8 +130,8 @@ function renderSystem(){
 
 
 	//shaderDefault.use()
-	programID = shaderDefault.use()
-	
+	shaderDefault.use()
+	programID = shaderDefault.program
 
 	uniformLocation = gl.getUniformLocation(programID, 'dprojection')
 	gl.uniformMatrix4dv(uniformLocation, 1, 0, perspective)
