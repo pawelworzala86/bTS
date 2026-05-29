@@ -123,27 +123,23 @@ function initSystem(){
 
 
 let uniformLocation:number = 0
-let programID:number = 0
 
 function renderSystem(){
 	gl.clear(gl.COLOR_BUFFER_BIT)
 
-
-	//shaderDefault.use()
 	shaderDefault.use()
-	programID = shaderDefault.program
 
-	uniformLocation = gl.getUniformLocation(programID, 'dprojection')
+	uniformLocation = gl.getUniformLocation(shaderDefault.program, 'dprojection')
 	gl.uniformMatrix4dv(uniformLocation, 1, 0, perspective)
 
-	uniformLocation = gl.getUniformLocation(programID, 'dcamera')
+	uniformLocation = gl.getUniformLocation(shaderDefault.program, 'dcamera')
 	gl.uniformMatrix4dv(uniformLocation, 1, 0, camera)
 
-	uniformLocation = gl.getUniformLocation(programID, 'dmodel')
+	uniformLocation = gl.getUniformLocation(shaderDefault.program, 'dmodel')
 	gl.uniformMatrix4dv(uniformLocation, 1, 0, model)
 
 	
-	uniformLocation = gl.getUniformLocation(programID, 'diffuseTexture')
+	uniformLocation = gl.getUniformLocation(shaderDefault.program, 'diffuseTexture')
 	gl.uniform1d(uniformLocation, textureID)
 
 

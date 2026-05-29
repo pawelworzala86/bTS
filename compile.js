@@ -1017,7 +1017,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
                 for(const CLASSname of Object.keys(FILE.CLASSES)){
                     let CLASS = FILE.CLASSES[CLASSname]
                 for(const OBJ of CLASS.objs){
-                    line = line.replace(new RegExp('\\b'+OBJ+'\\..*\\b','gm'),mmm=>{
+                    line = line.replace(new RegExp('\\b'+OBJ+'\\.[a-zA-Z0-9\_]+\\b','gm'),mmm=>{
                         let field = mmm.split('.')[1].trim()
                         prefix+=`   lea ${REG[idreg++]}, ${OBJ}
     mov ${REG[idreg]}, [${REG[idreg-1]} + ${CLASS.name}.${field}]`
