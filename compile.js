@@ -760,7 +760,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
             let name = mmm.split('=')[0].replace('let ','').trim().split(':')[0].trim()
             let value = mmm.split('=')[1].trim()
             locals.push({name,value})
-            return ''
+            return name + ' = ' + value
         })
         let pidx = 0
         //console.log('locals',locals,match)
