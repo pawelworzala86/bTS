@@ -9,7 +9,7 @@ function main(){
 
     buffor = fs.readFile(fileName)
 
-    msvcrt.printf(" %s ", buffor)
+    msvcrt.printf(" %c ", buffor[0])
 
     msvcrt.printf(" end")
 }
