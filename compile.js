@@ -739,6 +739,22 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
     ${FUNCS}`
     })
 
+    r(/function(.*)(?<num>\:[0-9]+)\{([\s\S]+?)(\k<num>)\}/gm,mmm=>{
+        mmm=mmm.replace(/let .* \= new .*\((.*)?\)/gm,match=>{
+            let name = match.split(' ')[1].trim().split(':')[0]
+            let kind = match.split(' ')[4].split('(')[0].trim()
+            let params = match.split('(')[1].split(')')[0].trim()
+            let value = null
+            console.log({name,kind,value,isObj:true})
+            //DATA.push({name,kind,value,isObj:true})
+            FILE.CLASSES[kind].objs.push(name)
+            return 'let '+name+':number = 0\n'+
+                ''+name+' = msvcrt.malloc('+kind+'_sizeof)\n'+
+                kind+'_constructor('+name+''+(params.length?(','+params):'')+')'
+        })
+        return mmm
+    })
+
     r(/let .* \= new .*\((.*)?\)/gm,match=>{
         let name = match.split(' ')[1].trim().split(':')[0]
         let kind = match.split(' ')[4].split('(')[0].trim()
@@ -747,7 +763,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         console.log({name,kind,value,isObj:true})
         DATA.push({name,kind,value,isObj:true})
         FILE.CLASSES[kind].objs.push(name)
-        return kind//+'_constructor('+name+''+(params.length?(','+params):'')+')'
+        return kind+'_constructor('+name+''+(params.length?(','+params):'')+')'
     })
     //fs.writeFileSync(filePath+'cache/classCnstr.asm',source)
 
@@ -763,10 +779,23 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
             return name + ' = ' + value
         })
         let pidx = 0
-        //console.log('locals',locals,match)
+        console.log('locals:::',locals)
         for(let local of locals){
             pidx += 8
             console.log('local.name',local.name)
+            for(const CLASSname of Object.keys(FILE.CLASSES)){
+                let CLASS = FILE.CLASSES[CLASSname]
+                for(const OBJ of CLASS.objs){
+                    if(local.name==OBJ){
+                        match = match.replace(new RegExp('(.*)'+OBJ+'\\.([a-zA-Z0-9\\_]+)','gm'),mmm=>{
+                            let prefix = mmm.split(OBJ)[0]
+                            let field = mmm.split('.')[1].trim()
+                            return 'mov rax, qword [rbp - '+pidx+']\n'+
+                                prefix+'[rax + '+CLASSname+'.'+field+']'
+                        })
+                    }
+                }
+            }
             match = match.replace(new RegExp('\\b'+local.name+'\\b','gm'),mmm=>{
                 return 'qword [rbp - '+pidx+']'
             })
@@ -778,6 +807,7 @@ function Compile(file,remdir='',fileWrite=true,savePath=''){
         FILE.FUNCTIONS[name] = {locals:Object.keys(locals).length}
         return match
     })
+    fs.writeFileSync(filePath+'cache/locals.asm',source)
 
     r(/let .* \= \'.*\'/gm,match=>{
         let name = match.split('=')[0].replace('let','').trim().split(':')[0]

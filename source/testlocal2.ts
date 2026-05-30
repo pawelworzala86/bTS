@@ -9,6 +9,7 @@ function main(){
     msvcrt.printf("loc A: %i", locA)
 
     let objA:imp1.OBJ = new imp1.OBJ()
+    msvcrt.printf("obja A: %i", objA.fieldA)
 
     msvcrt.printf(" end")
 }
